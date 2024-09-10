@@ -71,8 +71,8 @@ namespace Differencial.Queries
             };
 
             _usuario = usuario;
-            _conn = new SqlConnection(configuracao.ConnectionString);
-            _conn.Open();
+            //_conn = new SqlConnection(configuracao.ConnectionString);
+            //_conn.Open();
         }
 
         protected SqlBuilder.Template BuildTemplate(bool enablePaging)
