@@ -1,113 +1,113 @@
 ﻿@model IEnumerable<Solicitacao>
 @{
-    ViewBag.Title = "Financeiro";
-    var actionLink = new HtmlString[] {HtmlAtividadeHelper.BotaoModalAtividade("Competencia Novembro", "btFiltro", true,
-                                                BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
-                                                Url.Action("Enviar", "Solicitacao", new { id = 2 })) };
+	ViewBag.Title = "Financeiro";
+	var actionLink = new HtmlString[] {HtmlAtividadeHelper.BotaoModalAtividade("Competencia Novembro", "btFiltro", true,
+												BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
+												Url.Action("Enviar", "Solicitacao", new { id = 2 })) };
 
 
 }
 @using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
 {
-    @HtmlAtividadeHelper.BotaoModalAtividade("Pagar", "btnFaturar", true,
-                                            BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao,
-                                            Url.Action("Faturar", "Dashboards", new { id = 5 }))
+	@HtmlAtividadeHelper.BotaoModalAtividade("Pagar", "btnFaturar", true,
+													BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao,
+													Url.Action("Faturar", "Dashboards", new { id = 5 }))
 
-    @HtmlAtividadeHelper.BotaoModalAtividade("Relatório", "btnVisualizar", true,
-                                            BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
-                                            Url.Action("Enviar", "Solicitacao", new { id = 2 }))
-    
+	@HtmlAtividadeHelper.BotaoModalAtividade("Relatório", "btnVisualizar", true,
+													BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
+													Url.Action("Enviar", "Solicitacao", new { id = 2 }))
+
 }
 <div class="wrapper wrapper-content">
-    <div class="row">
-        @using (Html.BeginBox(actionsLeft: actionLink ))
-        {
-            <div class="row">
-                <div class="table-responsive">
-                    <table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th class="">&nbsp;</th>
-                                <th class="">Nome Vistoriador</th>
-                                <th class="w100px">Valor Total</th>
-                                <th class="w100px">Pago</th>                                
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>Nome Vistoriador</th>
-                                <th>Valor Total</th>
-                                <th>Pago</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
+	<div class="row">
+		@using (Html.BeginBox(actionsLeft: actionLink))
+		{
+			<div class="row">
+				<div class="table-responsive">
+					<table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="">&nbsp;</th>
+								<th class="">Nome Vistoriador</th>
+								<th class="w100px">Valor Total</th>
+								<th class="w100px">Pago</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>&nbsp;</th>
+								<th>Nome Vistoriador</th>
+								<th>Valor Total</th>
+								<th>Pago</th>
+							</tr>
+						</tfoot>
+						<tbody>
+							@foreach (var item in Model)
+							{
 
-                                <tr id="@item.Id">
-                                    <td></td>
-                                    <td>
-                                        @if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-                                        {
-                                            <span>Giovani Raubach</span>
-                                        }
-                                        else
-                                        {
-                                            <span>Mario</span>
-                                        }
-                                    </td>                                
-                                    
-                                    <td class="text-right">
-                                        @if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-                                        {
-                                            <span>5.200,00</span>
-                                        }
-                                        else
-                                        {
-                                            <span>3.400,00</span>
-                                        }
-                                    </td>
-                                    <td class="text-center">
-                                        @if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-                                        {
-                                            <span class="label label-warning">Pendente</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="label label-success">Concluído</span>
-                                        }
-                                    </td> 
+								<tr id="@item.Id">
+									<td></td>
+									<td>
+										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
+										{
+											<span>Giovani Raubach</span>
+										}
+										else
+										{
+											<span>Mario</span>
+										}
+									</td>
 
-                                </tr>
-                            }
+									<td class="text-right">
+										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
+										{
+											<span>5.200,00</span>
+										}
+										else
+										{
+											<span>3.400,00</span>
+										}
+									</td>
+									<td class="text-center">
+										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
+										{
+											<span class="label label-warning">Pendente</span>
+										}
+										else
+										{
+											<span class="label label-success">Concluído</span>
+										}
+									</td>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
-    </div>
+								</tr>
+							}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		}
+	</div>
 </div>
-@section scripts{
-    <script type="text/javascript">
-        var grideTodasSolic
-        $(document).ready(function () {
-            grideTodasSolic = $('#tbFinanceiroSolicVistoria').dataTableCli();
-            $("#btnAbrir").click(function () {
-                abrilSolicitacao(grideTodasSolic.rows({ selected: true }));
-            });
-        });
+@section scripts {
+	<script type="text/javascript">
+		var grideTodasSolic
+		$(document).ready(function () {
+			grideTodasSolic = $('#tbFinanceiroSolicVistoria').dataTableCli();
+			$("#btnAbrir").click(function () {
+				abrilSolicitacao(grideTodasSolic.rows({ selected: true }));
+			});
+		});
 
-        function abrilSolicitacao(objRows) {
-            arrSel = objRows.ids().toArray()
+		function abrilSolicitacao(objRows) {
+			arrSel = objRows.ids().toArray()
 
-            if (arrSel.length > 0) {
-                window.location = "/Solicitacao/Editar/" + arrSel[0];
-            } else {
-                alertaMensagem("Selecione um item da lista");
-            }
+			if (arrSel.length > 0) {
+				window.location = "/Solicitacao/Editar/" + arrSel[0];
+			} else {
+				alertaMensagem("Selecione um item da lista");
+			}
 
-        }
-    </script>
+		}
+	</script>
 }

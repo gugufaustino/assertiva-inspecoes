@@ -51,11 +51,11 @@
                         <td class="">
                             @if (item.TpSituacao == TipoSituacaoProcessoEnum.EnviadoParaVistoria || item.TpSituacao == TipoSituacaoProcessoEnum.ApropriadoVistoriador)
                             {
-                                @MvcHtmlString.Create(item.Vistoriador == null ? string.Empty : HtmlGridHelper.TextoSubTexto(item.Vistoriador.Operador.NomeOperador, item.Vistoriador.EnderecoBase.NomeMunicipio).ToHtmlString())
+                                @(item.Vistoriador == null ? string.Empty : HtmlGridHelper.TextoSubTexto(item.Vistoriador.Operador.NomeOperador, item.Vistoriador.EnderecoBase.NomeMunicipio))
                             }
                             else
                             {
-                                @MvcHtmlString.Create(ultimoMovimento.OperadorOrigem == null ? string.Empty : HtmlGridHelper.TextoSubTexto(ultimoMovimento.OperadorOrigem.NomeOperador, "").ToHtmlString())
+                                @(ultimoMovimento.OperadorOrigem == null ? string.Empty : HtmlGridHelper.TextoSubTexto(ultimoMovimento.OperadorOrigem.NomeOperador, ""))
                             }
                         </td>
                         <td class="text-center">

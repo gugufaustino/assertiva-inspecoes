@@ -14,8 +14,8 @@ namespace Differencial.Domain
         [Atividade(IdSituacaoProcessoOrigem = 4, Name = "Agendamento", ShortName = "Agendar" )]
         Agendamento = 3,
 
-        //[Atividade(IdSituacaoProcessoOrigem = 4, Name = "Checklist Dados", ShortName = "Checklist Dados", IndAtividadeOpicional = true)]
-        //ChecklistDados = 4,
+        [Atividade(IdSituacaoProcessoOrigem = 4, Name = "Checklist Dados", ShortName = "Checklist Dados", IndAtividadeOpicional = true)]
+        ChecklistDados = 4,
 
         [Atividade(IdSituacaoProcessoOrigem = 4, Name = "Realizar Vistoria", ShortName = "Fotos Vistoria" )]
         RealizarVistoria = 5,

@@ -17,33 +17,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>
     </DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Content\**" />
-    <Compile Remove="Views\Configuracao\**" />
-    <Compile Remove="Views\Dashboards\Solicitante\**" />
-    <Compile Remove="Views\Filial\**" />
-    <Compile Remove="Views\Solicitacao\**" />
-    <Compile Remove="Views\Solicitante\**" />
-    <Content Remove="Content\**" />
-    <Content Remove="Views\Configuracao\**" />
-    <Content Remove="Views\Dashboards\Solicitante\**" />
-    <Content Remove="Views\Filial\**" />
-    <Content Remove="Views\Solicitacao\**" />
-    <Content Remove="Views\Solicitante\**" />
-    <EmbeddedResource Remove="Content\**" />
-    <EmbeddedResource Remove="Views\Configuracao\**" />
-    <EmbeddedResource Remove="Views\Dashboards\Solicitante\**" />
-    <EmbeddedResource Remove="Views\Filial\**" />
-    <EmbeddedResource Remove="Views\Solicitacao\**" />
-    <EmbeddedResource Remove="Views\Solicitante\**" />
-    <None Remove="Content\**" />
-    <None Remove="Views\Configuracao\**" />
-    <None Remove="Views\Dashboards\Solicitante\**" />
-    <None Remove="Views\Filial\**" />
-    <None Remove="Views\Solicitacao\**" />
-    <None Remove="Views\Solicitante\**" />
-  </ItemGroup>
+  </PropertyGroup> 
   <ItemGroup>
     <Folder Include="App_Start\" />
     <Folder Include="Rotativa\" />
@@ -90,14 +64,8 @@
   <ItemGroup>
     <Content Remove="Views\Home\AtivarAcesso.cshtml" />
     <Content Remove="Views\Home\Erro404.cshtml" />
-    <Content Remove="Views\Home\TelaBloqueio.cshtml" />
-    <Content Remove="Web.Debug.config" />
-    <Content Remove="Web.Release.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Global.asax" />
-    <None Remove="Web.config_" />
-  </ItemGroup>
+    <Content Remove="Views\Home\TelaBloqueio.cshtml" /> 
+  </ItemGroup> 
   <ItemGroup>
     <None Include="Views\Cliente\Editar.cshtml" />
     <None Include="Views\Cliente\Listar.cshtml" />

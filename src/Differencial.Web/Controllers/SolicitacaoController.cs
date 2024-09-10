@@ -116,6 +116,14 @@ namespace WEB.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public ActionResult Incluir()
+        {
+             
+            return View();
+        }
+
         [HttpGet]
         [ServiceFilter(typeof(TransactionFilter))]
         [AllowAnonymous]

@@ -8,7 +8,7 @@
     <h3>@titleModal </h3>
 </div>
 
-@using (Html.BeginForm("RegistrarLancamentoFinanceiro", "Solicitacao", new RouteValueDictionary(new { Id = ViewBag.IdSolicitacao }), FormMethod.Post  ))
+@using (Html.BeginForm("RegistrarLancamentoFinanceiro", "Solicitacao", new { Id = ViewBag.IdSolicitacao }, FormMethod.Post  ))
 {
     <div class="modal-body" id="divRota">
         <div class="row"> 

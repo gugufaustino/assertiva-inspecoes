@@ -1,4 +1,5 @@
 ﻿@model Solicitacao
+@inject Differencial.Domain.Contracts.Util.IConfiguracaoAplicativo ConfiguracaoAplicativo
 @{
     string fotoGuid = "";
     string nomeArquivo = "Selecione um arquivo";
@@ -34,6 +35,6 @@
 <div class="hr-line-dashed col-md-12"></div>
 <div class="col-sm-12">
     <div class="text-center">
-        <img class="img-responsive" src="@UtilWeb.ImagemBase64(UtilWeb.ConfiguracaoAplicativo.RepositorioSolicitacao + "//" + Html.ValueFor( m=>m.Id ) + "//" + fotoGuid)" style="margin: auto;" />
+        <img class="img-responsive" src="@UtilWeb.ImagemBase64(ConfiguracaoAplicativo.RepositorioSolicitacao + "//" + Html.ValueFor( m=>m.Id ) + "//" + fotoGuid)" style="margin: auto;" />
     </div>
 </div>

@@ -8,7 +8,7 @@
     <h3 class="modal-title">Definir Analista Manual</h3>
 </div>
 
-@using (Html.BeginForm("DefinirAnalista", "Solicitacao", new { Id = idSolic }, FormMethod.Post, new { id = "formSalvarAnalista" }))
+@using (Html.BeginForm("DefinirAnalista", "Solicitacao", new { Id = idSolic }, FormMethod.Post, true, new { id = "formSalvarAnalista" }))
 {
     @Html.Hidden("IdAnalista")
     @*@Html.Hidden("txtJustificativaVistoriadorDefinido")*@
