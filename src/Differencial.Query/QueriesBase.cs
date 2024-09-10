@@ -71,8 +71,8 @@ namespace Differencial.Queries
             };
 
             _usuario = usuario;
-            //_conn = new SqlConnection(configuracao.ConnectionString);
-            //_conn.Open();
+            _conn = new SqlConnection(configuracao.ConnectionString);
+            _conn.Open();
         }
 
         protected SqlBuilder.Template BuildTemplate(bool enablePaging)
@@ -131,16 +131,16 @@ namespace Differencial.Queries
             {
                 if (disposing)
                 {
-                    //_conn.Close();
-                    //_conn.Dispose();
+                    _conn.Close();
+                    _conn.Dispose();
                 }
             }
             disposed = true;
         }
         public void Dispose()
         {
-            //if (_conn != null)
-            //    _conn.Close();
+            if (_conn != null)
+                _conn.Close();
             Dispose(true);
             GC.SuppressFinalize(this);
         }
