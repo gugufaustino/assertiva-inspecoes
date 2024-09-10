@@ -1,0 +1,115 @@
+﻿@model Solicitacao
+@using Differencial.Domain.Enums.WorkFlow;
+@using Differencial;
+ 
+@{
+    List<WFTipoAcao> lstAcoesDisponivel = ViewBag.lstAcoesDisponiveis;
+    var bFormEditar = ViewBag.OrigemForm != null && ViewBag.OrigemForm == "Editar" ? true : false;
+
+}
+<div class="clearfix TabelaEditavel">
+    <div class="col-md-12">
+        <table class="table table-striped border-bottom" style="margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th class="text-center w50px">
+                        #
+                    </th>
+                    <th class="text-center  ">
+                        Cobertura
+                    </th>
+                    <th class="text-center w30Perc">
+                        Valor
+                    </th>
+                    <th class="text-center w80px">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var nomePrefixo = "Cobertura";
+                    var CountlstCoberturas = 0;
+
+                    if (Model != null && Model.Cobertura.Count > 0)
+                    {
+                        CountlstCoberturas = Model.Cobertura.Count;
+                    }
+                    else
+                    {
+                        ViewBag.lstCoberturasPadrao = new List<CoberturaPadraoModel>();
+                        foreach (CoberturasEnum cobertura in Enum.GetValues(typeof(CoberturasEnum)))
+                        {
+                            var coberturaAttr = cobertura.GetAttributeOfType<CoberturaAttribute>();
+                            ViewBag.lstCoberturasPadrao.Add(new CoberturaPadraoModel() { NomeCobertura = coberturaAttr.Name, IndPadrao = coberturaAttr.IndPadraoInclusao });
+                        }
+
+                        CountlstCoberturas = ((List<CoberturaPadraoModel>)ViewBag.lstCoberturasPadrao).Count;
+                    }
+                }
+                @for (int i = 0; i < CountlstCoberturas; i++)
+                {
+                    CoberturaPadraoModel model = null;
+                    if (ViewBag.lstCoberturasPadrao != null)
+                    {
+                        model = ((List<CoberturaPadraoModel>)ViewBag.lstCoberturasPadrao).ElementAtOrDefault(i);
+                    }
+                    else
+                    {
+                        var item = Model.Cobertura.ElementAtOrDefault(i);
+                        model = new CoberturaPadraoModel { Id = item.Id, NomeCobertura = item.NomeCobertura, IndPadrao = false, VlrCobertura = item.VlrCobertura };
+                    }
+
+                    <tr tbeditindex="@i">
+                        <td>
+                            @if (bFormEditar)
+                            {
+                                @Html.Hidden(nomePrefixo + "[" + i + "]." + Html.NameFor(m => model.Id), model.Id) @*@(model.Id)*@
+                            }
+                        </td>
+                        <td>
+                            @Html.FwTextBox(nomePrefixo + "[" + i + "]." + Html.NameFor(m => model.NomeCobertura) ,model.NomeCobertura, htmlAttributes: new { @placeholder = "Descrição" })
+                        </td>
+                        <td>
+                            @Html.FwCurrency(nomePrefixo + "[" + i + "]." + Html.NameFor(m => model.VlrCobertura), model.VlrCobertura)
+                        </td>
+                        <td>
+                            @if (lstAcoesDisponivel.Contains(WFTipoAcao.Gravar))
+                            {
+                                <button type="button" class="btn btn-default btnExcluirRow btn-sm">
+                                    <span class="fa fa-trash-o" aria-hidden="true"></span>
+                                    <span class="">&nbsp;Excluir</span>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+                <template>
+                    <tr tbeditindex="0">
+                        <td></td>
+                        <td>
+                            @Html.FwTextBox(nomePrefixo + "[0]." + Html.NameFor(m => m.Cobertura.FirstOrDefault().NomeCobertura), htmlAttributes: new { @placeholder = "Descrição" })
+                        </td>
+                        <td>
+                            @Html.FwCurrency(nomePrefixo + "[0]." + Html.NameFor(m => m.Cobertura.FirstOrDefault().VlrCobertura))
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btnExcluirRow btn-sm">
+                                <span class="fa fa-trash-o" aria-hidden="true"></span>
+                                <span class="">&nbsp;Excluir</span>
+                            </button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12" >
+        @if (lstAcoesDisponivel.Contains(WFTipoAcao.Gravar))
+        {
+            <a id="add_row" class="btn btn-default pull-right btn-sm" style="margin-top:5px">
+                <span class="fa fa-plus" aria-hidden="true"></span>
+                Adicionar
+            </a>
+        }
+    </div>
+</div>

@@ -1,0 +1,237 @@
+﻿@model Operador
+
+@{
+    ViewBag.Title = "Formulário template";
+}
+@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "Listar"))
+
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            @using (Html.Box(string.Empty, string.Empty, false, true))
+            {
+                <div class="ibox-content">
+                    @using (Html.BeginForm())
+                    {
+                        var lstTab = new Tab[] {
+                            new Tab("idDetalhe",   "Detalhe" ),
+                            new Tab("idFormTemplate", "Formulário Template"),
+                            new Tab("idFormHelpers",   "Formulário Helpers", true ),
+
+                        };
+
+                        using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
+                        {
+                            using (Html.TabPane(lstTab[0]))
+                            {
+
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+
+                                    </div>
+                                </div>
+
+                            };
+
+                            using (Html.TabPane(lstTab[1]))
+                            {
+                                <div class="row">
+                                    <div class="form-group col-md-2" id="data_1">
+                                        <label>Data Agendado </label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control text-center" value="25/06/2017" data-mask="99/99/9999">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Hora Agendado </label>
+                                        <div class="input-group clockpicker" data-autoclose="true">
+                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                            <input type="text" class="form-control text-center" value="09:30" data-mask="99:99">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Phone</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-mask="(99) 99999999?9" placeholder="(99)99999999">
+                                            <small class="help-block">Digite o telefone</small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="">Saldo Banco</label>
+                                        <input class="text-box text-right single-line" type="number" step="0.01" value="">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="">Quantidade > 0</label>
+                                        <input class="text-box text-right form-control" type="number" step="0.01" value="" min="0">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="">Percentual 0 a 100</label>
+                                        <input class="text-box text-right single-line" type="number" step="0.01" value="" min="0" max="100">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label class="control-label">Ativo</label>
+                                        <input class="checkbox" type="checkbox" value="true">
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <label class="control-label">Opção</label>
+
+                                        <div>
+                                            <label class="checkbox-inline ">
+                                                <input type="checkbox" value="true">
+                                                A
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <label class="checkbox-inline ">
+                                                <input type="checkbox" value="true">
+                                                B
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <label class="checkbox-inline ">
+                                                <input type="checkbox" value="true">
+                                                C
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <label>Select pesquisavél</label>
+                                        <select class="select2_simples form-control " style="width:100%">
+                                            <option></option>
+                                            <option value="Bahamas">Bahamas</option>
+                                            <option value="Bahrain">Bahrain</option>
+                                            <option value="Bangladesh">Bangladesh</option>
+                                            <option value="Barbados">Barbados</option>
+                                            <option value="Belarus">Belarus</option>
+                                            <option value="Belgium">Belgium</option>
+                                            <option value="Belize">Belize</option>
+                                            <option value="Benin">Benin</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Select2 Multiplas Opções</label>
+                                        <select class="select2_multiple form-control" multiple="multiple" style="width:100%">
+                                            <option value="Mayotte">Mayotte</option>
+                                            <option value="Mexico">Mexico</option>
+                                            <option value="Myanmar">Myanmar</option>
+                                            <option value="Namibia">Namibia</option>
+                                            <option value="Nauru">Nauru</option>
+                                            <option value="Nepal">Nepal</option>
+                                            <option value="Netherlands">Netherlands</option>
+                                            <option value="New Caledonia">New Caledonia</option>
+                                            <option value="New Zealand">New Zealand</option>
+                                            <option value="Nicaragua">Nicaragua</option>
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                            };
+
+                            using (Html.TabPane(lstTab[2]))
+                            {
+                                <div class="row">
+                                    <div class="form-group col-md-8">
+                                        @Html.FwLabelFor(m => m.NomeOperador)
+                                        @Html.FwTextBoxFor(m => m.NomeOperador)
+                                        @Html.ValidationMessageFor(m => m.NomeOperador)
+                                    </div> 
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.IndAcessoSistema)
+                                        @Html.FwStatusFor(m => m.IndAcessoSistema)
+                                        @Html.ValidationMessageFor(m => m.IndAcessoSistema)
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.IndAtivo)
+                                        @Html.FwStatusFor(m => m.IndAtivo)
+                                        @Html.ValidationMessageFor(m => m.IndAtivo)
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.DataNascimento)
+                                        @Html.FwDateFor(m => m.DataNascimento) 
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.DataCadastro)
+                                        @Html.FwTimeFor(m => m.DataCadastro)
+                                        @Html.ValidationMessageFor(m => m.DataCadastro)
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.IndAtivo)
+                                        @Html.FwStatusFor(m => m.IndAtivo)
+                                        @Html.ValidationMessageFor(m => m.IndAtivo)
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.Rg)
+                                        @Html.FwNumberFor(m => m.Id)
+                                        @Html.ValidationMessageFor(m => m.Rg)
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.IndAcessoSistema)
+                                        @Html.FwStatusFor(m => m.IndAcessoSistema, true)
+                                        @Html.ValidationMessageFor(m => m.IndAcessoSistema)
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(m => m.IndAtivo)
+                                        @Html.FwStatusFor(m => m.IndAtivo, true)
+                                        @Html.ValidationMessageFor(m => m.IndAtivo)
+                                    </div>
+                                </div>
+                            };
+
+                        }
+
+
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <div class="">
+
+                                        <!-- Split button -->
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="caret"></span>
+                                                <span class="sr-only"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" id="btnSalvarDrop">
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Inserir)">Salvar e Inserir</a></li>
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Listar)">Salvar e Voltar</a></li>
+                                            </ul>
+                                            <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+                                        </div>
+
+                                        @Html.ActionLink("Cancelar", "Listar", null, new { @class = "btn btn-white" })
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Styles {
+    @*@Styles.Render("~/app/camposPadraoFwStyles")*@
+}
+@section scripts{
+    @*@Scripts.Render("~/app/camposPadraoFw")*@ 
+}

@@ -1,0 +1,27 @@
+﻿@model ContratoLancamento
+@{
+    var index = ViewData["index"];
+  
+}
+<fieldset class="col-md-4 form-group br5">
+    <legend class="col-form-legend col-sm-12">
+        <label>@Model.TipoParametroQuantitativoVariavel.FwDisplayEnum(true)</label>
+    </legend>
+    <div class="form-group col-md-12">      
+        @Html.Hidden("ContratoLancamento[" + index + "].Id", Model.Id)
+        @Html.Hidden("ContratoLancamento[" + index + "].IdContrato", Html.ValueFor(m => m.IdContrato))
+        @Html.Hidden("ContratoLancamento[" + index + "].TipoParametroQuantitativoVariavel", Html.ValueFor(m => m.TipoParametroQuantitativoVariavel))
+        @{ //for (int i = 0; i < Model.ContratoLancamentoValor.Count; i++)
+
+            ContratoLancamentoValor ContratoLancamentoValor =  Model.ContratoLancamentoValor.Any()  ? Model.ContratoLancamentoValor.FirstOrDefault() : new ContratoLancamentoValor();
+
+            int i = 0;
+            @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].Id", ContratoLancamentoValor.Id)
+            @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].TipoQuantitativoVariacao", ContratoLancamentoValor.TipoQuantitativoVariacao)
+
+            @Html.Label("Valor a Receber", new { @class = "control-label small" })
+            @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].ValorLancamento", ContratoLancamentoValor.ValorLancamento,  htmlAttributes: new { @class = "input-sm " })
+
+        }     
+    </div>
+</fieldset>

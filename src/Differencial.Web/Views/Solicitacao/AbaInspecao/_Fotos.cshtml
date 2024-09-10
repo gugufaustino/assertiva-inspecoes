@@ -1,0 +1,48 @@
+﻿@model Solicitacao
+@{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+}
+<div class="row">
+    <div id="myDropzone" class="dropzone no-padding">
+        <div class="col-md-12">
+            <div class="pull-right form-group no-margins" style="margin-top: 5px !important;">
+                <button type="button" class="btn btn-sm btn-primary hidden" id="btnEnviarFotos">Salvar<span class="fa fa-pencil" /></button>
+                <button type="button" class="btn btn-sm btn-white hidden" id="btnRemoverErro">Remover Erros</button>
+                @*
+                    <button type="button" class="btn btn-sm btn-white" id="btnBaixarFotosInspecaoZip">Baixar .Zip</button>
+                    
+                    <button type="button" class="btn btn-sm btn-white" id="btnRemoverSelecionados">Remover Selecionados</button>
+                   
+                *@
+                @{
+                    var indBaixarZip = true;
+                    @HtmlAcaoHelper.Botao("Baixar .Zip", "btnBaixarFotosInspecaoZip", indBaixarZip, BtnCorEnum.white, IconeEnum.SemIcone, BtnTamanhoEnum.Pequena);
+
+                    var indConcluir = lstAtivDisponiveis.Contains(TipoAtividadeEnum.RealizarVistoria);
+
+                    @HtmlAtividadeHelper.BotaoConcluirAtividade("Concluir", "btnConcluirAtividadeFotos", indConcluir, "Deseja salvar e concluír essa atividade?",
+                        Url.Action("RealizarVistoria", new { id = Html.ValueFor(m => m.Id).ToString() })); 
+
+                } 
+
+            </div>
+        </div>
+        <hr class="no-margins col-md-12" />
+        <div class="dropzone-previews col-md-12">
+        </div>
+    </div>
+</div>
+<style>
+    #idtabFotos .panel-body {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .dropzone {
+        padding-top: 6px;
+    }
+
+        .dropzone .dz-preview {
+            user-select: none;
+        }
+</style>

@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.Domain", "Differencial.Domain\Differencial.Domain.csproj", "{84FB2B88-97E3-452F-80F4-E9939F33CB2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.Queries", "Differencial.Query\Differencial.Queries.csproj", "{D0C5C98B-BA6B-46B1-B229-E904FDA3E308}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.Repository", "Differencial.Repository\Differencial.Repository.csproj", "{3B712DAE-DD40-4AA8-82A3-B21A5CEFF903}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.Service", "Differencial.Service\Differencial.Service.csproj", "{C4F96D7F-B0BD-4AE9-B590-94B6F1D3BA9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.IOC", "Differencial.IOC\Differencial.IOC.csproj", "{AA0C4920-D4F9-4B4A-8FDC-E2BB813C1FDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Differencial.Web", "Differencial.Web\Differencial.Web.csproj", "{C56351A2-B68B-40A0-96ED-43F6E0988BD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84FB2B88-97E3-452F-80F4-E9939F33CB2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FB2B88-97E3-452F-80F4-E9939F33CB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FB2B88-97E3-452F-80F4-E9939F33CB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FB2B88-97E3-452F-80F4-E9939F33CB2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C5C98B-BA6B-46B1-B229-E904FDA3E308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C5C98B-BA6B-46B1-B229-E904FDA3E308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C5C98B-BA6B-46B1-B229-E904FDA3E308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C5C98B-BA6B-46B1-B229-E904FDA3E308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B712DAE-DD40-4AA8-82A3-B21A5CEFF903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B712DAE-DD40-4AA8-82A3-B21A5CEFF903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B712DAE-DD40-4AA8-82A3-B21A5CEFF903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B712DAE-DD40-4AA8-82A3-B21A5CEFF903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F96D7F-B0BD-4AE9-B590-94B6F1D3BA9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F96D7F-B0BD-4AE9-B590-94B6F1D3BA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F96D7F-B0BD-4AE9-B590-94B6F1D3BA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F96D7F-B0BD-4AE9-B590-94B6F1D3BA9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0C4920-D4F9-4B4A-8FDC-E2BB813C1FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0C4920-D4F9-4B4A-8FDC-E2BB813C1FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0C4920-D4F9-4B4A-8FDC-E2BB813C1FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0C4920-D4F9-4B4A-8FDC-E2BB813C1FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56351A2-B68B-40A0-96ED-43F6E0988BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56351A2-B68B-40A0-96ED-43F6E0988BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56351A2-B68B-40A0-96ED-43F6E0988BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56351A2-B68B-40A0-96ED-43F6E0988BD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74BF7673-AA0B-4CAC-B981-B7B72A72BE34}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://gugufaustino.visualstudio.com/
+		SccProjectUniqueName0 = Differencial.Domain\\Differencial.Domain.csproj
+		SccProjectName0 = Differencial.Domain
+		SccAuxPath0 = https://gugufaustino.visualstudio.com
+		SccLocalPath0 = Differencial.Domain
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = Differencial.Query\\Differencial.Queries.csproj
+		SccProjectName1 = Differencial.Query
+		SccAuxPath1 = https://gugufaustino.visualstudio.com
+		SccLocalPath1 = Differencial.Query
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = Differencial.Repository\\Differencial.Repository.csproj
+		SccProjectName2 = Differencial.Repository
+		SccAuxPath2 = https://gugufaustino.visualstudio.com
+		SccLocalPath2 = Differencial.Repository
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName3 = Differencial.Service\\Differencial.Service.csproj
+		SccProjectName3 = Differencial.Service
+		SccAuxPath3 = https://gugufaustino.visualstudio.com
+		SccLocalPath3 = Differencial.Service
+		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName4 = Differencial.IOC\\Differencial.IOC.csproj
+		SccProjectName4 = Differencial.IOC
+		SccAuxPath4 = https://gugufaustino.visualstudio.com
+		SccLocalPath4 = Differencial.IOC
+		SccProvider4 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName5 = Differencial.Web\\Differencial.Web.csproj
+		SccProjectName5 = Differencial.Web
+		SccAuxPath5 = https://gugufaustino.visualstudio.com
+		SccLocalPath5 = Differencial.Web
+		SccProvider5 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

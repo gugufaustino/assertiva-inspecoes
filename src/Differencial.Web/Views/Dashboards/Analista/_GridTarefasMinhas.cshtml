@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Solicitacao>
+@{
+    IEnumerable<Solicitacao> Lista = ViewBag.ListaMinhasTerefas;
+}
+<div class="row">
+    <div class="table-responsive">
+        <table id="tbAnalistaMinhasTarefas" class="grid-dataTables display table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="">&nbsp;</th>
+                    <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                    <th class="w50px">@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                    <th class="w120px">Seguradora</th>
+                    <th class="text-nowrap">Segurado</th>
+                    <th class="w80px">Data Apropriado</th>
+                    <th>Elaborar Croqui</th>
+                    <th>Elaborar Quadro</th>
+                    <th>Elaborar Laudo</th> 
+                    <th class="w80px">Tempo Decorrido</th>
+                    <th hidden>Urgente</th>
+                </tr>
+            </thead> 
+            <tbody>
+                @foreach (var item in Lista)
+                {
+                var dthEnviado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise).DthMovimentacao;
+
+                    <tr id="@item.Id">
+                        <td></td>
+                        <td class="text-right">@item.Id</td>
+                        <td class="text-nowrap text-center">@item.CodSeguradora</td>
+                        <td class="text-nowrap">@HtmlGridHelper.TextoSubTexto(item.Produto.Seguradora.NomeSeguradora, item.Produto.NomeProduto)</td>
+                        <td class="">
+                            @item.Cliente.NomeRazaoSocial <br />
+                            <small class="text-nowrap">(@item.Endereco.NomeMunicipio - @item.Endereco.SiglaUf)</small>
+                        </td>
+                        <td class="text-center">@dthEnviado.FormatoDataHora() </td>
+                        <td class="text-center"> @HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise)  </td>
+                        <td class="text-center"> @HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarQuadro)  </td>
+                        <td class="text-center"> @HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarEnviarLaudo)  </td>
+                        <td class="text-center text-nowrap">@HtmlGridHelper.TempoDecorrido(dthEnviado)</td>
+                        <td hidden>@item.IndUrgente</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    #tbAnalistaMinhasTarefas_wrapper.dataTables_wrapper {
+        /*width: 1200px;*/
+        margin: 0 auto;
+    }
+</style>

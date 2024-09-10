@@ -1,0 +1,77 @@
+﻿@model Solicitacao
+@using Differencial.Domain.Enums.WorkFlow;
+@{
+    ViewBag.Title = "Solicitação de Vistoria";
+
+    string linkSolicitacao = string.Format("<a href=\"{0}\">Cód. {0}</a>", Model != null && Model.Id > 0 ? Model.Id.ToString() : "#");
+
+    ViewBag.lstAcoesDisponiveis = HtmlWorkFlowHelper.AcoesDisponiveis(ViewData.Model);
+    ViewBag.lstAtivDisponiveis = new List<TipoAtividadeEnum>();
+    ViewBag.lstContratoParametroObrig = new List<TipoContratoParametroEnum>();
+}
+@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home") )
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            @using (Html.Box(linkSolicitacao, string.Empty , false, true, false))
+            {
+                <div class="ibox-content">
+                    <div class="feed-activity-list">
+                        @using (Html.BeginForm("Inserir", "Solicitacao", FormMethod.Post))
+                        {
+                            @Html.Partial("_Form")
+
+                            <br />
+                            @Html.Partial("WorkFlow/_BotoesAcoes")
+
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @*@Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")*@
+    <style>
+        .inmodal .modal-header {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .hr-line-dashed {
+            border-top: 1px dashed #B3B3B3;
+           
+            height: 1px;
+            margin: 20px 0;
+        }
+
+         
+        .tab-content > .tab-pane,
+        .pill-content > .pill-pane {
+            display: block;  
+            height: 0;  
+            overflow-y: hidden; 
+        }
+
+        .tab-content > .active,
+        .pill-content > .active {
+            height: auto; 
+        }
+        
+        .tabs-container .tab-pane .panel-body {
+            min-height: 380px !important;
+        }
+    </style>
+}
+
+
+@section Scripts{
+    @*@Scripts.Render("~/app/solicitacao")
+    @Scripts.Render("~/app/operacoescadastros")
+    @Scripts.Render("~/app/comumendereco")
+    @Scripts.Render("~/app/workflow")*@
+}
+
+

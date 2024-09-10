@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.Title - Sistema | Differencial - Inspeções de Risco</title>
+    <link href="~/fonts/googleapis.css?family=Open+Sans:400,300,600,700" rel='stylesheet' type='text/css'>
+
+    <partial name="_StylePartial" />
+        
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles", required: false)
+    }
+
+</head>
+@{ 
+    UtilWeb.RedirecionarNaoAutenticado();
+
+
+    var clMinNav = (UtilWeb.UsuarioLogado.ConfigMenuColapso == "on") ? "mini-navbar" : string.Empty;
+}
+<body class="@clMinNav">
+    <div id="wrapper" class="@Html.PageClass()">
+        <partial name="_Navegacao" />
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            <partial name="_NavegacaoTop" />
+            <!-- Main view  -->
+            @RenderBody()
+            <br />
+            <br />
+            <!-- Footer -->
+            <partial name="_Footer" />
+
+        </div>
+
+    </div>
+    <partial name="Dialog/_ModalMensagem" />
+    <partial name="_Carregando" />
+
+    <partial name="_ScriptsjQueryBootstrapPartial" />
+    <partial name="_ScriptsLibsPartial" />
+    <partial name="_ScriptsAppPartial" />
+    @RenderSection("endbody", required: false)
+    @RenderSection("scripts", required: false)   
+</body>
+</html>

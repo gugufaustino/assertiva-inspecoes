@@ -1,0 +1,109 @@
+
+
+
+/*customização do datatables para a empresa*/
+.grid-dataTables th{
+    text-align:left;
+}
+#tbFilt{
+    position:absolute;
+    right:20px;
+}
+
+#tbInfo{
+    margin-left:15px
+}
+
+/*#example_filter {
+    display: none;
+}
+.dataTables_wrapper table th {
+    text-align: left !important;
+    vertical-align: middle;
+}*/
+
+.dataTables_wrapper table tfoot input, .filtroColuna input  {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+
+    font-weight: normal;
+    font-style: italic;
+}
+
+.filtroColuna input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+     color: #a0a0a0 !important; 
+}
+ 
+
+/*.dataTables_info {
+    position: absolute;
+    bottom: 62px;
+}*/
+
+table.table-bordered.dataTable tbody td {
+    padding: 5px 8px;
+}
+
+.select-checkbox.sorting_disabled {
+    background-color: initial;
+}
+
+table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected,
+table.dataTable.display tbody > tr.even.selected > .sorting_1,
+table.dataTable.order-column.stripe tbody > tr.even.selected > .sorting_1,
+table.dataTable.display tbody > tr.odd.selected > .sorting_1,
+table.dataTable.order-column.stripe tbody > tr.odd.selected > .sorting_1 {
+    /*background-color: #ffc9cf !important;*/
+      background-color: #e2e2e2 !important;
+}
+
+
+table.dataTable tbody td.select-checkbox:before, table.dataTable tbody th.select-checkbox:before {  
+    border-radius: 1px;
+   
+}
+
+table.dataTable tbody td.select-checkbox:before, table.dataTable tbody td.select-checkbox:after, table.dataTable tbody th.select-checkbox:before, table.dataTable tbody th.select-checkbox:after {
+    width: 13px;
+    height: 13px;
+    
+}
+table.dataTable tr.selected td.select-checkbox:after, table.dataTable tr.selected th.select-checkbox:after {
+    margin-top: -16px;
+    margin-left: -4px;
+    font-size: 16px;
+    text-shadow: 1px 1px #e2e2e2, -1px -1px #e2e2e2, 1px -1px #e2e2e2, -1px 1px #e2e2e2;
+    color:#676a6c
+}
+table.dataTable tbody td.select-checkbox{
+    color: transparent; /*oculta texto da coluna de seleção*/ 
+}
+
+table.dataTable tbody td.select-checkbox, table.dataTable thead th.select-checkbox {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 25px !important;
+    min-width: 20px;
+}
+
+
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    top: 8px;
+}
+
+.table > thead > tr > th
+{
+        padding-left: 4px;
+        padding-right: 4px;
+}
+
+table.dataTable tfoot tr th, tr.filtroColuna th
+{
+        padding: 1px !important;
+}
+
+table.dataTable .indUrgente {
+    background-color: #c54c5c !important;
+    color: white !important;
+}

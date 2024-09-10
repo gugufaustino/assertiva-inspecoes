@@ -1,0 +1,58 @@
+﻿ @{
+     ViewBag.Title = "Solicitante";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <a href="@Url.Action("Inserir","Solicitacao")" class="btn btn-primary">Nova Solicitação</a>
+    <input type="button" class="btn btn-primary" id="btnAbrir" value="Abrir" />
+    <input type="button" class="btn btn-primary" id="btnExcluirSolic" value="Excluir" />
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox(string.Empty, null, false, true, false))
+        {
+            @Html.PartialAsync("Solicitante/_GridSolicSolicitante")
+        }
+    </div>
+</div>
+@section Styles {
+}
+@section scripts{
+    <script type="text/javascript">
+        var grideTodasSolic
+        $(document).ready(function () {
+
+            grideTodasSolic = $('#tbSolicitanteSolic').dataTableCli();
+
+            $("#btnAbrir").click(function () {
+                abrilSolicitacao(grideTodasSolic.rows({ selected: true }));
+            });
+
+            $("#btnExcluirSolic").click(function () {
+                
+               // ids = JSON.stringify(grideTodasSolic.rows({ selected: true }));
+
+                ajaxJsonResponseResult({
+                    url: "/Dashboards/Excluir/" + grideTodasSolic.rows({ selected: true }).ids()[0], fnSucesso:
+                            function (result) {
+                                window.location.reload(true);
+                            }
+                });
+
+            })
+        });
+
+        function abrilSolicitacao(objRows) {
+            arrSel = objRows.ids().toArray()
+
+            if (arrSel.length > 0) {
+                window.location = "/Solicitacao/Editar/" + arrSel[0];
+            } else {
+                alertaMensagem("Selecione um item da lista");
+            }
+
+        } 
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Solicitacao> 
+<div class="row">
+    <div class="table-responsive">
+        <table id="tbVistoriadorSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="">&nbsp;</th>
+                    <th class="w05Perc">@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                    <th class="w20Perc">Seguradora</th>
+                    <th class="w40Perc text-nowrap">Segurado</th>
+                    <th class="w130px">@Html.DisplayNameFor(m => m.TpSituacao)</th>
+                    <th class="w80px">Data Enviado</th>
+                    <th class="w80px">Situação Agenda</th>
+                    <th class="w80px">Situação Inspeção</th>
+                    <th class="w80px">Situação Rota(Km)</th>
+                    <th hidden>Urgente</th>
+                </tr>
+            </thead> 
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var dthEnviadoVistoria = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria).DthMovimentacao;
+
+                    var classSitInspecao = "";
+                    var tpSitInspecao = "";
+
+                    DateTime? dthEnviadoAnalise = null; 
+
+                    if (item.MovimentacaoProcesso.Any(i => i.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaAnalise))
+                    {
+                        tpSitInspecao = "Concluído";
+                        classSitInspecao = "label-primary";
+                        dthEnviadoAnalise = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaAnalise).DthMovimentacao;
+                    }
+                    else
+                    {
+                        tpSitInspecao = "Pendente";
+                        classSitInspecao = "label-warning";
+                    }
+
+                    <tr id="@item.Id">
+                        <td></td>
+                        <td class="text-right">@item.Id</td>
+                        <td class="text-nowrap">@HtmlGridHelper.TextoSubTexto(item.Produto.Seguradora.NomeSeguradora, item.Produto.TipoInspecao.NomeTipoInspecao)</td>
+                        <td class="">
+                            @HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, "{0} - {1}".Formata(item.Endereco.NomeMunicipio, item.Endereco.SiglaUf))
+                        </td>
+                        <td class="text-center">
+                            @HtmlGridHelper.SituacaoProcesso(item.TpSituacao)
+                        </td>
+                        <td class="text-center">
+                            @dthEnviadoVistoria.FormatoDataHora()
+                        </td>
+                        <td class="text-center">
+                            @HtmlGridHelper.SituacaoAgendaVistoriador(item.Agendamento, dthEnviadoVistoria)
+                        </td>
+                        <td class="text-center">
+                            @(new HtmlString(string.Format("<span class=\"label {0}\">{1}</span><br />", classSitInspecao, tpSitInspecao)))
+                            @(new HtmlString(string.Format("<small class=\"text-nowrap\">{0}</small>", dthEnviadoAnalise.HasValue ? dthEnviadoVistoria.FormatoDataHora() : "")))
+
+                        </td>
+                        <td class="text-center">
+                            @HtmlGridHelper.SituacaoRotaRealizada(item)
+                        </td>
+                        <td>@item.IndUrgente</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

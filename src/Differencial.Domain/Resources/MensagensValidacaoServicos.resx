@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OperadorRnEmailDuplicado" xml:space="preserve">
+    <value>O e-mail informada já está cadastrado para um operador do sistema.</value>
+  </data>
+  <data name="OperadorRnLogonAcessoSistema" xml:space="preserve">
+    <value>Esse operador não está autorizado a acessar o sistema.</value>
+  </data>
+  <data name="OperadorRnLogonInvalido" xml:space="preserve">
+    <value>E-mail de acesso inválido, verifique o e-mail digitado e tente novamente.</value>
+  </data>
+  <data name="OperadorRnLogonPrimeiroAcesso" xml:space="preserve">
+    <value>O operador não realizou a ativação do acesso, para ativar verifique no seu e-mail ou realize alteração de senha no link 'Esqueceu a Senha'.</value>
+  </data>
+  <data name="OperadorRnLogonSenhaInvalida" xml:space="preserve">
+    <value>Senha de acesso inválida, tente novamente ou realize alteração de senha no link 'Esqueceu a Senha'.</value>
+  </data>
+  <data name="OperadorRnMudarSenha" xml:space="preserve">
+    <value>Operador não encontrado para realizar a mudança de senha.</value>
+  </data>
+  <data name="RnDeslocamentoRealizado_NaoInformado" xml:space="preserve">
+    <value>Não foi informado a quilometragem de deslocamento para realizar a vistoria, portanto não é possível processar os lançamentos financeiros.</value>
+  </data>
+  <data name="RnDistanciaRotaZeroResults" xml:space="preserve">
+    <value>Não foi possivél verificar no Google Maps a rota. Por favor contate o suporte técnico.</value>
+  </data>
+  <data name="RnEnderecoBuscarGeoZeroResult" xml:space="preserve">
+    <value>O não foi possível determinar a geolocalização no Google Maps do endereço informado. Por favor valide os dados informados e tente novamente.</value>
+  </data>
+  <data name="RnFactorySolicitacaoEmail_NaoImplementada" xml:space="preserve">
+    <value>Não há implementaçao para interpretar e-mail de solicitação da seguradora {0}. Contate o suporte técnico.</value>
+  </data>
+  <data name="RnFactorySolicitacaoEmail_RemetenteNaoEncontrado" xml:space="preserve">
+    <value>Nenhuma seguradora cadastrada com remetente de novas solicitações para {0}.</value>
+  </data>
+  <data name="RnFactorySolicitacaoEmail_SeguradoraNaoSolicita" xml:space="preserve">
+    <value>A seguradora {0} não tem habilitada configuração de {1}.</value>
+  </data>
+  <data name="ServExGoogleApiGeoResul" xml:space="preserve">
+    <value>Houve uma falha na integração com Google Maps. {0}</value>
+  </data>
+  <data name="SolicitacaoRegistrarComunicacaoNaoHaEmail" xml:space="preserve">
+    <value>Não há e-mail cadastrado para que seja realizado o envio de e-mail.</value>
+  </data>
+  <data name="SolicitacaoRnCadastroDuplicado" xml:space="preserve">
+    <value>Não é permitido o cadastro de registro duplicado, já existe solicitação para essa seguradora com mesmo Nº Cia.</value>
+  </data>
+  <data name="SolicitacaoRnEnviarParaVistoriador" xml:space="preserve">
+    <value>Não há vistoriador definido para receber essa solicitação. Por favor defina através do botão 'Definir Vistoriador'</value>
+  </data>
+  <data name="SolicitacaoRnInserirLancamentosCustoDeslocamentoAcordado" xml:space="preserve">
+    <value>A solicitação ainda não tem valores de Pré-Acordo(R$) registrados pelo gerente. Esse dado deve ser devidamente registrado na aba Gestão - Vistoriador campos Pré-Acordo.</value>
+  </data>
+  <data name="SolicitacaoRnInserirLancamentosCustoDeslocamentoRealizado" xml:space="preserve">
+    <value>A solicitação ainda não tem Rota Realizados(Km/R$) pelo vistoriador. Esse dado deve ser preenchido na aba Inspeção - Rota - Informar Km Realizado</value>
+  </data>
+  <data name="SolicitacaoRnInserirLancamentosReceitaProduto" xml:space="preserve">
+    <value>O produto da solicitação não tem valor de receita para o campo {0}. Esse dado deve ser devidamente registrado no cadastro de produtos.</value>
+  </data>
+  <data name="SolicitacaoRnProdutoSemContrato" xml:space="preserve">
+    <value>O produto selecionado não possui dados financeiros/contrato cadastrados. O cadastro desse produto deve ser revisado.</value>
+  </data>
+  <data name="SolicitacaoRnValidarExiteAgendamento" xml:space="preserve">
+    <value>A solicitação não possúi agendamento realizado. O agendamento deve ser preenchido na aba Inspeção - aba Agenda - botão Agendar. </value>
+  </data>
+  <data name="SolicitacaoRnValidarExiteInspecaoRealizada" xml:space="preserve">
+    <value>A solicitação não possui fotos da inspeção realizada e/ou a atividade não foi concluída.  
+As fotos devem ser enviadas na aba Inspeção - aba Anexar Fotos - painel Drop files. 
+A atividade dever ser concluída no botão Concluir.</value>
+  </data>
+  <data name="SolicitacaoRnValidarExiteLaudoConcluido" xml:space="preserve">
+    <value>A solicitação não tem laudo concluído. O laudo deve ser anexado e a atividade concluída na aba Anallise - aba Laudo - campo Laudo Final.</value>
+  </data>
+  <data name="SolicitanteRnExisteSolicitacoes" xml:space="preserve">
+    <value>Não é possível excluir o solicitante pois já existe registros de solicitação no sistema.</value>
+  </data>
+  <data name="SolicitanteRnOperadorExclusivo" xml:space="preserve">
+    <value>O operador solicitante de seguradora não pode ter mais nenhum papel interno da Differencial.</value>
+  </data>
+  <data name="VistoriadorProdutoRnAtivarSemValor" xml:space="preserve">
+    <value>O registro ainda não possui valor. Você deve editar os valores dos produtos deste vistoriador poder ativar.</value>
+  </data>
+  <data name="VistoriadorProdutoRnDesativarSemValor" xml:space="preserve">
+    <value>O registro ainda não possui valor. Você deve editar os valores dos produtos deste vistoriador poder desativar.</value>
+  </data>
+</root>

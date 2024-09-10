@@ -1,0 +1,57 @@
+﻿ @model Solicitacao
+
+
+<div class="row">
+@{
+
+    var abaAtiva = (string)TempData["abaAtiva"] ?? "idtabAgenda";
+
+    var lstTab = new Tab[] {
+    new Tab("idtabAgenda",   "Agenda" , abaAtiva == "idtabAgenda"),
+    //new Tab("idtabCheckList", "Check-List", abaAtiva == "idtabCheckList" ),
+    new Tab("idtabFotos",   "Anexar Fotos" , abaAtiva == "idtabFotos" ),
+    //new Tab("idtabCroqui",   "Anexar Croqui", abaAtiva == "idtabCroqui"),
+    new Tab("idtabRoda",   "Rota", abaAtiva == "idtabRoda")
+    };
+
+    if(lstTab.All(i=> i.IndAtiva == false))
+    {
+        lstTab.First().IndAtiva = true;
+    }
+
+    using (Html.TabContainer(TabsOrientacaoEnum.Left, lstTab))
+    {
+        using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabAgenda")))
+        {
+            @Html.Partial("AbaInspecao/_Agenda")
+        };
+
+        @*using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabCheckList")))
+        {
+            @Html.Partial("AbaInspecao/_CheckList")
+        };*@
+
+        using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabFotos")))
+        {
+            @Html.Partial("AbaInspecao/_Fotos")
+        };
+
+        @*using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabCroqui")))
+        {
+            @Html.Partial("AbaInspecao/_Croqui")
+        };*@
+
+        using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabRoda")))
+        {
+            @Html.Partial("AbaInspecao/_Rota")
+        };
+
+    }
+}    
+</div> 
+<style>
+    .tabs-container .tabs-left .panel-body {
+        width: 100%;
+        margin-left: 0;
+    }
+</style> 

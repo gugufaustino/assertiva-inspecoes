@@ -1,0 +1,31 @@
+﻿@model IEnumerable<LogAuditoria>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="w20Perc text-center">@Html.DisplayNameFor(m => m.DataAcao)</th>
+                <th class="w20Perc text-center">@Html.DisplayNameFor(m => m.Tabela)</th>
+                <th class="w05Perc text-center hidden">@Html.DisplayNameFor(m => m.IdTabela) </th>
+                <th class="w20Perc text-center">@Html.DisplayNameFor(m => m.Acao)</th>
+                <th class="w30Perc text-center">@Html.DisplayNameFor(m => m.UsuarioAplicacao) </th>
+                @*<th class="w10Perc text-center">Baixar Dados</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.DataAcao</td>
+                        <td class="text-center">@item.Tabela</td>
+                        <td class="text-center hidden">@item.IdTabela</td>
+                        <td class="text-center">@(item.Acao == "I" ? "Inserção" : item.Acao == "U" ? "Atualização" : item.Acao == "D" ? "Exclusão" : string.Empty )</td>
+                        <td class="text-center">@($"{item.UsuarioAplicacao} - {item?.Operador?.NomeOperador}")</td>
+                        @*<td class="text-center"><a>Arquivo XML</a></td>*@
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div> 

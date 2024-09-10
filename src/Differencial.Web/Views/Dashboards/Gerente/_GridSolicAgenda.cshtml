@@ -1,0 +1,56 @@
+﻿@{
+    List<Solicitacao> lstSolicAgenda = (List<Solicitacao>)ViewBag.lstSolicAgenda;
+}
+<div class="row">
+    <div class="table-responsive">
+        <table id="tbSolicAgenda" class="grid-dataTables display table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="">Cód.</th>
+                    <th class="">Situação</th>
+                    <th class="">Nº Cia/ Seguradora</th>
+                    <th class="">Cliente</th>
+                    <th class="">Operador</th>
+                    <th class="w80px">Data Envio</th>
+                    <th class="w50px">Tempo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in lstSolicAgenda)
+                {
+                    var dthEnviado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria).DthMovimentacao;
+
+                    <tr id="@item.Id">
+                        <td class="text-right">
+                            <a href="@Url.Action("Editar", "Solicitacao", new { @item.Id })">@item.Id</a>
+                        </td>
+                        <td class="text-center">
+                            @HtmlGridHelper.SituacaoAgenda(item.Agendamento, dthEnviado)
+                        </td>
+                        <td class="">
+                            @item.CodSeguradora <br />
+                            @item.Produto.Seguradora.NomeSeguradora
+                        </td>
+                        <td class="">
+                            @item.Cliente.NomeRazaoSocial
+                        </td>
+                        <td class="">
+                            @(item.IdVistoriador.HasValue ? 
+                                    HtmlGridHelper.TextoSubTexto(item.Vistoriador.Operador.NomeOperador, item.Vistoriador.EnderecoBase.NomeMunicipio + " - " + item.Vistoriador.EnderecoBase.SiglaUf) 
+                                    : string.Empty
+                            )
+                        </td>
+                        <td class="text-center">
+                            @dthEnviado
+                        </td>
+                        <td class="text-center text-nowrap">
+                            @HtmlGridHelper.TempoDecorrido(dthEnviado)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

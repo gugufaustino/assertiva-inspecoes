@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Vistoriador>
+@{
+    Layout = null;
+    var idSolic = ViewBag.IdSolicitacao.ToString();
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">Definir Vistoriador Manual</h3>
+</div>
+
+@using (Html.BeginForm("SalvarVistoriador", "Solicitacao", new { Id = idSolic }, FormMethod.Post, true, new { id = "formSalvarVistoriador" }))
+{
+    @Html.Hidden("IdVistoriador")
+    @Html.Hidden("txtJustificativaVistoriadorDefinido")
+    <div class="modal-body no-padding-top-bottom" style="overflow-y:auto;">
+        <div class="row">
+            <div class="table-responsive" style="border-top: 0;">
+                <table id="tbVistoriadorPesquisar" class="no-margins grid-dataTables display table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.Id)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.NomeOperador)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.Endereco)</th>
+                            <th>Ativo</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.Id)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.NomeOperador)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.Endereco)</th>
+                            <th>Ativo</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="@item.Id">
+                                <td></td>
+                                <td>@item.Operador.Id</td>
+                                <td>@item.Operador.NomeOperador</td>
+                                <td>@HtmlGridHelper.Endereco(item.EnderecoBase, true)</td>
+                                <td>@HtmlGridHelper.Indicador(true, true) </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success" id="btnDefinirVistoriadorManual">Concluír <span class="fa fa-check" />  </button>
+    </div>
+    <script>
+        var grideVistoriadorPesquisar
+        $(document).ready(function () { 
+            var columns = [
+                { data: "0" },
+                { data: "Id", "className": "text-right w20px" },
+                { data: "NomeOperador", "className": "w100px" },
+                { data: "Endereco", "className": "w-auto" },
+                { data: "TpSituacao", "className": "text-center w20px", },
+            ];
+            grideVistoriadorPesquisar = $('#tbVistoriadorPesquisar').dataTableFw(true, true, true, false, columns); 
+           
+        }); 
+    </script>
+}

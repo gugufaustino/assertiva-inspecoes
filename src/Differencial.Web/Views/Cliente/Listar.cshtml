@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <input type="button" class="btn btn-primary" id="btnAbrir" value="Abrir" />
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.Box(string.Empty, string.Empty, false, true, false))
+            {
+            <div class="ibox-content">
+                @Html.PartialAsync("_GridCliente")
+            </div>
+        }
+    </div>
+</div>
+@section Styles {
+    @*   @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles") *@
+}   
+@section scripts{
+   @*   @Scripts.Render("~/plugins/dataTables") *@
+    <script type="text/javascript">
+        var gride;
+        $(document).ready(function () {
+
+            gride = $('#tbCliente').dataTableCli();
+
+            $("#btnAbrir").click(function () {
+                abrilSolicitacao(gride.rows({ selected: true }));
+            });
+
+        });
+
+        function abril(objRows) {
+            arrSel = objRows.ids().toArray()
+
+            if (arrSel.length > 0) {
+                window.location = "/Cliente/Editar/" + arrSel[0];
+            } else {
+                alertaMensagem("Selecione um item da lista");
+            }
+
+        }
+
+    </script>
+}
+

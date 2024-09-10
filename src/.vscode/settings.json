@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/382bf9af-832a-4075-b7ed-9b664931972b/resourceGroups/rg-diff-brazil-dev/providers/Microsoft.Web/sites/diff-desenv",
+    "appService.deploySubpath": "."
+}

@@ -1,0 +1,85 @@
+﻿@model Agendamento
+@{
+    Layout = null;
+    var titleModal = "Agendar";
+
+    if (ViewBag.AcaoAgenda == "reagendar")
+    {
+        titleModal = "Reagendar";
+    }
+    else if (ViewBag.AcaoAgenda == "cancelaragenda")
+    {
+        titleModal = "Cancelar Agenda";
+    }
+    else if (ViewBag.AcaoAgenda == "comunicar")
+    {
+        titleModal = "Comunicar Não Atendimento";
+    }
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>@titleModal    </h3>
+</div>
+
+@using (Html.BeginForm("Agendar", "Solicitacao", new { Id = @ViewBag.IdSolicitacao.ToString() }, FormMethod.Post))
+{
+    <input type="hidden" name="tokenTransacao" value="@ViewBag.Token" />
+    <input type="hidden" name="acaoagenda" value="@ViewBag.AcaoAgenda" />
+    <div class="modal-body">
+        <div class="row">
+            @if (ViewBag.AcaoAgenda != "cancelaragenda" && ViewBag.AcaoAgenda != "comunicar")
+            {
+                <div class="form-group col-md-6"> 
+                    @Html.FwLabel("lblData", "Data do Agendado", true)
+                    @Html.FwDate("txtDataAgenda", requerido:true, calendario:false)
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.FwLabel("lblHoraAgenda", "Horario do Agendado", true)
+                    @Html.FwTime("txtHoraAgenda", requerido:true, relogio:false) 
+                </div>
+ 
+            }
+
+            @if (ViewBag.AcaoAgenda != "comunicar")
+            {
+                <div class="form-group col-md-12">
+                    @Html.FwLabelFor(m => m.Solicitacao.Cliente.ContatoAgendamento)
+                    @Html.FwTextBoxFor(m => m.Solicitacao.Cliente.ContatoAgendamento, htmlAttributes: new { @id = "txtContatoAgendamento", @Name = "txtContatoAgendamento" })
+                </div>
+            }           
+
+            @if (ViewBag.AcaoAgenda == "reagendar" || ViewBag.AcaoAgenda == "cancelaragenda" || ViewBag.AcaoAgenda == "comunicar")
+            {
+                <div class="form-group col-md-12">
+                    @Html.FwLabel("lblMotivo", "Motivo", true)
+
+                    @Html.FwTextAreaFor(m => m.MotivoCancelamentoReagendamento, htmlAttributes: new { @required = "required" } )
+
+                </div>
+            }
+        </div>     
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-success">Concluír <span class="fa fa-check" /> </button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+        //$('.input-group.date22').datepicker({
+        //    todayBtn: "linked",
+        //    keyboardNavigation: true,
+        //    forceParse: false,
+        //    calendarWeeks: true,
+        //    autoclose: true,
+        //    language: 'pt-BR',
+        //    format: 'dd/mm/yyyy',
+        //});
+
+        $('.clockpicker').clockpicker();
+
+    });
+
+</script>
+

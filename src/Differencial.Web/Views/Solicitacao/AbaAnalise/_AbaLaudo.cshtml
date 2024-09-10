@@ -1,0 +1,75 @@
+﻿@model Solicitacao
+@{
+    string nomeArquivo = "Selecione um arquivo";
+    List<TipoContratoParametroEnum> lstParamObrig = ViewBag.lstContratoParametroObrig;
+
+    ArquivoAnexo arquivo = Model == null ? null : Model.Foto.LastOrDefault(f => f.TipoArquivoAnexo == TipoArquivoAnexoEnum.LaudoAnalise);
+    if (arquivo != null)
+    {
+        nomeArquivo = "{0}{1}".Formata(arquivo.ArquivoNome, arquivo.ArquivoExtencao);
+    }
+
+
+}
+@using (Html.BarraAtividade())
+{
+    <button type="button" class="btn btn-sm btn-white" id="btnBaixarLaudoAnalise">Baixar Laudo</button>
+
+    if (((List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis).Contains(TipoAtividadeEnum.ElaborarEnviarLaudo))
+    {
+        <button type="button" class="btn btn-success btn-sm" id="btnConcluirLaudoAnalise">Salvar e Concluír &nbsp;<span class="fa fa-pencil "></span></button>
+    }
+}
+
+<div class="row">
+    <fieldset class="form-group col-md-12">
+        <legend class="col-form-legend col-md-12">
+            <label>Informações da vistoria para financeiro</label>
+        </legend>
+        <div class="form-group col-md-3">
+            @Html.FwLabel("AreaConstruida", "Área Construida (m²)")
+            @Html.FwCurrencyFor(m => m.AreaConstruida, !lstParamObrig.Contains(TipoContratoParametroEnum.AreaConstruida))
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.FwLabel("BlocoConstruido", "Blocos (Un)")
+            @Html.FwCurrencyFor(m => m.BlocoConstruido, !lstParamObrig.Contains(TipoContratoParametroEnum.BlocoConstruido))
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.FwLabel("CasaConstruida", "Casas (Un)")
+            @Html.FwCurrencyFor(m => m.CasaConstruida, !lstParamObrig.Contains(TipoContratoParametroEnum.CasaConstruida))
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.FwLabel("QtdEquipamento", "Equipamentos (Un)")
+            @Html.FwCurrencyFor(m => m.QtdEquipamento, !lstParamObrig.Contains(TipoContratoParametroEnum.Equipamento))
+        </div>
+        <div class="form-group col-md-1">
+        </div>
+        <div class="form-group col-md-2">
+            @Html.FwLabel("IndRelatorioExigenciaMelhoria", "Relatório Melhoria")
+            @Html.FwCheckBoxFor(m => m.IndRelatorioExigenciaMelhoria, !lstParamObrig.Contains(TipoContratoParametroEnum.RelatorioMelhoria))
+        </div>
+    </fieldset>
+
+</div>
+
+<div class="hr-line-dashed col-md-12"></div>
+
+<div class="col-md-12">
+    <label>Laudo Final</label>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" readonly value="@nomeArquivo" />
+            <label class="input-group-btn">
+                <span class="btn btn-primary ">
+                    <span class="fa fa-upload">
+                    </span>
+                    Carregar&nbsp; <input type="file" name="arquivolaudoanalista" style="display: none;">
+                </span>
+            </label>
+        </div>
+        <small>Laudo Final para enviar a seguradora</small>
+    </div>
+</div>

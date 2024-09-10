@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = null;
+    var lstOperadorDistancia = (List<Differencial.Domain.DTO.OperadorDistancia>)@ViewBag.lstOperadorDistancia;
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">Definir Vistoriador Sugerido</h3>
+</div>
+
+@using (Html.BeginForm("SalvarVistoriador", "Solicitacao", new {Id = ViewBag.Id }, FormMethod.Post, true, new { Id = "formSalvarVistoriador" }))
+{
+    @Html.Hidden("txtJustificativaVistoriadorDefinido","")
+    <div class="modal-body no-padding-top-bottom">
+        <div class="row">
+            <div class="table-responsive" style="border-top: 0;">
+                <table id="tbVistoriadorSugerido" class="table table-striped no-margins">
+                    <thead>
+                        <tr>
+                            <th class="text-center">&nbsp;</th>
+                            <th class="text-center w20Perc">Vistoriador</th>
+
+                            <th class="text-center text-nowrap w10Perc">
+                                Histórico
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Indica se o vistoriador já realizou vistoria no mesmo município."></i>
+                            </th>
+                            <th class="text-center text-nowrap w10Perc">
+                                Honorários
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Valor pago pelo honorário do serviço de vistoria prestado."></i>
+                            </th>
+                            <th class="text-center text-nowrap w10Perc">
+                                Quilometro
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Valor pago pelo quilometro rodado ao vistoriador que se deslocar de sua cidade base."></i>
+                            </th>
+                            <th class="text-center text-nowrap w15Perc">
+                                Deslocamento
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Deslocamento em quilometros entre o endereço base e o local da inspeção."></i>
+                            </th>
+                            <th class="text-center text-nowrap w15Perc ">
+                                Total Previsto
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Estimativa do custo total do deslocamento. Esse valor é a distancia calculado pelo valor pago por quilometro rodado ao vistoriador."></i>
+                            </th>
+                            <th class="text-center text-nowrap">
+                                Bandeira
+                                <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sistema indica a melhor opção de custo para solicitar a vistoria."></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (lstOperadorDistancia != null)
+                        {
+                            foreach (var item in lstOperadorDistancia)
+                            {
+                                <tr>
+                                    <td class="text-right">
+                                        @*<input  name="IdVistoriador" type="radio" value="chkVistoriador" />*@
+                                        @Html.RadioButton("IdVistoriador", item.Id, new { id = "checkbox" + item.Id.ToString() })
+                                    </td>
+                                    <td class="col-Nome">
+                                        <label class="lblColunaId" for="@("checkbox" + item.Id)" style="padding-bottom: 5px;"><a href='@Url.Action("Editar", "Operador", new { item.Id })' target="_blank" style="color:inherit"> @item.NomeOperador </a> </label><br />
+                                        <a href="@item.UrlVerMapa" target="_blank">
+                                            <i class="fa fa-map-marker" style="font-size: 16px;"></i>
+                                            <small class="text-nowrap">     @item.NomeMunicipioSiglaUf </small>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">  <i class="text-muted @(item.IndHistoricoMesmaCidade ? "fa fa-check" : "fa fa-times")"></i></td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrPagamentoVistoria.HasValue ? "R$" + item.VlrPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrQuilometroRodado.HasValue ? "R$" + item.VlrQuilometroRodado.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-right" style="padding-right: 20px;">@item.DistanciaRota.Value.ToString("0.0") km</td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.HasValue ? "R$" + item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-center">
+                                        @if (item.IndSolicitacaoMesmaCidade)
+                                        {
+                                            <span class="badge badge-primary">
+                                                Há Solicitação
+                                                <i class="fa fa-question-circle text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Há uma solicitação em aberto para a mesma cidade, SE VISTORIADOR REALIZAR NO MESMO dia não haverá custo para Differencial"></i>
+                                            </span>
+                                        }
+                                        else if (item.IndCidadeBase)
+                                        {
+                                            <span class="badge badge-warning">
+                                                É Cidade Base
+                                                <i class="fa fa-question-circle text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Vistoriador atende solicitações desta cidade. Não haverá custo para Differencial"></i>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">
+                                                Há Custo
+                                                <i class="fa fa-question-circle text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Vistoriador atende solicitações de outra cidade. O deslocamento implicará em custo para Differencial"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success" id="btnConcluirVistoriadorSugerido">Concluír <span class="fa fa-check" />  </button>
+    </div>
+}

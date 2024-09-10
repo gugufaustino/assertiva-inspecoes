@@ -1,0 +1,71 @@
+﻿@model Solicitacao
+@inject Differencial.Domain.Contracts.Infra.IUsuarioService UsuarioService
+@using Differencial.Domain.Enums.WorkFlow;
+@{
+    List<WFTipoAcao> lstAcoesDisponivel = ViewBag.lstAcoesDisponiveis;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group pull-right">
+            <div class="">
+                @if (Model?.Id > 0 && (UsuarioService.UsuarioAutenticado.IndGerente || UsuarioService.UsuarioAutenticado.IndAssessor))
+                {
+                    @HtmlAcaoHelper.BotaoConfirm("Reinspeção", "btnReinspecao", true, "Deseja gerar uma nova solicitação como Reinspeção?",
+                                                   @Url.Action("Reinspecao", "Solicitacao", new { id = Html.ValueFor(m => m.Id).ToString() })
+                                                   , BtnCorEnum.white, IconeEnum.SemIcone)
+                }
+
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Apropriar))
+                {
+                    <button type="button" class="btn btn-white" id="btnApropriar"
+                            data-id="@Html.ValueFor(m=>m.Id).ToString()"
+                            data-href="@Url.Action("Apropriar","Solicitacao", new { id = Html.ValueFor(m=>m.Id).ToString() })">
+                        Apropriar
+                    </button>
+                }
+
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Devolver))
+                {
+                    <button type="button" class="btn btn-white" id="btnDevolver"
+                            data-id="@Html.ValueFor(m=>m.Id).ToString()"
+                            data-href="@Url.Action("Devolver","Solicitacao", new { id = Html.ValueFor(m=>m.Id).ToString() })">
+                        Devolver
+                    </button>
+                }
+
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Cancelar))
+                {
+                    <button type="button" class="btn btn-white" id="btnCancelar"
+                            data-id="@Html.ValueFor(m=>m.Id).ToString()"
+                            data-href="@Url.Action("Cancelar","Solicitacao", new { id = Html.ValueFor(m=>m.Id).ToString() })">
+                        Cancelar
+                    </button>
+                }
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Concluir))
+                {
+                    <button type="button" class="btn btn-white" id="btnConcluir"
+                            data-id="@Html.ValueFor(m=>m.Id).ToString()"
+                            data-href="@Url.Action("Concluir","Solicitacao", new { id = Html.ValueFor(m=>m.Id).ToString() })">
+                        Concluir
+                    </button>
+                }
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Enviar))
+                {
+                    <button type="button" class="btn btn-white" id="btnEnviar"
+                            data-id="@Html.ValueFor(m=>m.Id).ToString()"
+                            data-href="@Url.Action("Enviar","Solicitacao", new { id = Html.ValueFor(m=>m.Id).ToString() })">
+                        Enviar
+                    </button>
+                }
+                @if (lstAcoesDisponivel.Contains(WFTipoAcao.Gravar))
+                {
+                    <button type="button" class="btn btn-primary" id="btnSalvar">Salvar</button>
+                    <!-- Split button -->
+                    <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

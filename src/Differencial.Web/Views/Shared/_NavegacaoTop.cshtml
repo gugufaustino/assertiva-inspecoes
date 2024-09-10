@@ -1,0 +1,49 @@
+﻿<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            &nbsp;&nbsp;&nbsp;
+            <img class="img-identidade-logo" src="~/Images/identidade_cliente/identidade-logo-horiz-min.png" id="sendmessage" />
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown" style="" id="ddlNotificacao">
+                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bell"></i>  <span class="label label-danger" v-bind:class="{hidden: notificacoes.length == 0}">{{notificacoes.length}}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-alerts">
+                    <li>
+                        <h4 class="text-center text-muted m-t-none">
+                            Notificações
+                        </h4>
+                    </li>
+                    <li class="divider"></li>
+                    <template v-for="(notificacao, index) in notificacoes">
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="titulo">
+                                        @*<i class="fa fa-newspaper-o fa-fw"></i>*@
+                                        {{notificacao.mensagem}}
+                                    </span>
+                                    <span class="pull-right text-muted small">{{notificacao.data | dateToString}}</span> @*4 minutes ago*@
+                                    <br /><small v-bind:class="{hidden: notificacao.cod == undefined}">Cód.: {{notificacao.cod}} </small>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+
+                    </template>
+                    <li>
+                        <button class="btn btn-primary btn-sm pull-right" v-on:click="deleteAll">Limpar</button>
+                    </li>
+                </ul>
+
+            </li>
+            <li>
+                <a href="@Url.Action("Logout", "Home")">
+                    <i class="fa fa-sign-out"></i> Sair
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

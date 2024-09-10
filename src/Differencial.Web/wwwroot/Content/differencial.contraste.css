@@ -1,0 +1,40 @@
+﻿.btn-default{
+	border-color:#c1c1c1;
+}
+.form-control, .single-line, .input-group-addon{
+	border-color:#c1c1c1;
+}
+
+.btn-white{
+	border-color: #d0d0d0;
+}
+
+.tabs-container .panel-body{
+	border-color:#d0d0d0;
+}
+.tabs-container .nav-tabs > li.active > a, .tabs-container .nav-tabs > li.active > a:hover, .tabs-container .nav-tabs > li.active > a:focus {
+	border-color:#d0d0d0;
+	border-bottom-color:transparent
+}
+
+.tabs-container .nav-tabs {
+    border-bottom-color:  #d0d0d0;
+}
+
+.tabs-container .panel-body {
+    border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.nav-tabs > li > a {
+    color: #397ab9;
+}
+
+.tabs-container .tabs-left .tab-pane .panel-body, .tabs-container .tabs-right .tab-pane .panel-body {
+    border-top-color: #d0d0d0;
+}
+
+.tabs-container .tabs-left > .nav-tabs .active > a, .tabs-container .tabs-left > .nav-tabs .active > a:hover, .tabs-container .tabs-left > .nav-tabs .active > a:focus {
+    border-color: #d0d0d0;
+	border-right-color: transparent
+}

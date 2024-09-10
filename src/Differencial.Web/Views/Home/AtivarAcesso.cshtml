@@ -1,0 +1,102 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Differencial - Inspeções de Risco</title>
+    <link href="~/fonts/googleapis.css?family=Open+Sans:400,300,600,700" rel='stylesheet' type='text/css'>
+
+    <!-- Primary Inspinia style -->
+    @Styles.Render("~/Content/css")
+    <style>
+        .gray-bg {
+            background-color: #edeef0;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                @*<h1 class="logo-name">IN+</h1>*@
+                <img src="~/Images/identidade_cliente/logo_180_180-min.png" />
+                <img src="~/Images/identidade_cliente/identidade-logo-horiz-min.png" />
+            </div>
+
+
+            <p>
+                seja bem vindo
+            </p>
+            <p><b>@ViewBag.NomeOperador</b></p>
+
+            @using (Html.BeginForm("AtivarAcesso", "Home", new { @id = ViewBag.Id, @token = ViewBag.Token }, FormMethod.Post, new { @class = "m-t", @role = "form", onsubmit = "return valido();" }))
+            {
+                <div class="form-group">
+                    <input type="password" class="form-control" id="novasenha" name="novasenha" placeholder="Nova Senha" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="repetirsenha" name="repetirsenha" placeholder="Repetir Nova Senha" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Ativar Acesso</button>
+
+
+            }
+            <p class="m-t"> <small>Todos os direitos reservados &copy; @DateTime.Now.Date.Year</small> </p>
+        </div>
+
+
+    </div>
+    @Html.Partial("Dialog/_ModalMensagem")
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+
+        $(document).ready(function () {
+
+            if (($(".validation-summary-errors").length > 0 && $(".validation-summary-errors li:eq(0)").css("display") != "none")
+                || (sTrim($("#myModalMessage .modal-body").text()).length > 0)) {
+
+                setTimeout(function () {
+                    $("#myModalMessage").modal("show");
+                }, 100);
+
+            }
+
+            $('#myModalMessage').on('hidden.bs.modal', function () {
+                $("#myModalMessage .modal-body").html("")
+
+            });
+
+
+        });
+
+        function sTrim(str) {
+            return str.replace(/^\s+/, '').replace(/\s+$/, '');
+        }
+
+        function valido() {
+            try {
+                if ($("#novasenha").val().length > 0 && $("#novasenha").val() == $("#repetirsenha").val()) {
+ 
+                    return true;
+                } else {
+                   
+                    alert('Senha deve ser igual.'); 
+                }
+                return false;
+
+            } catch (e) {
+                console.log(e)
+                return false;
+            }
+
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Analista>
+@{
+    Layout = null;
+    var idSolic = ViewBag.IdSolicitacao.ToString();
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">Definir Analista Manual</h3>
+</div>
+
+@using (Html.BeginForm("DefinirAnalista", "Solicitacao", new { Id = idSolic }, FormMethod.Post, new { id = "formSalvarAnalista" }))
+{
+    @Html.Hidden("IdAnalista")
+    @*@Html.Hidden("txtJustificativaVistoriadorDefinido")*@
+    <div class="modal-body no-padding-top-bottom" style="overflow-y:auto;">
+        <div class="row">
+            <div class="table-responsive" style="border-top: 0;">
+                <table id="tbAnalistaPesquisar" class="no-margins grid-dataTables display table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="">&nbsp;</th>
+                            <th class="">@Html.DisplayNameFor(m => m.Operador.Id)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.NomeOperador)</th>  
+                            <th>Ativo</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="">&nbsp;</th>
+                            <th class="">@Html.DisplayNameFor(m => m.Operador.Id)</th>
+                            <th>@Html.DisplayNameFor(m => m.Operador.NomeOperador)</th> 
+                            <th>Ativo</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="@item.Id">
+                                <td></td>
+                                <td class="w100px">@item.Operador.Id</td>
+                                <td>@item.Operador.NomeOperador</td> 
+                                <td class="w100px">@HtmlGridHelper.Indicador(true, true) </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success" id="btnDefinirAnalistaManual" >Concluír<span class="fa fa-check" /></button>
+    </div>
+    <script>
+        var grideAnalistaPesquisar
+        $(document).ready(function () { 
+            var columns = [
+                { data: "0" },
+                { data: "Id", "className": "text-right" },
+                { data: "NomeOperador", "className": "" }, 
+                { data: "TpSituacao", "className": "text-center", },
+            ];
+            grideAnalistaPesquisar = $('#tbAnalistaPesquisar').dataTableFw(true, true, true, false, columns);
+           
+        }); 
+    </script>
+}

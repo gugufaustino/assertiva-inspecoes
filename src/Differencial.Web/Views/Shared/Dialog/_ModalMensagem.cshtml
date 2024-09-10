@@ -1,0 +1,85 @@
+﻿@using Differencial.Web.DTO;
+@{
+    ResponseResultDTO retornoPost = null;
+    var sMensagem = string.Empty;
+    var sClassIcon = string.Empty;
+    var sClassText = string.Empty;
+    var sTitulo = string.Empty;
+    var sClassHead = string.Empty;
+
+
+
+
+
+    if (ViewData["ResponseResult"] != null || TempData["ResponseResult"] != null || !ViewData.ModelState.IsValid)
+    {
+
+        if (ViewData["ResponseResult"] != null)
+        {
+            retornoPost = (ResponseResultDTO)ViewData["ResponseResult"];
+        }
+        else if (TempData["ResponseResult"] != null)
+        {
+            retornoPost = (ResponseResultDTO)System.Text.Json.JsonSerializer.Deserialize<ResponseResultDTO>((string)TempData["ResponseResult"]);
+            TempData.Remove("ResponseResult");
+        }
+        else if (!ViewData.ModelState.IsValid)
+        {
+            retornoPost = new ResponseResultDTO { TipoResponseResult = TipoResponseResultEnum.Atencao, title = "Validação" };
+        }
+
+        sMensagem = retornoPost.message;
+
+        switch (retornoPost.TipoResponseResult)
+        {
+            case TipoResponseResultEnum.Sucesso:
+                sClassHead = "alert-success";
+                sClassIcon = "fa-check-circle";
+                sTitulo = "Sucesso";
+                sClassText = "text-success";
+                break;
+
+            case TipoResponseResultEnum.Informacao:
+                sClassHead = "alert-info";
+                sClassIcon = "fa-info-circle";
+                sTitulo = "Informação";
+                sClassText = "text-info";
+                break;
+            case TipoResponseResultEnum.Atencao:
+                sClassHead = "alert-warning";
+                sClassIcon = "fa-exclamation-triangle";
+                sTitulo = "Atenção";
+                sClassText = "text-warning";
+                break;
+            case TipoResponseResultEnum.Erro:
+                sClassHead = "alert-danger";
+                sClassIcon = "fa-times-circle";
+                sTitulo = "Erro";
+                sClassText = "text-danger";
+                break;
+        }
+        if (!String.IsNullOrEmpty(retornoPost.title))
+        {
+            sTitulo = retornoPost.title;
+        }
+    }
+
+}
+<div id="myModalMessage" class="modal @*fade*@" role="dialog" style="">
+    @*overflow-y: hidden;*@
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header @sClassHead">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title @sClassText">
+                    <i class="fa @sClassIcon" aria-hidden="true"></i>
+                    @sTitulo
+                </h4>
+            </div>
+            <div class="modal-body" style="white-space: pre-wrap;">@sMensagem @Html.ValidationSummary()</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" autofocus>OK</button>
+            </div>
+        </div>
+    </div>
+</div>

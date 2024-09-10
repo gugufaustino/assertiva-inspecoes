@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Seguradora>
+@{
+    ViewBag.Title = "Seguradoras";
+}
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
+    <button class="btn btn-primary" id="btnExcluir">Excluir</button>
+    <button class="btn btn-primary" id="btnAbrir">Abrir</button>
+}
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        @using (Html.BeginBox(maximizavel: true))
+        {
+            using (Html.BeginForm("Excluir", "Seguradora", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="table-responsive">
+                        <table id="gridSeguradora" class="grid-dataTables display table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="w10px"></th>
+                                    <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id)</th>
+                                    <th class="w150px">@Html.DisplayNameFor(m => m.NomeSeguradora)</th>
+                                    <th class="w150px">@Html.DisplayNameFor(m => m.RazaoSocial)</th>
+                                    <th class="w130px">@Html.DisplayNameFor(m => m.Cnpj)</th>
+                                    <th class="w80px">@Html.DisplayNameFor(m => m.DataCadastro)</th>
+                                    <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr id="@item.Id">
+                                        <td></td>
+                                        <td class="text-right">@item.Id </td>
+                                        <td>@item.NomeSeguradora</td>
+                                        <td>@item.RazaoSocial</td>
+                                        <td>@item.Cnpj</td>
+                                        <td class="text-center">@item.DataCadastro</td>
+                                        <td class="text-center">@item.DataModificacao</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+@section Styles {
+    @* @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles") *@
+}
+@section scripts{
+    @*@* @Scripts.Render("~/app/operacoescadastros")  *@
+    @*@Scripts.Render("~/plugins/dataTables")*@
+    @* @Scripts.Render("~/app/seguradora")  *@
+
+    <script src="~/Scripts/app/Seguradora/comum.js" ></script>
+    <script src="~/Scripts/app/Seguradora/listar.js"></script>
+    <script src="~/Scripts/app/Seguradora/editar.js"></script> 
+}

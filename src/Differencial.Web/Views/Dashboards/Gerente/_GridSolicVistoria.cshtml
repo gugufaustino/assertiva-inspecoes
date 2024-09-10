@@ -1,0 +1,189 @@
+﻿@model IEnumerable<Solicitacao>
+
+<div class="row">
+    <div class="col-sm-12" style="margin-top: -10px;text-align:right">
+
+        <a href="@Url.Action("Inserir","Solicitacao")" class="btn btn-primary">Novo</a>
+
+        <input type="button" class="btn btn-primary" id="btnExcluirSolic"  value="Excluir"/>
+
+        <input type="button" class="btn btn-primary" id="btnAbrirSolic" Value="Abrir" />
+        @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFiltrar">
+                Filtrar
+            </button>*@
+    </div>
+</div>
+<div class="row">
+    <div id="modalFiltrar" class="modal filtro fade" role="dialog" style="">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        Filtrar
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="email">Nº Cia:</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Valor 1">
+                            </div>
+                            <div class="col-sm-1">
+                                <select class="form-control input-sm">
+                                    <option value="value">E</option>
+                                    <option value="value">Ou</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Valor 2">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="email">Tipo:</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Valor 1">
+                            </div>
+                            <div class="col-sm-1">
+                                <select class="form-control input-sm">
+                                    <option value="value">E</option>
+                                    <option value="value">Ou</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" id="email" placeholder="Valor 2">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="email">Contato:</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 1">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="E/Ou">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="email">Telefone:</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 1">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="E/Ou">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" for="email">Cliente:</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 1">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="E/Ou">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Critério 1">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control  input-sm" id="email" placeholder="Valor 2">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Filtrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive no-margin-top" >
+        <table id="tbGerenteSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="">&nbsp;</th>
+                    <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                    <th class="w50px">@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                    <th class="w130px">@Html.DisplayNameFor(m => m.Seguradora.NomeSeguradora)</th>
+                    <th class="">Produto</th>
+                    <th class="">@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
+                    <th class="w100px">@Html.DisplayNameFor(m => m.TpSituacao)</th>
+                    <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th> 
+                    <th class="w80px" >Definir Vistoriador</th>
+                    <th class="w80px">Definir Analista</th>
+                    <th hidden></th>
+                </tr>
+            </thead> 
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.Id">
+                        <td></td>
+                        <td>
+                           @item.Id 
+                        </td>
+                        <td class="text-nowrap">
+                           @item.CodSeguradora
+                        </td>
+                        <td>
+                            @item.Seguradora.NomeSeguradora
+                        </td>
+                        <td>
+                            @item.Produto.NomeProduto
+                        </td>
+                        <td>
+                            @HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco.NomeMunicipio + " - " + item.Endereco.SiglaUf)
+                        </td>
+
+                        <td class="text-center">
+                            @HtmlGridHelper.SituacaoProcesso(item.TpSituacao)
+                        </td>
+                        <td class="text-center">
+                            @item.DataCadastro
+                        </td> 
+                        <td> @HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.DefinirVistoriador)  </td>
+                        <td> @HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.DefinirAnalista)  </td>
+                        <td>@item.IndUrgente</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

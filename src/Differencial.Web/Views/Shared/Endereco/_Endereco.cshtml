@@ -1,0 +1,78 @@
+﻿@model Differencial.Domain.Contracts.Entities.IEndereco
+@{
+    var strLatitudeLongitude = string.Empty;
+
+    if (!Html.ValueFor(m => m.Endereco.Latitude).ToString().IsNullOrEmpty())
+    {
+        strLatitudeLongitude = Html.ValueFor(m => m.Endereco.Latitude).ToString() + ", " + Html.ValueFor(m => m.Endereco.Longitude).ToString();
+    }
+
+}
+<div id="divEndereco" class="row">
+    <div class="form-group col-md-2">
+        @Html.FwLabelFor(model => model.Endereco.Cep)
+
+        @Html.FwTextBoxFor(model => model.Endereco.Cep)
+        @Html.ValidationMessageFor(model => model.Endereco.Cep)
+
+    </div>
+    <div class="form-group col-md-4">
+        @Html.FwLabelFor(model => model.Endereco.NomeMunicipio)
+
+        @Html.FwTextBoxFor(model => model.Endereco.NomeMunicipio)
+        @Html.ValidationMessageFor(model => model.Endereco.NomeMunicipio)
+
+    </div>
+    <div class="form-group col-md-2">
+        @Html.FwLabelFor(model => model.Endereco.SiglaUf)
+
+        @Html.FwTextBoxFor(model => model.Endereco.SiglaUf)
+        @Html.ValidationMessageFor(model => model.Endereco.SiglaUf)
+    </div>
+    <div class="form-group col-md-4">
+        @Html.FwLabelFor(model => model.Endereco.Bairro)
+
+        @Html.FwTextBoxFor(model => model.Endereco.Bairro)
+        @Html.ValidationMessageFor(model => model.Endereco.Bairro)
+    </div>
+
+    <div class="form-group col-md-4">
+        @Html.FwLabelFor(model => model.Endereco.Logradouro)
+
+        @Html.FwTextBoxFor(model => model.Endereco.Logradouro)
+        @Html.ValidationMessageFor(model => model.Endereco.Logradouro)
+
+    </div>
+    <div class="form-group col-md-2">
+        @Html.FwLabelFor(model => model.Endereco.Numero)
+
+        @Html.FwNumberFor(model => model.Endereco.Numero)
+        @Html.ValidationMessageFor(model => model.Endereco.Numero)
+
+    </div>
+    <div class="form-group col-md-2">
+        @Html.FwLabelFor(model => model.Endereco.Complemento, new { @class = "control-label" })
+
+        @Html.FwTextBoxFor(model => model.Endereco.Complemento)
+        @Html.ValidationMessageFor(model => model.Endereco.Complemento)
+    </div>
+    <div class="form-group col-md-4">
+        @Html.Label("Latitude x Longitude", new { @class = "control-label" })
+
+        @if (ViewData.ContainsKey("btnEditarLatitudeLongitude") && (bool)ViewData["btnEditarLatitudeLongitude"] == true)
+        {
+            <div class="input-group">
+                @Html.TextBox("txtLatitudeLongitude", strLatitudeLongitude, new { disabled = "disabled", @class = "form-control" })
+                <span class="input-group-btn">
+                    @HtmlAcaoHelper.Botao("", "btnEditarLatitudeLongitude", true, BtnCorEnum.primary, IconeEnum.pencil)
+                </span>
+            </div>
+        }
+        else
+        {
+            @Html.TextBox("txtLatitudeLongitude", strLatitudeLongitude, new { disabled = "disabled", @class = "form-control" })
+        } 
+        @Html.HiddenFor(model => model.Endereco.Latitude)
+        @Html.HiddenFor(model => model.Endereco.Longitude)
+    </div>
+</div> 

@@ -1,0 +1,25 @@
+﻿@model Differencial.Domain.Entities.Produto
+@using System.Linq
+@{ 
+    var indSompo = Html.ValueFor(m => m.Seguradora.NomeSeguradora).ToString().Equals("SOMPO");
+}
+<fieldset class="col-md-12 form-group">
+    <legend class="col-form-legend col-sm-12">
+        <label>Integração</label>@Html.Tooltip("Aplicável quando sistema tem integração com sistema da seguradora")        
+    </legend>
+    <div class="form-group col-md-12">
+        <div class="form-group col-md-2">
+            <label>Código Ramo</label> @Html.Tooltip("Código 'De -> Para' para realizar a leitura da solicitação da seguradora e relacionar com o produto da Differencial")
+            @Html.FwTextBoxFor(m => m.CodProdutoSeguradora, !indSompo)
+            @Html.ValidationMessageFor(m => m.CodProdutoSeguradora)
+        </div>
+        <div class="form-group col-md-4">
+            <label>Nome Ramo</label>
+            @Html.FwTextBoxFor(m => m.NomeProdutoSeguradora, !indSompo)
+            @Html.ValidationMessageFor(m => m.NomeProdutoSeguradora)
+        </div>
+    </div>
+</fieldset>
+
+
+ 

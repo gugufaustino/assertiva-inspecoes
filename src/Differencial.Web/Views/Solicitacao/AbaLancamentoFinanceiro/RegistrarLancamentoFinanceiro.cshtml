@@ -1,0 +1,88 @@
+﻿@model LancamentoFinanceiro
+@{
+    Layout = null;
+    var titleModal = "Registrar Lançamento Financeiro";
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>@titleModal </h3>
+</div>
+
+@using (Html.BeginForm("RegistrarLancamentoFinanceiro", "Solicitacao", new RouteValueDictionary(new { Id = ViewBag.IdSolicitacao }), FormMethod.Post  ))
+{
+    <div class="modal-body" id="divRota">
+        <div class="row"> 
+            <div class="col-md-12">
+
+                <div class="form-group col-md-6">
+                    @Html.FwLabelFor(m => m.TipoLancamentoFinanceiro)
+                    <div class="no-padding radioDuploVertical">
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(m => m.TipoLancamentoFinanceiro, TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador)
+                                @TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador.FwDisplayEnum()
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(m => m.TipoLancamentoFinanceiro, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora)
+                                @TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora.FwDisplayEnum()
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.FwLabelFor(m => m.ValorLancamentoFinanceiro)
+                    @Html.FwCurrencyFor(m => m.ValorLancamentoFinanceiro)
+                </div>
+   
+                <div class="form-group col-md-12">
+                    @Html.FwLabelFor(m => m.DescricaoLancamentoFinanceiro)
+                    @Html.FwTextAreaFor(m => m.DescricaoLancamentoFinanceiro)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-success">Concluír <span class="fa fa-check" /> </button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+        $("input[name=rbtTipoIntinerario]").change(function () {
+            var acao = $(this).val();
+         
+            switch (acao) {
+
+                case "1":
+                    $("#divRota #DeslocamentoRealizado").attr("readonly", "readonly");
+                    $("#divRota #txtDataAgenda").attr("disabled", "disabled");
+                    $("#divRota #txtHoraAgenda").attr("disabled", "disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").attr("disabled", "disabled");
+                    break;
+
+                case "2":
+                    $("#divRota #DeslocamentoRealizado").removeAttr("readonly");
+                    $("#divRota #txtDataAgenda").attr("disabled", "disabled");
+                    $("#divRota #txtHoraAgenda").attr("disabled", "disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").removeAttr("disabled");
+                    break;
+
+                case "3":
+                    $("#divRota #DeslocamentoRealizado").removeAttr("readonly");
+                    $("#divRota #txtDataAgenda").removeAttr("disabled");
+                    $("#divRota #txtHoraAgenda").removeAttr("disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").removeAttr("disabled");
+                    break;
+
+                default:
+            }
+        });
+    });
+</script>
+

@@ -1,0 +1,14 @@
+using Differencial.Domain.Entities;
+using Differencial.Domain.Filters;
+using System.Collections.Generic;
+
+namespace Differencial.Domain.Contracts.Services
+{
+    public interface ICoberturaService
+    {
+        IEnumerable<Cobertura> Listar(CoberturaFilter filtro);
+        void Salvar(IEnumerable<Cobertura> entidade, int IdSolicitacao);
+        void Excluir(int id);
+        void Excluir(int[] ids);
+    }
+}

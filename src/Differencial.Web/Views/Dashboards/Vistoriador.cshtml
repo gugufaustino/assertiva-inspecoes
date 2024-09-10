@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Vistoriador";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <input type="button" class="btn btn-primary" id="btnAbrir" value="Abrir" />
+    
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox(maximizavel: true))
+        {
+            <partial name="Vistoriador/_GridSolicVistoria"/>
+        }
+    </div>
+</div>
+@section Styles {
+    
+}
+@section scripts{
+    
+    <script type="text/javascript">
+        var gride
+        $(document).ready(function () {
+
+            gride = $('#tbVistoriadorSolicVistoria').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                ordering: true,
+                order: [[1, 'desc']],
+                columns: [
+                     { data: "0" },
+                     { data: "Id", "className": "text-right" },
+                     { data: "Seguradora", "className": "" },
+                     { data: "ClenteRazaoSocial", "className": "" },
+                     { data: "TpSituacao", "className": "text-center" },
+                     { data: "DataEnviadoVistoria", "className": "text-center", type: 'date-euro' },
+                     { data: "AtividadeAgenda", "className": "text-center" },
+                     { data: "AtividadeInspecao", "className": "text-center" },
+                     { data: "AtividadeRota", "className": "text-center" },
+                     { data: "IndUrgente", "visible": false },
+                ],
+
+            });
+
+            $("#btnAbrir").click(function () {
+                gride.abrirRegistroSelecionado("/Solicitacao/Editar/");
+
+            });
+
+            $("#btnApropriar").click(function () {
+                apropriarSolicictacao(grideTodasSolic.rows({ selected: true }));
+
+
+
+            });
+
+        });
+
+        function apropriarSolicictacao(objRows) {
+            //arrSel = objRows.ids().toArray()
+
+            //if (arrSel.length > 0) {
+            //    window.location = "/Solicitacao/Editar/" + arrSel[0];
+            //} else {
+            //    alertaMensagem("Selecione um item da lista");
+            //}
+        }  
+    </script>
+}

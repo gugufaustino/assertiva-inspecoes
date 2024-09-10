@@ -1,0 +1,39 @@
+﻿@model Solicitacao
+@{
+    string fotoGuid = "";
+    string nomeArquivo = "Selecione um arquivo";
+    ArquivoAnexo foto = Model == null ? null : Model.Foto.LastOrDefault(f => f.TipoArquivoAnexo == TipoArquivoAnexoEnum.Croqui);
+    if (foto != null)
+    {
+        fotoGuid = foto.GuidArquivo.ToString();
+        nomeArquivo = "{0}{1}".Formata(foto.ArquivoNome, foto.ArquivoExtencao);
+    }
+}
+@using (Html.BarraAtividade())
+{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+    if (lstAtivDisponiveis.Contains(TipoAtividadeEnum.ElaborarCroquiVistoriador))
+    {
+        <button type="button" class="btn btn-success btn-sm" id="btnConcluirCroqui">Salvar e Concluír &nbsp;<span class="fa fa-pencil "></span></button>
+    }
+}
+ 
+<div class="col-sm-12">
+    <label>Selecionar - Arquivo Croqui</label>
+    <div class="input-group">
+        <input type="text" class="form-control" readonly value="@nomeArquivo" />
+        <label class="input-group-btn">
+            <span class="btn btn-primary ">
+                <span class="fa fa-upload">
+                </span>
+                Carregar&nbsp;<input type="file" name="arquivocroquie" style="display: none;">
+            </span>
+        </label>
+    </div>
+</div>
+<div class="hr-line-dashed col-md-12"></div>
+<div class="col-sm-12">
+    <div class="text-center">
+        <img class="img-responsive" src="@UtilWeb.ImagemBase64(UtilWeb.ConfiguracaoAplicativo.RepositorioSolicitacao + "//" + Html.ValueFor( m=>m.Id ) + "//" + fotoGuid)" style="margin: auto;" />
+    </div>
+</div>

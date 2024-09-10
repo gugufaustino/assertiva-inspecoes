@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Solicitacao>
+@{
+    ViewBag.Title = "Todas Solicitações Concluídas";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <input type="button" class="btn btn-primary" id="btnAbrir" value="Abrir" />
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox(string.Empty, null, false, true, false))
+        {
+            <div class="row table-responsive">
+                <table id="tbTodasSolicConcluidas" class="grid-dataTables display table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                            <th class="w50px">@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                            <th class="w120px">@Html.DisplayNameFor(m => m.Produto.NomeProduto)</th>
+                            <th class="w120px">@Html.DisplayNameFor(m => m.Produto.Seguradora.NomeSeguradora)</th>
+                            <th class="">@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
+                            <th class="w130px">@Html.DisplayNameFor(m => m.Endereco.NomeMunicipio)</th>
+                            <th>Endereço</th>
+                            <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
+                            <th class="w80px">Data Conclusão</th>
+                            <th class="w80px">Tempo</th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="">&nbsp;</th>
+                            <th>@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                            <th>@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                            <th>@Html.DisplayNameFor(m => m.Produto.NomeProduto)</th>
+                            <th>@Html.DisplayNameFor(m => m.Produto.Seguradora.NomeSeguradora)</th>
+                            <th>@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
+                            <th>@Html.DisplayNameFor(m => m.Endereco.NomeMunicipio)</th>
+                            <th>Endereço</th>
+                            <th>@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
+                            <th>Data Conclusão</th>
+                            <th>Tempo</th>
+
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var dthEnviado = item.MovimentacaoProcesso.LastOrDefault().DthMovimentacao;
+                            <tr id="@item.Id">
+                                <td></td>
+                                <td class="text-right">@item.Id </td>
+                                <td class="text-right">@item.CodSeguradora</td>
+                                <td class="">@item.Produto.NomeProduto</td>
+                                <td class="">@item.Produto.Seguradora.NomeSeguradora</td>
+                                <td class="">@HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Cliente.CpfCnpj.FormatCpfCnpj())</td>
+                                <td class="">@item.Endereco.NomeMunicipio (@item.Endereco.SiglaUf)</td>
+                                <td>@HtmlGridHelper.Endereco(item.Endereco)</td>
+                                <td class="text-center">@item.DataCadastro.FormatoDataHora()</td>
+                                <td class="text-center"> @dthEnviado.FormatoDataHora()</td>
+                                <td class="text-center text-nowrap">@HtmlGridHelper.TempoDecorrido(item.DataCadastro, dthEnviado)</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        }
+    </div>
+</div>
+@section Styles {
+    <style>
+        div.dataTables_wrapper {
+            width: 1600px;
+            margin: 0 auto;
+        }
+    </style>
+}
+@section scripts{
+    <script type="text/javascript">
+        var grideTodasSolic = "";
+        $(document).ready(function () {
+            grideTodasSolic = $('#tbTodasSolicConcluidas').dataTableCli();
+
+            $("#btnAbrir").click(function () {
+                abrilSolicitacao(grideTodasSolic.rows({ selected: true }));
+            });
+
+        });
+
+        function abrilSolicitacao(objRows) {
+            arrSel = objRows.ids().toArray()
+
+            if (arrSel.length > 0) {
+                window.location = "/Solicitacao/Editar/" + arrSel[0];
+            } else {
+                alertaMensagem("Selecione um item da lista");
+            }
+
+        }
+
+    </script>
+}
+

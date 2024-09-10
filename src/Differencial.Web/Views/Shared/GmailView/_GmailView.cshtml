@@ -1,0 +1,99 @@
+﻿@{
+    var lstActions = new List<HtmlString>();
+
+    TagBuilder tag = new TagBuilder("a");
+    tag.InnerHtml.AppendHtml("Configuração do leitor de email");
+    tag.Attributes.Add("data-toggle", "modal");
+    tag.Attributes.Add("data-target", "#modalConfig");
+    tag.Attributes.Add("href", "#");
+    lstActions.Add(new HtmlString(tag.ToString()));
+}
+@using (Html.Box("Mensagens", "&nbsp;", true, true, true, null, lstActions))
+{
+    <div class="ibox-content ibox-heading">
+        <h3><i class="fa fa-envelope-o"></i> Bem vindo </h3>
+        <small><i class="fa fa-tim"></i></small>
+        <button type="button" id="btn-autenticar-gmail" onclick="handleAuthClick(event)" style="display:none" class="btn btn-primary btn-sm pull-right"> Autenticar Gmail </button>
+        <button type="button" href="https://accounts.google.com/logout?service=mail" style="display:none" class="btn btn-primary btn-sm pull-right"> Sair </button>
+
+    </div>
+    <div class="ibox-content">
+        <div class="feed-activity-list">
+            @*<div class="feed-element">
+                    <div>
+                        <small class="pull-right text-navy">1m ago</small>
+                        <strong>Monica Smith</strong>
+                        <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
+                        <small class="text-muted">Hoje 5:60 pm - 12.06.2014</small>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+}
+<div class="modal inmodal " id="modalConfig" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @Html.Hidden("gmailview-client_id", (string)ViewBag.gmailCredencialAplicativo)
+            @Html.Hidden("gmailview-from", (string)ViewBag.gmailSeguradoraEmailRemetente)
+            @Html.Hidden("gmailview-integracaohabilitada", ((bool)ViewBag.gmailIndIntegracaoEmailAbilitada).ToString().ToLower())
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3>Configuração do leitor de emails</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <label>Credencial do aplicativo - ID do cliente </label>
+                        <input type="text" class="form-control" value="@ViewBag.gmailCredencialAplicativo" disabled="">
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label>Caixa de e-mail</label>
+                        <input type="text" class="form-control" value="" id="gmail-hint" disabled="">
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="hr-line-dashed"></div>
+                        <h4 class="m-t-none m-b">Opções de filtro</h4>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label class="">
+                            Emails
+                        </label>
+                        <div class="checkbox"><label> <input type="checkbox" checked disabled value=""> Não lidos </label></div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="">
+                            Seguradoras
+                        </label>
+                        @foreach (var item in (List<Seguradora>)ViewBag.lstSeguradoras)
+                        {
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" disabled @(item.IndIntegracaoSolicitacaoPorEmail == true ? "checked=checked" : "") value="" />@("{0} - {1}".Formata(item.NomeSeguradora, item.EmailRemetenteSolicitacao))
+                                </label>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Salvar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <script type="text/javascript">
+
+    </script>
+}
+<script src="~/plugins-diff/gmailview"></script>
+  
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>

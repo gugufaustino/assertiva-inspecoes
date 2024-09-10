@@ -1,0 +1,92 @@
+﻿@model Comunicacao
+@{
+    Layout = null;
+    var titleModal = "Informar Agendamento";
+    string strIdSolic = ViewBag.IdSolicitacao.ToString();
+    string strCodSeguradora = ViewBag.CodSeguradora.ToString();
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>@titleModal</h3>
+</div>
+
+@using (Html.BeginForm("InformarAgendamento", "Solicitacao", new RouteValueDictionary(new { Id = strIdSolic }), FormMethod.Post))
+{
+    <div class="modal-body" id="divInformar">
+        @if (ViewBag.IndAgendaRepostaPorEmail)
+        {  
+            @Html.Hidden("rbtTipoNotificacao", TipoNotificacaoEnum.EmailSistemaAuto)
+            <div class="row">
+                <div class="form-group col-md-5">
+                    @Html.FwLabelFor(i=> i.TipoComunicacao)
+                    @Html.FwEnumDropDownList("TipoComunicacao", "", TipoComunicacaoEnum.ContatoSeguradora, true , requerido: true)
+                </div>
+                <div class="form-group col-md-7">
+                    @Html.FwLabel("lblDestinatarios", "Destinatários")
+                    @Html.FwTextBox("txtEmailDestinatario",(string)ViewBag.EmailRemetenteSolicitacao, desabilitado: true)
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.FwLabelFor(i=>i.Assunto)
+                    @Html.FwTextBox("Assunto", "{0} - SOLICITAÇÃO DE INSPEÇÃO - {1} - AGENDAMENTO REALIZADO".Formata(strIdSolic, strCodSeguradora), requerido:true)
+
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.FwLabel("lblDatadoAgendado", "Data do Agendado", true)
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        @Html.TextBox("txtDataAgenda", (string)ViewBag.valorData, new { @class = "form-control text-center", @data_mask = "99/99/9999", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.FwLabel("lblHorariodoAgendado", "Horário do Agendado", true)
+                    <div class="input-group" data-autoclose="true">
+                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        @Html.TextBox("txtHoraAgenda", (string)ViewBag.valorHora, new { @class = "form-control text-center", @data_mask = "99:99", @disabled = "disabled" })
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-12 ">
+                    @Html.FwLabelFor(i => i.TextoComunicacao)
+                    @Html.FwTextAreaFor(i=>i.TextoComunicacao)
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="row">
+                <h4>Como foi realizado a notificação sobre o agendamento a seguradora?</h4>
+                <div class="col-md-12">
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButton("rbtTipoNotificacao", (int)TipoNotificacaoEnum.EmailExterno, htmlAttributes: new { @required =  "required" } )
+                            Enviado e-mail através de conta em Gmail ou outro provedor.
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButton("rbtTipoNotificacao", (int)TipoNotificacaoEnum.FerramentaCliente, htmlAttributes: new { @required = "required" })
+                            Registro em sistema disponibilizado pela Seguradora.
+                        </label>
+                    </div>
+                </div>
+            </div> 
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-success">Concluír<span class="fa fa-check" /></button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+<style>
+  
+</style>
+

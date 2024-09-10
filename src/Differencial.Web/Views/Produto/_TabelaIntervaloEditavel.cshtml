@@ -1,0 +1,128 @@
+﻿@model ContratoLancamento
+@{  
+    var index = ViewData["index"];
+}
+<fieldset class="form-group col-md-7 fieldsetTabelaIntervaloEditavel">
+    @Html.Hidden("ContratoLancamento[" + index + "].Id", Model.Id)
+    @Html.Hidden("ContratoLancamento[" + index + "].IdContrato", Html.ValueFor(m => m.IdContrato))
+    @Html.Hidden("ContratoLancamento[" + index + "].TipoParametroQuantitativoVariavel", Html.ValueFor(m => m.TipoParametroQuantitativoVariavel))
+    <legend class="col-form-legend col-md-12 form-inline">
+        <label class="">Honorário por paramêtro</label> 
+        <label class="pull-right"> 
+            @Model.TipoParametroQuantitativoVariavel.FwDisplayEnum(true)            
+        </label>
+    </legend>
+
+    <div class="TabelaIntervaloEditavel col-md-12">
+       
+        @for (int i = 0; i < Model.ContratoLancamentoValor.Count; i++)
+        {
+            var ctLancVal = Model.ContratoLancamentoValor.ElementAtOrDefault(i);
+
+            <div tbeditindex="@i" class="row">
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].Id", ctLancVal.Id)
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].TipoQuantitativoVariacao", ctLancVal.TipoQuantitativoVariacao)
+                
+                @if (ctLancVal.TipoQuantitativoVariacao == TipoQuantitativoVariacaoEnum.DeAte)
+                {
+                    <div class="col-md-3">
+                        
+                        @Html.FwLabel("", "De", true, new { @class = "small" })
+                        @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].QuantitativoA", value: ctLancVal.QuantitativoA, htmlAttributes: new { @class = "input-sm " }, requerido:true)
+                    </div>
+                    <div class="col-md-3">
+                        @Html.FwLabel("", "Até", true, new { @class = "small" })
+                        @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].QuantitativoB", value: ctLancVal.QuantitativoB, htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                    </div>
+                }
+                else if (ctLancVal.TipoQuantitativoVariacao == TipoQuantitativoVariacaoEnum.AcimaDe)
+                {
+                    <div class="col-md-3"> 
+                        @Html.FwLabel("", "Acima de", true, new { @class = "small" })
+                         @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].QuantitativoA", value: ctLancVal.QuantitativoA, htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                    </div>
+                    <div class="col-md-3">
+                        @Html.FwLabel("", "Pré Acordo", false, new { @class = "small" }, MensagensAjuda.ProdutoFinanceiroValorIndPreAcordo)     
+                        @Html.CheckBox("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].IndPreAcordo", ctLancVal.IndPreAcordo, new { @class = "checkbox " })                      
+                    </div>
+                }  
+                <div class="col-md-4"> 
+                    @Html.FwLabel("[" + index + "].lblValorLancamento", "Valor a Receber", !ctLancVal.IndPreAcordo, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].ValorLancamento", value: ctLancVal.ValorLancamento, desabilitado: ctLancVal.IndPreAcordo, htmlAttributes: new { @class = "input-sm AcimaDe " }, requerido: true)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label">&nbsp; &nbsp;</label>
+                    <button type="button" class="btn btn-default btn-sm" id="btnExcluirRowIntervaloEditavel">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                        <span class="">Excluír</span>
+                    </button>
+                </div>
+            </div> 
+        } 
+        <!-- TEMPLATE -->
+        <template class="t1">
+            <div tbeditindex="0" class="row">
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].TipoQuantitativoVariacao",  TipoQuantitativoVariacaoEnum.DeAte)
+                <div class="col-md-3">
+                    @Html.FwLabel("", "De", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].QuantitativoA",  htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                </div>
+                <div class="col-md-3">
+                    @Html.FwLabel("", "Até", true, new { @class = "small" })
+                     @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].QuantitativoB",  htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                </div>
+                <div class="col-md-4"> 
+                    @Html.FwLabel("[" + index + "].lblValorLancamento", "Valor a Receber", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].ValorLancamento", htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                </div>
+                <div class="col-md-2"> 
+                    <label class="small control-label sr-only"></label>
+                    <button type="button" class="btn btn-default btn-sm" id="btnExcluirRowIntervaloEditavel">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                        <span class="">Excluír</span>
+                    </button>
+                </div>
+            </div>
+        </template>
+        <template class="t2">
+            <div tbeditindex="0" class="row">
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].TipoQuantitativoVariacao", TipoQuantitativoVariacaoEnum.AcimaDe)
+                <div class="col-md-3">
+                    @Html.FwLabel("", "Acima de", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].QuantitativoA",  htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                </div>
+                <div class="col-md-3">
+                    @Html.FwLabel("", "Pré Acordo", false, new { @class = "small" }, MensagensAjuda.ProdutoFinanceiroValorIndPreAcordo)                      
+                    @Html.CheckBox("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].IndPreAcordo", false, new { @class = "checkbox " })
+                </div>
+
+                <div class="col-md-4">
+                    @Html.FwLabel("[" + index + "].lblValorLancamento", "Valor a Receber", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].ValorLancamento", htmlAttributes: new { @class = "input-sm AcimaDe " }, requerido: true)
+                </div>
+                <div class="col-md-2"> 
+                    <button type="button" class="btn btn-default btn-sm" id="btnExcluirRowIntervaloEditavel">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                        <span class="">Excluír</span>
+                    </button>
+                </div>
+            </div>
+        </template>
+        <!-- TEMPLATE -->
+        <div class="row">
+            <div class="form-group pull-right text-right  col-md-3">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" style="margin-top:7px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa fa-plus "></span>
+                    Adicionar
+                    <span class="caret"></span>
+                    <span class="sr-only"></span>
+                </button>
+                <ul class="dropdown-menu" style="min-width:100px;" id="btnAddRow">
+                    <li> <a class="t1"><b>[&nbsp;]</b> de.. até..</a> </li>
+                    <li>  <a class="t2"><b>></b> acima de..</a>  </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</fieldset>
+ 

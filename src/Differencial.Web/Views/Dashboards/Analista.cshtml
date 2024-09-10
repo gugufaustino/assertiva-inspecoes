@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Analista";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <input type="button" class="btn btn-primary" id="btnAbrir" value="Abrir" />
+    <input type="button" class="btn btn-default" id="btnApropriarAnalista" value="Apropriar" />
+
+
+    
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox("Minhas Tarefas", maximizavel: true))
+        {
+            <partial name="Analista/_GridTarefasMinhas" />
+        }
+    </div>
+    <div class="row">
+        @using (Html.BeginBox("Tarefas da Análise", maximizavel: true))
+        {
+            <partial name="Analista/_GridTarefasAnalise" />
+        }
+    </div>
+</div>
+@section Styles {
+}
+@section scripts{
+    <script type="text/javascript">
+        var grideAnalistaMinhasTarefas;
+        var grideAnalistaTarefas;
+
+        $(document).ready(function () {
+            grideAnalistaMinhasTarefas = $('#tbAnalistaMinhasTarefas').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                ordering: true,
+                order: [[1, 'desc']],
+                autoWidth: false,
+                columns: [
+                    { data: "0" },
+                    { data: "Id", "className": "text-right" },
+                    { data: "CodSeguradora", "className": "text-right" },
+                    { data: "SeguradoraProduto", "className": "" },
+                    { data: "ClienteRazaoSocial", "className": "" },
+                    { data: "DataApropriado", "className": "text-center", type: 'date-euro' },
+                    { data: "ElaborarCroquiAnalise", "className": "text-center" },
+                    { data: "ElaborarQuadro", "className": "text-center" },
+                    { data: "ElaborarEnviarLaudo", "className": "text-center" },
+                    { data: "TempoDecorrido", "className": "text-center", type: 'date-euro' },
+                    { data: "IndUrgente", "visible": false },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        Id: obj.Id,
+                        CodSeguradora: obj.CodSeguradora,
+                        SeguradoraProduto: obj.SeguradoraProduto,
+                        ClienteRazaoSocial: obj.ClienteRazaoSocial,
+                        DataApropriado: obj.DataApropriado,
+                        ElaborarCroquiAnalise: obj.ElaborarCroquiAnalise,
+                        ElaborarQuadro: obj.ElaborarQuadro,
+                        ElaborarEnviarLaudo: obj.ElaborarEnviarLaudo,
+                        TempoDecorrido: obj.TempoDecorrido,
+                        IndUrgente: obj.IndUrgente,
+                        DT_RowId: obj.Id
+                    }
+                }
+            });
+
+
+            grideAnalistaTarefas = $('#tbAnalistaTarefas').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                ordering: true,
+                order: [[1, 'desc']],
+                autoWidth: false,
+                columns: [
+                    { data: "0" },
+                    { data: "Id", "className": "text-right" },
+                    { data: "CodSeguradora", "className": "text-right" },
+                    { data: "SeguradoraProduto", "className": "" },
+                    { data: "ClienteRazaoSocial", "className": "" },
+                    { data: "SituacaoProcesso", "className": "text-center" },
+                    { data: "OperadorApropriado", "className": " ", type: 'date-euro' },
+                    { data: "DataEnviado", "className": "text-center", type: 'date-euro' },
+                    { data: "ElaborarCroquiAnalise", "className": "text-center" },
+                    { data: "ElaborarQuadro", "className": "text-center" },
+                    { data: "ElaborarEnviarLaudo", "className": "text-center" },
+                    { data: "TempoDecorrido", "className": "text-center", type: 'date-euro' },
+                    { data: "IndUrgente", "visible": false },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        Id: obj.Id,
+                        CodSeguradora: obj.CodSeguradora,
+                        SeguradoraProduto: obj.SeguradoraProduto,
+                        ClienteRazaoSocial: obj.ClienteRazaoSocial,
+                        SituacaoProcesso: obj.SituacaoProcesso,
+                        OperadorApropriado: obj.OperadorApropriado,
+                        DataEnviado: obj.DataEnviado,
+                        ElaborarCroquiAnalise: obj.ElaborarCroquiAnalise,
+                        ElaborarQuadro: obj.ElaborarQuadro,
+                        ElaborarEnviarLaudo: obj.ElaborarEnviarLaudo,
+                        TempoDecorrido: obj.TempoDecorrido,
+                        IndUrgente: obj.IndUrgente,
+                        DT_RowId: obj.Id
+                    }
+                }
+            });
+
+            $("#btnAbrir").click(function () {
+                abrilSolicitacao();
+
+            });
+
+            $("#btnApropriarAnalista").click(apropriarSolicitacaoTarefa);
+
+        });
+
+        function abrilSolicitacao() {
+            var arrMinhas = grideAnalistaMinhasTarefas.rows({ selected: true }).ids().toArray();
+            var arrAnalise = grideAnalistaTarefas.rows({ selected: true }).ids().toArray();
+
+            if (arrMinhas.length > 0 && arrAnalise.length > 0) {
+                alertaMensagem("Selecione apenas um item dentre as listas");
+            }
+            else if (arrMinhas.length == 0 && arrAnalise.length == 0) {
+                alertaMensagem("Selecione um item da lista");
+            }
+            else {
+                if (arrMinhas.length > 0)
+                    grideAnalistaMinhasTarefas.abrirRegistroSelecionado("/Solicitacao/Editar/");
+
+                if (arrAnalise.length > 0)
+                    grideAnalistaTarefas.abrirRegistroSelecionado("/Solicitacao/Editar/");
+            }
+
+        }
+
+        function apropriarSolicitacaoTarefa() {
+            var arrAnalise = grideAnalistaTarefas.rows({ selected: true }).ids().toArray();
+            var arrMinhasNao = grideAnalistaMinhasTarefas.rows({ selected: false }).ids().toArray();
+            var arrMinhasSim = grideAnalistaMinhasTarefas.rows({ selected: true }).ids().toArray();
+
+            if (arrMinhasSim.length > 0) {
+                alertaMensagem("Você não pode se apropriar de uma própria solicitação");
+            }
+            else if (arrMinhasSim.length == 0 && arrAnalise.length == 0) {
+                alertaMensagem("Selecione um item da lista");
+            }
+            else if (arrAnalise.length > 1) {
+                alertaMensagem("Selecione apenas 1 item");
+            }
+            else {
+                $.post("/Dashboards/ApropriarSolicitacao/", { Id: arrAnalise }, function (data) {
+
+                    if (!data.success) {
+                        alertaResponseResult(data);
+                    }
+                    else {
+                        alertaResponseResult(data);
+
+
+                        grideAnalistaTarefas.atualizarDados(data.content);
+                        atualizarSolicitacaoTarefa();
+
+                    }
+                    esconderCarregando();
+                });
+            }
+        }
+
+        function atualizarSolicitacaoTarefa() {
+            var arrMinhas = grideAnalistaMinhasTarefas.rows({ selected: false }).ids().toArray();
+            $.post("/Dashboards/AtualizarSolicitacao/", function (data) {
+                console.log(data.content);
+
+
+                grideAnalistaMinhasTarefas.atualizarDados(data.content);
+            }
+            );
+        }
+    </script>
+}

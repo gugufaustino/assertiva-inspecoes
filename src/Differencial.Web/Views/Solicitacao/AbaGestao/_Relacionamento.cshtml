@@ -1,0 +1,84 @@
+﻿@model Solicitacao
+@using (Html.BarraAtividade())
+{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+    var indInfoAgendmto = lstAtivDisponiveis.Contains(TipoAtividadeEnum.InformarAgendamento);
+
+    @HtmlAtividadeHelper.BotaoModalAtividade("Registrar Comunicação", "", true, BtnCorEnum.Default, IconeEnum.pencil, TamanhoEnum.ModalLarga
+        , Url.Action("RegistrarComunicacao", new { IdSolicitacao = Html.ValueFor(m => m.Id).ToString() })) 
+
+    @HtmlAtividadeHelper.BotaoModalAtividade("Informar Agendamento", "", indInfoAgendmto, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
+        , Url.Action("InformarAgendamento", new { id = Html.ValueFor(m => m.Id).ToString() }))
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            Agendamento Informado a Seguradora
+            @Html.Tooltip(MensagensAjuda.SolicitacaoRelacionamentoAgendamentoInformado)
+        </h4>
+        <div class="form-group col-md-4">
+            @Html.FwLabelFor(m => m.NomeOperadorAgendaInformada)
+            @Html.FwTextBoxFor(m => m.NomeOperadorAgendaInformada, true)
+        </div>
+        <div class="form-group col-md-4">
+            @Html.FwLabelFor(m => m.DthRelacionamentoAgendaInformada)
+            @Html.FwDateFor(m => m.DthRelacionamentoAgendaInformada, true)
+        </div>
+        <div class="form-group col-md-4">
+            @{
+                TipoNotificacaoEnum? tipoNotificacaoEnum = null;
+
+                if (Model != null && Model.TipoNotificacaoAgendaInformada != null)
+                {
+                    tipoNotificacaoEnum = Model.TipoNotificacaoAgendaInformada;
+                }
+            }
+            @Html.FwLabelFor(m => m.TipoNotificacaoAgendaInformada)
+            @Html.TextBox("TipoNotificacaoAgendaInformada", (string)(tipoNotificacaoEnum == null ? string.Empty : tipoNotificacaoEnum.FwDisplayEnum().ToString()), new { @class = "form-control", disabled = "disabled" })
+        </div>
+    </div>
+
+    <br />
+    <div class="col-md-12">
+        <h4>Comunicação</h4>
+        <div class="row">
+            <table class="table table-striped no-margins">
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>Operador</th>
+                        <th>Comunicação</th>
+                        <th>Assunto</th>
+                        <th>Texto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Comunicacao != null && Model.Comunicacao.Any())
+                    {
+                        foreach (var item in Model.Comunicacao.OrderByDescending(o => o.DataCadastro))
+                        {
+                            <tr>
+                                <td class="text-center w100px">
+                                    @item.DataCadastro.FormatoDataHora()
+                                </td>
+                                <td class="w130px">
+                                    @item.Operador.NomeOperador
+                                </td>
+                                <td class="text-center w100px">
+                                    @item.TipoComunicacao.FwDisplayEnum(true)
+                                </td>
+                                <td class="w150px small">
+                                    @item.Assunto
+                                </td>
+                                <td class="small">@item.TextoComunicacao</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,84 @@
+﻿@model Solicitacao
+@using (Html.BarraAtividade())
+{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+    if (lstAtivDisponiveis.Contains(TipoAtividadeEnum.ChecklistDados))
+    {
+        <button type="button" class="btn btn-success btn-sm" id="btnConcluiCheckList">Salvar e Concluír &nbsp;<span class="fa fa-pencil "></span></button>
+    }
+}
+
+
+<div class="row col-sm-12">
+    <div class="form-horizontal" style="overflow-x: hidden;">
+        <div class="form-group">
+            <label class="col-md-4 control-label">Atividade</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+                <span class="help-block m-b-none">CNAE da empresa junto a receita federal</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Nome e função do atendente</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Idade do prédio</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Tempo no local</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Imóvel</label>
+            <div class="col-md-8">
+                <div class="checkbox i-checks">
+                    <label>
+                        <input type="checkbox"><i></i> Próprio
+                    </label>
+
+                    <label style="margin-left:25px">
+                        <input type="checkbox"><i></i> Locado
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Nº funcionários</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Detalhes sobre sinistro</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+                <span class="help-block m-b-none">Se houver, descrever aqui</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Sistema de combate a incêndio</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control">
+                <span class="help-block m-b-none">Se houver, informar quantidade, tipo e validade</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Informações adicionais</label>
+            <div class="col-md-8">
+                <textarea class="form-control" rows="5"
+                          placeholder="Ex.: valor de mercadoria, particularidades sobre os sistemas de combate a incêndio ou de roubo, alguma situação atípica no ato da inspeção, etc."></textarea>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model Solicitacao
+<div class="row">
+    @{
+        var abaAtiva = (string)TempData["abaAtiva"] ?? "idtabDetalhe";
+        var lstTab = new Tab[] {
+        new Tab("idtabLaudo", "Laudo", (abaAtiva == "idtabLaudo")),
+        //new Tab("idtabQuadroFotos", "Quadro de Fotos", (abaAtiva == "idtabQuadroFotos")),
+        new Tab("idtabCroquiAnalista", "Croqui", (abaAtiva == "idtabCroquiAnalista")),
+        };
+
+        using (Html.TabContainer(TabsOrientacaoEnum.Left, lstTab))
+        {
+            using (Html.TabPane(lstTab[0]))
+            {
+                @await Html.PartialAsync("AbaAnalise/_AbaLaudo")
+            }
+            @*using (Html.TabPane(lstTab[1]))
+            {
+                @Html.PartialAsync("AbaAnalise/_AbaQuadroFotos")
+            }*@
+            using (Html.TabPane(lstTab[1]))
+            {
+                @await Html.PartialAsync("AbaAnalise/_AbaCroqui")
+            }
+        }
+    }
+</div>
+
+<style>
+    #idtabQuadroFotos .panel-body:first-child {
+        padding: 0;
+    }
+</style>

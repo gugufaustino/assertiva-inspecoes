@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "Gerente";
+    Layout = "~/Views/Shared/_LayoutDifferencial.cshtml";
+    var usuario = UtilWeb.UsuarioLogado;
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox("Solicitações de Vistoria", maximizavel: true, minimizavel: true, removivel: true))
+        {
+            @await Html.PartialAsync("Gerente/_GridSolicVistoria");
+        }
+    </div>
+    <div class="row">
+        @*@if (!usuario.IndAssessor)
+            {
+                <div class="col-md-4 formEmail">
+                    @using (Html.BeginForm("InserirEmail", "Solicitacao", FormMethod.Post))
+                    {
+                        @Html.Partial("GmailView/_GmailView")
+                    }
+                </div>
+            }*@
+
+        @*@(!usuario.IndAssessor ? "col-md-8" : "col-md-12")*@
+        @using (Html.BeginBox("Agendamento das Últimas Solicitações", maximizavel: true, minimizavel: true, removivel: true))
+        {
+            @await Html.PartialAsync("Gerente/_GridSolicAgenda");
+        }
+    </div>
+</div>
+@section Styles {
+    <style>
+        .feed-element small.text-muted {
+            margin-top: 14px;
+            display: inline-block;
+        }
+
+        .table a {
+            text-decoration: underline;
+        }
+    </style>
+
+}
+
+@section Scripts {
+
+    @*@Scripts.Render("~/plugins/flot")
+        @Scripts.Render("~/plugins/chartJs")
+        @Scripts.Render("~/plugins/peity")*@
+
+    <script type="text/javascript">
+        var grideSolicAgenda;
+        var grideGerenteSolicVistoria
+
+
+        $(document).ready(function () {
+
+            grideGerenteSolicVistoria = $('#tbGerenteSolicVistoria').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                ordering: true,
+                order: [[1, 'desc']],
+                autoWidth: false,
+                columns: [
+                    { data: "0" },
+                    { data: "Id", "className": "text-right" },
+                    { data: "CodSeguradora", "className": "text-right" },
+                    { data: "NomeSeguradora", "className": "" },
+                    { data: "NomeProduto", "className": "" },
+                    { data: "NomeMunicipio", "className": "" },
+                    { data: "TpSituacao", "className": "text-center" },
+                    { data: "DataCadastro", "className": "text-center", type: 'date-euro' },
+                    { data: "DefinirVistoriador", "className": "text-center" },
+                    { data: "DefinirAnalista", "className": "text-center" },
+                    { data: "IndUrgente", "visible": false },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        Id: obj.Id,
+                        CodSeguradora: obj.CodSeguradora,
+                        NomeSeguradora: obj.NomeSeguradora,
+                        NomeProduto: obj.NomeProduto,
+                        NomeMunicipio: obj.NomeMunicipio,
+                        TpSituacao: obj.TpSituacao,
+                        DataCadastro: obj.DataCadastro,
+                        DefinirVistoriador: obj.DefinirVistoriador,
+                        DefinirAnalista: obj.DefinirAnalista,
+                        IndUrgente: obj.IndUrgente,
+                        DT_RowId: obj.Id
+                    }
+                }
+            });
+
+
+
+            grideSolicAgenda = $('#tbSolicAgenda').Gride({
+                ordering: true,
+                order: [[1, 'desc']],
+                autoWidth: false,
+
+            });
+
+            $("#btnAbrirSolic").click(function () {
+                grideGerenteSolicVistoria.abrirRegistroSelecionado("/Solicitacao/Editar/");
+
+            });
+
+            $("#btnExcluirSolic").click(function () {
+                grideGerenteSolicVistoria.excluirRegistrosSelecionados("/Dashboards/Excluir/");
+            });
+
+
+            //checkAuth();
+            //$("form[method=post]").submit(function (event) {
+            //    try {
+            //        var objForm = this;
+            //        if ($(this).valid()) {
+            //            var formData = new FormData($(objForm));
+            //            formData.append("Email", EmailPost);
+
+            //            $.ajax({
+            //                type: 'POST',
+            //                url: this.action,
+            //                data: formData,
+            //                processData: false,
+            //                contentType: false,
+            //                success: function (data) {
+            //                    alert(data);
+            //                },
+            //                error: function (msg) {
+            //                    alert("error: " + msg.statusText + ". Press F12 for details");
+
+            //                }
+            //            }).done(function (data) {
+            //                alert("aham");
+            //            });
+            //        }
+            //    } catch (e) {
+            //        alert(e.message);
+            //    }
+            //    event.preventDefault();
+            //    return false;
+            //});
+
+            $(".formEmail").on("click", "button.btn-novasolicitacaoemail", function () {
+                getMessageNovaSolicitacao($(this).attr("data-email"), $(".formEmail form").get(0));
+            });
+
+
+        });
+
+
+    </script>
+}
+
+<style>
+    .inmodal .modal-header {
+        padding: 15px;
+        text-align: left;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    button[disabled], html input[disabled] {
+        cursor: default !important;
+    }
+
+    .hr-line-dashed {
+        border-top: 1px dashed #B3B3B3;
+        /* color: #D24646; */
+        /* background-color: #F8FAFB; */
+        height: 1px;
+        margin: 20px 0;
+    }
+
+    /* bootstrap hack: fix content width inside hidden tabs */
+    .tab-content > .tab-pane,
+    .pill-content > .pill-pane {
+        display: block; /* undo display:none          */
+        height: 0; /* height:0 is also invisible */
+        overflow-y: hidden; /* no-overflow                */
+    }
+
+    .tab-content > .active,
+    .pill-content > .active {
+        height: auto; /* let the content decide it  */
+    }
+    /* bootstrap hack end */
+</style>

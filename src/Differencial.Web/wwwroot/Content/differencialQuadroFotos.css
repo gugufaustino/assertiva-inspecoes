@@ -1,0 +1,91 @@
+﻿/*.file-box {
+            float: left;
+            width: 320px;
+        }
+        .file .icon, .file .image {
+        height: 195px;
+        overflow: hidden;
+    }*/
+
+.file {
+   
+    /*border: 1px solid #e7eaec;*/
+    padding: 4px !important;
+    
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.16);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.16);
+    border: 1px solid #acacac !important;
+}
+
+    .file .image {
+        height: 136px;
+    }
+
+    .fullscreen .file .image {
+        height: 180px;
+    }
+
+    .file .file-name {
+        padding: 4px !important;
+        height: 70px !important;
+        font-size: 12px;
+    }
+
+        .file .file-name small {
+            position: absolute;
+            bottom: 4px;
+        }
+
+div.selected .file {
+    border-color: #b43546;
+}
+
+    div.selected .file div {
+        background-color: #ee909d;
+        color: #8e0e1f;
+    }
+
+    div.selected .file .corner {
+        border-right: 9px solid #d05d6c;
+        border-bottom: 9px solid #d05d6c;
+    }
+
+    div.selected .file img {
+        opacity: 0.6;
+    }
+
+div.selected-last .file div,
+div.selected-current:hover .file div {
+    background-color: #d15768;
+    color: #890012;
+}
+
+div.selected-last .file img,
+div.selected-current:hover .file img {
+    opacity: 0.5;
+}
+
+div.selected-last .file .corner,
+div.selected-current:hover .file .corner {
+    border-right: 9px solid #ae3242;
+    border-bottom: 9px solid #ae3242;
+}
+
+div.item-finderSelect {
+    user-select: none;
+}
+
+
+div.un-selected .file div {
+    background-color: #f8f8f8;
+    color: inherit;
+}
+
+div.un-selected .file img {
+    opacity: inherit;
+}
+
+div.un-selected .file .corner {
+    border-right: 0.6em solid #f1f1f1;
+    border-bottom: 0.6em solid #f1f1f1;
+}

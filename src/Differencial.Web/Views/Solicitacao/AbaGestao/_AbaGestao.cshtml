@@ -1,0 +1,28 @@
+﻿@model Solicitacao
+<div class="row">
+    @{
+        var abaAtiva = (string)TempData["abaAtiva"] ?? "tabVistoriador";
+        var lstTab = new Tab[] {
+            new Tab("idtabVistoriador", "Vistoriador", abaAtiva == "idtabVistoriador" ),
+            new Tab("idtabAnalista", "Analista", abaAtiva == "idtabAnalista" ),
+            new Tab("idtabRelacionamento", "Relacionamento", abaAtiva == "idtabRelacionamento" ),
+        };
+       
+        using (Html.TabContainer(TabsOrientacaoEnum.Left, lstTab))
+        {
+            using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabVistoriador")))
+            {
+                @Html.Partial("AbaGestao/_Vistoriador")
+            }
+            using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabAnalista")))
+            {
+                @Html.Partial("AbaGestao/_Analista")
+            }
+            using (Html.TabPane(lstTab.First(i => i.Identificacao == "idtabRelacionamento")))
+            {
+                @Html.Partial("AbaGestao/_Relacionamento")
+            }
+        }
+    }
+</div>
+

@@ -1,0 +1,161 @@
+﻿@model Differencial.Domain.Entities.Seguradora
+@{
+    ViewBag.Title = "Seguradora";
+}
+@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "Listar"))
+
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            @using (Html.Box(string.Empty, string.Empty, false, true))
+            {
+            <div class="ibox-content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    if (Model != null)
+                    {
+                        @Html.HiddenFor(model => model.Id)
+                    }
+
+                    @Html.HiddenFor(model => model.IdEndereco)
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            @Html.FwLabelFor(model => model.Id)
+                            @Html.FwTextBoxFor(model => model.Id, true)
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            @Html.FwLabelFor(model => model.NomeSeguradora)
+                            @Html.FwTextBoxFor(model => model.NomeSeguradora)
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.FwLabelFor(m => m.IndAtivo)
+                            @Html.FwStatusFor(m => m.IndAtivo)
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.FwLabelFor(model => model.Cnpj)
+                            @Html.FwTextBoxFor(model => model.Cnpj)
+                        </div>
+                        <div class="form-group col-md-8">
+                            @Html.FwLabelFor(model => model.RazaoSocial)
+                            @Html.FwTextBoxFor(model => model.RazaoSocial)
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.FwLabelFor(model => model.Inscricao)
+                            @Html.FwTextBoxFor(model => model.Inscricao)
+                        </div>
+
+                        <div class="hr-line-dashed col-md-12"></div>
+                    </div>
+
+                    var abaAtiva = (string)TempData["idtabSeguradora"] ?? "idtabEndereco";
+
+                    var lstTab = new Tab[] {
+                        new Tab("idtabEndereco",   "Endereço" , abaAtiva == "idtabEndereco"),
+                        new Tab("idtabSolicitante",   "Solicitantes" , abaAtiva == "idtabSolicitante"),
+                        new Tab("idtabFilial",   "Filiais", abaAtiva == "idtabFilial"),
+                        new Tab("idtabFinanceiro",   "Financeiro" , abaAtiva == "idtabFinanceiro"),
+                        new Tab("idtabConfiguracao",   "Configurações" , abaAtiva == "idtabConfiguracao"),
+                        new Tab("idtabLogAuditoria",   "Histórico" , abaAtiva == "idtabLogAuditoria"),
+                        };
+
+                    using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
+                    {
+                        using (Html.TabPane(lstTab[0]))
+                        {
+                            @Html.PartialAsync("Endereco/_Endereco", Model)
+                        }
+                        using (Html.TabPane(lstTab[1]))
+                        {
+                            @Html.PartialAsync("_AbaSolicitante")
+                        }
+                        using (Html.TabPane(lstTab[2]))
+                        {
+                            @Html.PartialAsync("_AbaFilial")
+                        }
+                        using (Html.TabPane(lstTab[3]))
+                        {
+                            @Html.PartialAsync("_AbaFinanceiro")
+                        }
+                        using (Html.TabPane(lstTab[4]))
+                        {
+                            @Html.PartialAsync("_AbaConfiguracao", Model)
+                        }
+                        using (Html.TabPane(lstTab[5]))
+                        {
+                            List<LogAuditoria> lstLogAuditoria = (Model != null) ? ViewBag.lstLog : null;
+                            <partial name="LogAuditoria/_GridLogAuditoria" model="lstLogAuditoria" />
+                        }
+                    }
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pull-right">
+                                <div class="">
+
+                                    <!-- Split button -->
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" id="btnSalvarDrop">
+                                            <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Inserir)">Salvar e Inserir</a></li>
+                                            <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Listar)">Salvar e Voltar</a></li>
+                                        </ul>
+                                        <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+                                    </div>
+
+                                    @Html.ActionLink("Cancelar", "Listar", null, new { @class = "btn btn-white" })
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            }
+        </div>
+    </div>
+</div>
+@section Styles {
+    @* @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles") *@
+}
+@section Scripts {
+    @* @Scripts.Render("~/app/operacoescadastros")  *@
+    @*  @Scripts.Render("~/app/comumendereco") *@
+    
+    @*@Scripts.Render("~/plugins/dataTables")*@
+    @* @Scripts.Render("~/app/seguradora")  *@
+    <script>
+        var abaSolicitante;
+        var abaFilial;
+
+        $(document).ready(function () {
+            abaSolicitante = new abaSolicitante({
+                Id: @Html.ValueFor(model => model.Id),
+                gride: $("#gridSeguradoraSolicitante"),              
+                btnNovo: $("#btnNovoSolicitante"),
+                btnExcluir: $("#btnExcluirSolicitante"),
+                btnAbrir: $("#btnAbrirSolicitante")
+            });
+
+
+            abaFilial = new abaFilial({
+                Id: @Html.ValueFor(model => model.Id),
+                gride: $("#gridSeguradoraFilial"),           
+                btnNovo: $("#btnNovaFilial"),
+                btnExcluir: $("#btnExcluirFilial"),
+                btnAbrir: $("#btnAbrirFilial")
+            });
+
+
+        });
+    </script>
+}

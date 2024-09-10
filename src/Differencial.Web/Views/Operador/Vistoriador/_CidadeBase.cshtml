@@ -1,0 +1,104 @@
+﻿@model Differencial.Domain.Entities.Operador
+
+<div class="row">
+    <div class="form-group col-md-6">
+        @Html.Label("", "Endereço Cidade Base", new { @class = "control-label" })
+        <i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="É possível indicar outro endereço como cidade base ao invés do endereço principal"
+           data-original-title=""></i>
+        <div class="col-md-12">
+            <div class="radio">
+                <label>
+                    @Html.RadioButtonFor(m => m.Vistoriador.IndEnderecoBaseIgual, true)
+                    Mesmo Enderenço Principal
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    @Html.RadioButtonFor(m => m.Vistoriador.IndEnderecoBaseIgual, false)
+                    Outro Endereço
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group col-md-3 col-md-offset-3">
+        @Html.FwLabelFor(m => m.Vistoriador.IndAtivo)
+        @Html.FwStatusFor(m => m.Vistoriador.IndAtivo)
+    </div>
+
+</div>
+<div class="row classContainerEndereco vistoriador">
+    <div class="col-md-9 b-r">
+        <div class="row" id="divVistoriadorEndereco">
+            @{
+                object atributosEndereco = new { @@class = "form-control" };
+                if (Model != null && Model.Vistoriador != null && Model.Vistoriador.IndEnderecoBaseIgual)
+                {
+                    atributosEndereco = new { @@class = "form-control", @disabled = "disabled" };
+                }
+            }
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.Cep, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.Cep, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.Cep)
+
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.NomeMunicipio, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.NomeMunicipio, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.NomeMunicipio)
+
+            </div>
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.SiglaUf, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.SiglaUf, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.SiglaUf)
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.Bairro, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.Bairro, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.Bairro)
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.Logradouro, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.Logradouro, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.Logradouro)
+
+            </div>
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.Numero, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.Numero, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.Numero)
+
+            </div>
+            <div class="form-group col-md-2">
+                @Html.LabelFor(model => model.Vistoriador.EnderecoBase.Complemento, new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.Vistoriador.EnderecoBase.Complemento, new { htmlAttributes = atributosEndereco })
+                @Html.ValidationMessageFor(model => model.Vistoriador.EnderecoBase.Complemento)
+
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("","Latitude x Longitude", new { @class = "control-label" })
+                @Html.TextBox("txtLatitudeLongitudeEnderecoBase", (Model != null && Model.Vistoriador != null && Model.Vistoriador.EnderecoBase != null && Model.Vistoriador.EnderecoBase.Latitude != null) ? (Model.Vistoriador.EnderecoBase.Latitude.Value + ", " + Model.Vistoriador.EnderecoBase.Longitude.Value) : string.Empty, new { disabled = "disabled", @class = "form-control" })
+                @Html.HiddenFor(model => model.Vistoriador.EnderecoBase.Latitude)
+                @Html.HiddenFor(model => model.Vistoriador.EnderecoBase.Longitude)
+            </div>
+        </div>
+    </div>
+  
+    <div class="col-md-3">
+        @await Html.PartialAsync("Endereco/_EnderecoMap")
+    </div>
+
+</div>
+

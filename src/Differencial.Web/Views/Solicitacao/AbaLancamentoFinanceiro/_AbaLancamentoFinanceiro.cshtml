@@ -1,0 +1,59 @@
+﻿@model Solicitacao
+@using (Html.BarraAtividade())
+{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+
+    <button type="button" class="btn btn-success btn-sm" id="btnGerarValorizacao" style="display:none"> Gerar Valorização &nbsp;<span class="fa fa-pencil "></span></button>
+
+    var indRegistra = lstAtivDisponiveis.Contains(TipoAtividadeEnum.RegistrarLancamentoFinanceiro);
+
+    @HtmlAtividadeHelper.BotaoModalAtividade("Registrar Lançamento", "btnRegistrarLancamento", indRegistra, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao,
+        Url.Action("RegistrarLancamentoFinanceiro", new { id = Html.ValueFor(m => m.Id).ToString() })) 
+}
+<div class="clearfix"></div>
+<div class="row"  >
+    <div class="table-responsive">
+        <table id="tbLancamentoFinanceiro" class="grid-dataTables display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Tipo Lançamento </th>
+                    <th>Valor Lançamento </th>
+                    <th>Há Lançamento Contábil</th>
+                    <th>Descrição </th>
+                  
+                    <th>Data </th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @if (ViewBag.lstLancamentoFinanceiro != null)
+                {
+                    foreach (LancamentoFinanceiro m in ViewBag.lstLancamentoFinanceiro)
+                    {
+                        <tr>
+                            <td>@m.TipoLancamentoFinanceiro.FwDisplayEnum()</td>
+                            <td>@m.ValorLancamentoFinanceiro</td>
+                            <td>Não</td>
+                            <td>@m.DescricaoLancamentoFinanceiro</td>
+                            
+                            <td>@m.DataCadastro</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+
+</style>

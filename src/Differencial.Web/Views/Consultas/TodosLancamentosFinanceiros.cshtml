@@ -1,0 +1,75 @@
+﻿@model IEnumerable<LancamentoFinanceiroTotal>
+@{
+    ViewBag.Title = "Todos Lançamentos Totalizados";
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox(string.Empty, null, false, true, false))
+        {
+            <div class="row table-responsive">
+                <table id="tbTodosLancamentosFinanceiros" class="grid-dataTables display table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Código Solicitação</th>
+                            <th>Código Differencial</th>
+                            <th>Tipo Lançamento </th>
+                            <th>Valor Total Lançamento Total</th>
+                            <th>Data Sintético</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            
+                        </tr>
+                    </tfoot> 
+                    <tbody>
+                        @foreach (LancamentoFinanceiroTotal m in Model)
+                        {
+                            <tr>
+                                <td>@m.Id</td>
+                                <td>@m.IdSolicitacao</td>
+                                <td>@m.Solicitacao.CodSistemaLegado</td>
+                                <td>@m.TipoLancamentoFinanceiro.FwDisplayEnum()</td>
+                                <td>@m.ValorLancamentoFinanceiroTotal</td>
+                                <td>@m.DthLancamentoPagamento.FormatoData()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+@section Styles {
+}
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var columnsLanFin = [
+                     { data: "Id", "className": "text-right" },
+                     { data: "IdSolicitacao", "className": "text-right" },
+                     { data: "CodSistemaLegado", "className": "text-right" },
+                     { data: "TipoLancamentoFinanceiro", "className": "text-center" },
+                     { data: "ValorLancamentoFinanceiroTotal", "className": "text-right" },
+                     { data: "DthLancamentoPagamento", "className": "text-center" },
+            ];
+            grideTodosLancamentosFinanceiros = $('#tbTodosLancamentosFinanceiros').dataTableFw(false, false, false, true, columnsLanFin);
+
+        });
+    </script>
+}
+

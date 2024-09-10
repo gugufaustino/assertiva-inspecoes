@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="118fd497-2172-4c73-991e-35703f6d300c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://sistema.differencialseguros.com.br/WS/ConsultaFinanceiro.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ConsultaFinanceiro.disco" MetadataType="Disco" ID="8ac4915c-d2b3-40a9-a465-ebf4fcfb3714" SourceId="1" SourceUrl="http://sistema.differencialseguros.com.br/ws/ConsultaFinanceiro.svc?disco" />
+    <MetadataFile FileName="ConsultaFinanceiro.wsdl" MetadataType="Wsdl" ID="1bf76d1b-f502-410c-844c-9a339edca738" SourceId="1" SourceUrl="http://sistema.differencialseguros.com.br/ws/ConsultaFinanceiro.svc?wsdl" />
+    <MetadataFile FileName="ConsultaFinanceiro.xsd" MetadataType="Schema" ID="7c3c9918-37f9-417a-9529-2b0af7254378" SourceId="1" SourceUrl="http://sistema.differencialseguros.com.br/ws/ConsultaFinanceiro.svc?xsd=xsd1" />
+    <MetadataFile FileName="ConsultaFinanceiro1.xsd" MetadataType="Schema" ID="4fb95bff-4e18-4ae6-9f5b-649bbd1d1431" SourceId="1" SourceUrl="http://sistema.differencialseguros.com.br/ws/ConsultaFinanceiro.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

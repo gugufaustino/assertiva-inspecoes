@@ -1,0 +1,131 @@
+﻿@model Differencial.Domain.Entities.Produto
+@{
+    ViewBag.Title = "Produtos";
+}
+@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "Listar"))
+
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            @using (Html.Box(string.Empty, string.Empty, false, true))
+            {
+                <div class="ibox-content"> 
+                    @using (Html.BeginForm("Editar","Produto", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        if (Model != null)
+                        {
+                            @Html.HiddenFor(model => model.Id)
+                        }
+                        <div class="row">
+
+                            <div class="form-group col-md-2">
+                                @Html.FwLabelFor(model => model.Id)
+                                @Html.FwTextBoxFor(model => model.Id, true)
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.FwLabelFor(model => model.IdTipoInspecao)
+                                @Html.DropDownListFor(m => m.TipoInspecao.Id, (SelectList)ViewBag.IdTipoInspecao, "Selecione", new { @class = "form-control", @required = "required" })
+                                
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.FwLabelFor(model => model.NomeProduto)
+                                @Html.FwTextBoxFor(model => model.NomeProduto)
+                                
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.FwLabelFor(m => m.IndAtivo)
+                                @Html.FwStatusFor(m => m.IndAtivo)
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.FwLabelFor(model => model.IdSeguradora)
+                                @Html.DropDownListFor(m => m.Seguradora.Id, (SelectList)ViewBag.IdSeguradora, "Selecione", new { @class = "form-control", @required = "required" })
+                               
+                            </div>
+
+                            <div class="hr-line-dashed col-md-12"></div>
+                        </div>
+
+                        var abaAtiva = (string)TempData["idtabContratoFinanceiro"] ?? "idtabContratoFinanceiro";
+
+                        var lstTab = new Tab[] {
+                        new Tab("idtabContratoFinanceiro",   "Financeiro" , abaAtiva == "idtabContratoFinanceiro"),
+                        new Tab("idtabConfiguracao",   "Configurações" , abaAtiva == "idtabConfiguracao")
+                        };
+
+                        using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
+                        {
+                            using (Html.TabPane(lstTab[0]))
+                            {
+                                <partial name="_ContratoFinanceiro" />
+                            }
+
+                            using (Html.TabPane(lstTab[1]))
+                            {
+                                <partial name="_Configuracao" />
+                            }
+                        }
+
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <div class="">
+
+                                        <!-- Split button -->
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" id="btnSalvarDrop">
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Inserir)">Salvar e Inserir</a></li>
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Listar)">Salvar e Voltar</a></li>
+                                            </ul>
+                                            <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+                                        </div>
+
+                                        @Html.ActionLink("Cancelar", "Listar", null, new { @class = "btn btn-white" })
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div> 
+<style> 
+ 
+</style>
+@section scripts{
+    @* @Scripts.Render("~/app/operacoescadastros")  *@  
+    <script>
+        $(document).ready(function () { 
+
+            $("#Seguradora_Id").change(function () {
+                var optionSelected = $(this).find("option:selected").text();
+             
+                if (optionSelected.toUpperCase() === "SOMPO") {
+
+                    $("#CodProdutoSeguradora").val("");
+                    $("#CodProdutoSeguradora").removeAttr("disabled");
+                    $("#NomeProdutoSeguradora").val("");
+                    $("#NomeProdutoSeguradora").removeAttr("disabled");
+                } else {
+
+                    $("#CodProdutoSeguradora").val("");
+                    $("#CodProdutoSeguradora").attr("disabled", "disabled");
+                    $("#NomeProdutoSeguradora").val("");
+                    $("#NomeProdutoSeguradora").attr("disabled", "disabled")
+                }
+            })
+
+        });
+    </script>
+}

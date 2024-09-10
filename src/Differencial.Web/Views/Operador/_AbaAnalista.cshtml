@@ -1,0 +1,6 @@
+﻿@model Operador
+
+@if (Model != null && Model.Analista != null)
+{
+    @Html.HiddenFor(m => m.Analista.Id)
+}

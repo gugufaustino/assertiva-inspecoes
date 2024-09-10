@@ -1,0 +1,19 @@
+﻿@model Solicitacao
+@using (Html.BarraAtividade())
+{
+    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+    var indDefAnalista = lstAtivDisponiveis.Contains(TipoAtividadeEnum.DefinirAnalista);
+
+    @HtmlAtividadeHelper.BotaoModalAtividade("Definir Analista", "btnDefinirAnalista", indDefAnalista, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
+    , Url.Action("PesquisarAnalista", new { id = Html.ValueFor(m => m.Id).ToString() }))
+    
+}
+<div class="col-md-12">
+    <div class="row"> 
+        <div class="form-group col-md-12">
+            @Html.FwLabelFor(m => m.IdAnalista)
+            @Html.FwTextBoxFor(m => m.Analista.Operador.NomeOperador, true)
+        </div> 
+    </div>
+</div>
+

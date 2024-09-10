@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DroparTriggersTable" xml:space="preserve">
+    <value>DECLARE @nomeTabela VARCHAR(MAX)
+DECLARE @existeTrigger INT
+
+DECLARE @sqlTrigger NVARCHAR(MAX)
+
+SET @existeTrigger = 0
+
+SET @sqlTrigger = ''
+
+DECLARE C CURSOR LOCAL STATIC READ_ONLY FORWARD_ONLY
+
+FOR SELECT TABLE_NAME AS SCRIPT FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+AND TABLE_NAME NOT IN ('__MigrationHistory', 'LogTrilhaAuditoria');
+
+OPEN C
+FETCH NEXT FROM C INTO @nomeTabela
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	
+	select @existeTrigger = COUNT(*) from sys.triggers where name = 'trg_ins_upd_del_' + @nomeTabela
+	if @existeTrigger &gt;= 1
+	BEGIN
+		
+		SET @sqlTrigger = N'DROP TRIGGER [dbo].[trg_ins_upd_del_'+ @nomeTabela +']'
+		EXECUTE sp_executesql @sqlTrigger
+	END
+	 
+  FETCH NEXT FROM C INTO @nomeTabela
+END
+CLOSE C
+DEALLOCATE C</value>
+  </data>
+  <data name="NomeProcedureSetUserContext" xml:space="preserve">
+    <value>[dbo].[sp_setusercontext]</value>
+  </data>
+  <data name="sp_setusercontext" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[sp_setusercontext]
+    @cod_usuario VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @context VARBINARY(10)
+    SET @context = CONVERT(BINARY(10), @cod_usuario)
+
+    SET CONTEXT_INFO @context
+END</value>
+  </data>
+  <data name="VerificacaoCriacaoTriggerAuditoria" xml:space="preserve">
+    <value>DECLARE @nomeTabela VARCHAR(MAX)
+DECLARE @existeTrigger INT
+
+DECLARE @sqlTrigger NVARCHAR(MAX)
+
+SET @existeTrigger = 0
+
+SET @sqlTrigger = ''
+
+DECLARE C CURSOR LOCAL STATIC READ_ONLY FORWARD_ONLY
+
+FOR SELECT TABLE_NAME AS SCRIPT FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+AND TABLE_NAME NOT IN ('__MigrationHistory', 'LogAuditoria', 'sysdiagrams');
+
+OPEN C
+FETCH NEXT FROM C INTO @nomeTabela
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	
+	select @existeTrigger = COUNT(*) from sys.triggers where name = 'trg_ins_upd_del_' + @nomeTabela
+	
+	if @existeTrigger = 0
+	BEGIN		
+		
+		SET @sqlTrigger = N'CREATE TRIGGER [dbo].[trg_ins_upd_del_'+ @nomeTabela +']
+				ON [dbo].['+ @nomeTabela +'] FOR INSERT, DELETE, UPDATE
+			AS
+
+			DECLARE @CONTEXT_INFO varbinary(10)
+			DECLARE	@CURRENTXML XML
+			DECLARE @PREVIOUSXML XML			
+			DECLARE @TABLENAME NVARCHAR(100)
+			DECLARE @USERAPLICACAO INT 
+
+
+			SET @TABLENAME = (SELECT OBJECT_NAME(parent_object_id) 
+								FROM sys.objects 
+								WHERE name = OBJECT_NAME(@@PROCID))
+
+			SELECT @CONTEXT_INFO = CONTEXT_INFO()
+			
+			BEGIN TRY  
+				SELECT @USERAPLICACAO =  CONVERT(INT, REPLACE(CAST(@CONTEXT_INFO AS varchar(128)) COLLATE Latin1_General_100_BIN , 0x00, '''')  ) 
+			END TRY  
+			BEGIN CATCH  					
+			END CATCH;		 
+
+			SET @CURRENTXML = (SELECT * FROM INSERTED FOR XML AUTO)
+			SET @PREVIOUSXML = (SELECT * FROM DELETED FOR XML AUTO)
+			'
+			
+			SET @sqlTrigger = @sqlTrigger + '
+			/* RECUPERAR O VALOR DA PK DO REGISTRO QUE FOI ALTERADO*/
+			DECLARE @PKNAME NVARCHAR(100)
+			DECLARE @PKVALUE INT
+			DECLARE @SQLEXECUTE NVARCHAR(300)
+			DECLARE @SQLOUTPUT NVARCHAR(300)
+				 
+			SET @PKNAME = (SELECT Col.Column_Name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS Tab, INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE Col 
+			WHERE Col.Constraint_Name = Tab.Constraint_Name AND Col.Table_Name = Tab.Table_Name AND Constraint_Type = ''PRIMARY KEY'' AND Col.Table_Name = @TABLENAME)
+	   
+			IF  @PREVIOUSXML IS NOT NULL and @CURRENTXML IS NULL  
+				BEGIN
+					SELECT * INTO #TB_DELETED FROM DELETED
+					SET  @SQLEXECUTE = ''SELECT @VALUE='' + @PKNAME + '' FROM #TB_DELETED''
+				END 
+			ELSE
+				BEGIN
+					SELECT * INTO #TB_INSERTED FROM INSERTED					
+					SET  @SQLEXECUTE = ''SELECT @VALUE='' + @PKNAME + '' FROM #TB_INSERTED''
+				END 
+			SET  @SQLOUTPUT =  ''@VALUE int output''
+			EXEC sp_executesql @SQLEXECUTE, @SQLOUTPUT, @PKVALUE output;
+			/* */  
+			'
+
+			SET @sqlTrigger = @sqlTrigger + '
+			IF @CURRENTXML IS NOT NULL AND @PREVIOUSXML IS NOT NULL
+		INSERT INTO LogAuditoria
+           ([Tabela]
+           ,[XMLDadosAnterior]
+           ,[XMLDadosPosterior]
+           ,[UsuarioAplicacao]
+           ,[Acao]
+           ,[DataAcao]
+           ,[UsuarioBanco]
+		   ,[IdTabela])
+		VALUES
+           (@TABLENAME
+           ,@PREVIOUSXML
+           ,@CURRENTXML
+           ,@USERAPLICACAO
+           ,''U''
+           ,GETDATE()
+           ,(SELECT SYSTEM_USER)
+		   ,@PKVALUE)
+           
+	ELSE IF @CURRENTXML IS NOT NULL
+		INSERT INTO LogAuditoria
+           ([Tabela]
+           ,[XMLDadosAnterior]
+           ,[XMLDadosPosterior]
+           ,[UsuarioAplicacao]
+           ,[Acao]
+           ,[DataAcao]
+           ,[UsuarioBanco]
+		   ,[IdTabela])
+		VALUES
+           (@TABLENAME
+           ,NULL
+           ,@CURRENTXML
+           ,@USERAPLICACAO
+           ,''I''
+           ,GETDATE()
+           ,(SELECT SYSTEM_USER)
+		   ,@PKVALUE)
+	
+	ELSE IF @PREVIOUSXML IS NOT NULL
+		INSERT INTO LogAuditoria
+           ([Tabela]
+           ,[XMLDadosAnterior]
+           ,[XMLDadosPosterior]
+           ,[UsuarioAplicacao]
+           ,[Acao]
+           ,[DataAcao]
+           ,[UsuarioBanco]
+		   ,[IdTabela])
+		VALUES
+           (@TABLENAME
+           ,@PREVIOUSXML
+           ,NULL
+           ,@USERAPLICACAO
+           ,''D''
+           ,GETDATE()
+           ,(SELECT SYSTEM_USER)
+		   ,@PKVALUE)		'
+
+		EXECUTE sp_executesql @sqlTrigger
+		--SELECT @sqlTrigger
+	END
+ 
+  FETCH NEXT FROM C INTO @nomeTabela
+END
+CLOSE C
+DEALLOCATE C</value>
+  </data>
+  <data name="fnVistoriadorDistancia" xml:space="preserve">
+    <value>CREATE FUNCTION [dbo].[FunctionTable]
+(
+	@param1 float,
+	@param2 float,
+	@param3 int 
+)
+RETURNS @returntable TABLE
+(
+	Id int,
+	NomeOperador varchar(300),
+	DistanciaRaio float null,
+	DistanciaRota float null
+) 
+AS 
+BEGIN
+
+DECLARE @Top AS INT
+
+/*
+DECLARE @param1 AS FLOAT, @param2 AS FLOAT
+SET @param1 = -30.008597 
+SET @param2 = -51.191220 
+*/
+
+
+	INSERT @returntable
+
+		SELECT TOP 10
+				Operador.Id,
+				Operador.NomeOperador,
+				/* DISTANCIA = CASE WHEN ENDERECO.Latitude is NULL THEN NULL ELSE dbo.fnCalcDistancia(@param1, @param2, ENDERECO.Latitude, ENDERECO.Longitude) END */
+				DISTANCIA =  dbo.fnCalcDistancia(@param1, @param2, Endereco.Latitude, Endereco.Longitude),
+				NULL
+		FROM Operador		
+		INNER JOIN Vistoriador ON Operador.Id = Vistoriador.Id
+		INNER JOIN VistoriadorProduto ON VistoriadorProduto.IdVistoriador = Vistoriador.Id
+		INNER JOIN Endereco ON Vistoriador.IdEnderecoBase = Endereco.Id
+		WHERE Endereco.Latitude IS NOT NULL 
+		AND VistoriadorProduto.IndAtivo = 1 
+		AND VistoriadorProduto.IdProduto = @param3
+		ORDER BY 3
+
+
+	RETURN
+END</value>
+  </data>
+  <data name="NomefnVistoriadorDistancia" xml:space="preserve">
+    <value>[dbo].[FunctionTable]</value>
+  </data>
+  <data name="fnCalcDistancia" xml:space="preserve">
+    <value>CREATE FUNCTION [dbo].[fnCalcDistancia] 
+(
+@latIni float, @lonIni float, @latFim float, @lonFim float  
+)
+RETURNS float
+AS
+BEGIN
+
+DECLARE @Result as float, @arcoA as float, @arcoB  float, @arcoC as float, @auxPI as FLOAT;
+
+SET @auxPi = Pi() / 180;
+SET @arcoA = (@lonFim - @lonIni) * @auxPi;
+SET @arcoB = (90 - @latFim) * @auxPi;
+SET @arcoC = (90 - @latIni) * @auxPi;
+SET @Result = Cos(@arcoB) * Cos(@arcoC) + Sin(@arcoB) * Sin(@arcoC) * Cos(@arcoA);
+SET @Result = (40030 * ((180 / Pi()) * Acos(@Result))) /360
+
+RETURN Round(@Result,4)
+END</value>
+  </data>
+  <data name="NomefnCalcDistancia" xml:space="preserve">
+    <value>[dbo].[fnCalcDistancia]</value>
+  </data>
+</root>

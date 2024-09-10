@@ -1,0 +1,140 @@
+﻿@model Solicitacao
+@using (Html.BarraAtividade())
+{
+    if (((List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis).Contains(TipoAtividadeEnum.PrestacaoContaKm))
+    {
+        <button type="button" class="btn btn-success btn-sm" id="btnEditarInformarRota"
+                fw-click="modal" fw-modal="modal-lg" data-href="@Url.Action("InformarRotaRealizada", "Solicitacao", new { id = Html.ValueFor(m => m.Id).ToString() })">
+            Informar Km Realizado   <span class="fa fa-pencil "></span>
+        </button>
+    }
+}
+<div class="row">
+    <div class="col-sm-12 ">
+        <div class="form-group col-md-4">
+            @Html.FwLabelFor(m => m.VistoriadorCidadeBase)
+            @Html.FwTextBoxFor(m => m.VistoriadorCidadeBase, true)
+        </div>
+        <div class="form-group col-md-4">
+            @Html.FwShortLabelFor(m => m.VlrPagamentoVistoria)
+            @Html.FwCurrencyFor(m => m.VlrPagamentoVistoria, true)
+        </div>
+        <div class="form-group col-md-4">
+            @Html.FwLabelFor(m => m.VlrQuilometroRodado)
+            @Html.FwCurrencyFor(m => m.VlrQuilometroRodado, true)
+        </div>
+    </div>
+    <div class="hr-line-dashed col-md-12"></div>
+    <div class="col-md-4 b-r">
+        <div class="row">
+            <div class="form-group col-md-12">
+                @Html.FwLabelFor(m => m.TipoRotaVistoriaPrevista)
+                @{
+                    var strLinkRota = @"<a href='{0}' target='_blank'><i class='fa fa-map-marker' style='font-size: 16px;'></i>  <small class='text-nowrap'>{1}</small></a>&nbsp;";
+                    var strLinkVolta = string.Empty;
+                }
+                <div class="no-padding radioDuploVertical">
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButtonFor(m => m.TipoRotaVistoriaPrevista, TipoRotaVistoriaEnum.CidadeBase, new { @disabled = "disabled" })
+                            @TipoRotaVistoriaEnum.CidadeBase.FwDisplayEnum()
+                            @if (Html.ValueFor( m=> m.TipoRotaVistoriaPrevista).ToString() == TipoRotaVistoriaEnum.CidadeBase.ToString() && !String.IsNullOrEmpty(ViewBag.UrlMapaRotaAnterior))
+                            {
+                                @Html.Raw(strLinkRota.Formata((string)ViewBag.UrlMapaRotaAnterior, "Ver"));
+                                if (!String.IsNullOrEmpty(ViewBag.UrlMapaRotaDeVolta))
+                                {
+                                    @Html.Raw(strLinkRota.Formata((string)ViewBag.UrlMapaRotaDeVolta, "Retorno"));
+                                }
+                            }
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButtonFor(m => m.TipoRotaVistoriaPrevista, TipoRotaVistoriaEnum.EntreVistoria, new { @disabled = "disabled" })
+                            @TipoRotaVistoriaEnum.EntreVistoria.FwDisplayEnum() 
+                            @if (Html.ValueFor(m => m.TipoRotaVistoriaPrevista).ToString() == TipoRotaVistoriaEnum.EntreVistoria.ToString() && !String.IsNullOrEmpty(ViewBag.UrlMapaRotaAnterior))
+                            {
+                                @Html.Raw(strLinkRota.Formata((string)ViewBag.UrlMapaRotaAnterior, "Ver"));
+                                if (!String.IsNullOrEmpty(ViewBag.UrlMapaRotaDeVolta))
+                                {
+                                    @Html.Raw(strLinkRota.Formata((string)ViewBag.UrlMapaRotaDeVolta, "Retorno"));
+                                }
+                            }
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                @Html.FwShortLabelFor(m => m.DeslocamentoPrevisto)
+                @Html.FwCurrencyFor(m => m.DeslocamentoPrevisto, true)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 b-r">
+        <div class="row">
+            <div class="form-group col-md-12">
+                @Html.FwLabelFor(m => m.TipoRotaVistoriaRealizada)
+                <div class="no-padding radioDuploVertical">
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButtonFor(m => m.TipoRotaVistoriaRealizada, TipoRotaVistoriaEnum.CidadeBase, new { @disabled = "disabled" })
+                            @TipoRotaVistoriaEnum.CidadeBase.FwDisplayEnum()
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButtonFor(m => m.TipoRotaVistoriaRealizada, TipoRotaVistoriaEnum.EntreVistoria, new { @disabled = "disabled" })
+                            @TipoRotaVistoriaEnum.EntreVistoria.FwDisplayEnum()
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 ">
+                @Html.FwShortLabelFor(m => m.DeslocamentoRealizado)
+                @Html.FwCurrencyFor(m => m.DeslocamentoRealizado, true)
+            </div>
+            <div class="form-group col-md-12">
+                @Html.FwShortLabelFor(m => m.CustoDeslocamentoRealizado)
+                @Html.FwCurrencyFor(m => m.CustoDeslocamentoRealizado, true)
+            </div>
+            <div class="form-group col-md-12 ">
+                @Html.FwShortLabelFor(m => m.CustoTotalRealizado)
+                @Html.FwCurrencyFor(m => m.CustoTotalRealizado, true)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="form-group col-md-12" style="height:62px">
+                <label class="checkbox-inline" style="font-weight:700;cursor:default">
+                    @Html.CheckBoxFor(m => m.IndCustoVistoriaAcordado, new { @disabled = "disabled" })
+                    Custos Pré-Acordado
+                </label>
+                @*<div class="input-group"></div>*@
+            </div>
+            <div class="form-group col-md-12">
+                @Html.FwShortLabelFor(m => m.VlrPagamentoVistoriaAcordado)
+                @Html.FwCurrencyFor(m => m.VlrPagamentoVistoriaAcordado, true)
+
+            </div>
+            <div class="form-group col-md-12">
+                @Html.FwShortLabelFor(m => m.CustoDeslocamentoAcordado)
+                @Html.FwCurrencyFor(m => m.CustoDeslocamentoAcordado, true)
+            </div>
+
+            <div class="form-group col-md-12">
+                @Html.FwShortLabelFor(m => m.CustoTotalAcordado)
+                @Html.FwCurrencyFor(m => m.CustoTotalAcordado, true)
+            </div>
+
+        </div>
+    </div>
+    <div class="hr-line-dashed col-md-12"></div>
+    <div class="col-sm-12">
+        <div class="form-group col-md-12">
+            @Html.FwLabelFor(m => m.TxtJustificativaDeslocamentoRealizado)
+            @Html.FwTextAreaFor(m => m.TxtJustificativaDeslocamentoRealizado, true)
+        </div>
+    </div>
+
+</div>

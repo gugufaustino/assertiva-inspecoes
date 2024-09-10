@@ -1,0 +1,112 @@
+﻿@model Solicitacao
+@{
+    Layout = null;
+    var titleModal = "Informar Km Realizado";
+
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>@titleModal    </h3>
+</div>
+
+@using (Html.BeginForm("InformarRotaRealizada", "Solicitacao", new { Id = Model.Id.ToString() }, FormMethod.Post))
+{
+
+    <div class="modal-body" id="divRota">
+        <div class="row">
+            <p> Sistema avalia pela data e hora dos agendamentos de inspeção um possível intinerário com a diferença de quilometros entre as vistorias.</p>
+            <h4>Marque uma das opções a baixo como foi o intinerário(rota) para realizar essa inspeção:</h4>
+
+            <div class="col-md-12">
+                <div class="radio">
+                    <label>
+                        @Html.RadioButton("rbtTipoIntinerario", (int)TipoOpcaoInformarRota.RealizadoDeslocamentoKmSistema, true)
+                        1) A vistoria foi realizada @Html.Raw(ViewBag.strTipoRota) Deslocamento de <b>@Model.DeslocamentoPrevisto Km(s) apróximado</b>.
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="radio">
+                    <label>
+                        @Html.RadioButton("rbtTipoIntinerario", (int)TipoOpcaoInformarRota.RealizadoDeslocamentoKmDiferente)
+                        2) A vistoria foi realizada @Html.Raw(ViewBag.strTipoRota) Porém a quilometragem é <b>diferente de @Model.DeslocamentoPrevisto Km(s)</b> previsto pelo sistema.
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="radio">
+                    <label>
+                        @Html.RadioButton("rbtTipoIntinerario", (int)TipoOpcaoInformarRota.RealizadoDeslocamentoIntinerarioDiferente)
+                        3) A vistoria foi realizada a fora do agendamento informado <b>mudando então a ordem de vistorias</b> do dia.
+                    </label>
+                </div>
+                <br />
+            </div>
+            <div class="col-md-12">
+                <div class="form-group col-md-4">
+                    @Html.FwLabelFor(m => m.DeslocamentoRealizado)
+                    @Html.FwCurrencyFor(m => m.DeslocamentoRealizado, htmlAttributes: new { @readonly = "readonly" })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.Label("Data da Vistoria")
+                    <div class="input-group date22">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        @Html.TextBox("txtDataAgenda", "", new { @class = "form-control text-center", @data_mask = "99/99/9999", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.Label("Horário da Vistoria")
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        @Html.TextBox("txtHoraAgenda", "", new { @class = "form-control text-center", @data_mask = "99:99", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.FwLabelFor(m => m.TxtJustificativaDeslocamentoRealizado)
+                    @Html.FwTextAreaFor(m => m.TxtJustificativaDeslocamentoRealizado, true)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-success">Concluír <span class="fa fa-check" /> </button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+
+        $("input[name=rbtTipoIntinerario]").change(function () {
+            var acao = $(this).val();
+
+            switch (acao) {
+
+                case "1":
+                    $("#divRota #DeslocamentoRealizado").attr("readonly", "readonly");
+                    $("#divRota #txtDataAgenda").attr("disabled", "disabled");
+                    $("#divRota #txtHoraAgenda").attr("disabled", "disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").attr("disabled", "disabled");
+                    break;
+
+                case "2":
+                    $("#divRota #DeslocamentoRealizado").removeAttr("readonly");
+                    $("#divRota #txtDataAgenda").attr("disabled", "disabled");
+                    $("#divRota #txtHoraAgenda").attr("disabled", "disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").removeAttr("disabled");
+                    break;
+
+                case "3":
+                    $("#divRota #DeslocamentoRealizado").removeAttr("readonly");
+                    $("#divRota #txtDataAgenda").removeAttr("disabled");
+                    $("#divRota #txtHoraAgenda").removeAttr("disabled");
+                    $("#divRota #TxtJustificativaDeslocamentoRealizado").removeAttr("disabled");
+                    break;
+
+                default:
+            }
+        });
+    });
+</script>
+

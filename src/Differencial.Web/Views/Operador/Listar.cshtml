@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Differencial.Domain.Entities.Operador>
+@inject Differencial.Domain.Contracts.Util.IConfiguracaoAplicativo ConfiguracaoAplicativo
+@{
+    ViewBag.Title = "Operadores";
+    Layout = "~/Views/Shared/_LayoutDifferencial.cshtml";
+
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
+    <input type="button" value="Excluir" class="btn btn-primary" id="btnExcluir" />
+    <a href="@Url.Action("Editar")" class="btn btn-primary" id="btnAbrir">Abrir</a>
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginForm("Excluir", "Operador", FormMethod.Post))
+        {
+            foreach (Operador item in Model)
+            {
+                <div class="col-lg-3">
+                    <div class="contact-box center-version">
+                        <a href="@Url.Action("Editar","Operador", new { item.Id })">
+                            @if (String.IsNullOrEmpty(item.UrlFoto))
+                            {
+                                <i class="fa fa-user medium-icon text-muted"></i>
+                            }
+                            else
+                            {
+                                @*<img alt="image" class="img-circle" src="@UtilWeb.ImagemBase64FromCache(ConfiguracaoAplicativo.PastaVirtualOperadorImagem + item.UrlFoto)">*@
+                                <img alt="image" class="img-circle" src="@(ConfiguracaoAplicativo.PastaVirtualOperadorImagem + item.UrlFoto)">
+                            }
+                            <h3 class="m-b-xs"><strong>@item.NomeOperador</strong></h3>
+                            @if (item.IndAnalista)
+                            {
+                                <div class="font-bold">Analista</div>
+                                @*<strong>&nbsp;</strong>*@
+                            }
+                            @if (item.IndGerente)
+                            {
+                                <div class="font-bold">Gerente</div>
+                                @*<strong>  &nbsp;</strong>*@
+                            }
+                            @if (item.IndVistoriador)
+                            {
+                                <div class="font-bold">Vistoriador</div>
+                                <strong>@(item.Endereco != null ? item.Endereco.NomeMunicipio : "")&nbsp;</strong>
+                            }
+                            @if (item.IndSolicitante && !item.Solicitante.IsNull())
+                            {
+                                <div class="font-bold">Solicitante</div>
+                                <strong>@(item.Solicitante.Seguradora != null ? item.Solicitante.Seguradora.NomeSeguradora : "")&nbsp;</strong>
+                            }
+                            @if (item.IndFinanceiro)
+                            {
+                                <div class="font-bold">Financeiro</div>
+                            }
+                            @if (item.IndAssessor)
+                            {
+                                <div class="font-bold">Assessor</div>
+                            }
+                        </a>
+
+                        <address class="m-t-md text-center">
+                            @if (item.IndGerente || item.IndAnalista || item.IndAssessor || item.IndFinanceiro)
+                            {
+                                <i class="fa fa-envelope"></i>
+                                <span class="small"> @String.Format("{0}", item.Email)</span>
+                                <br />
+                                <i class="fa fa-phone"></i>
+                                @String.Format("{0}", item.Telefone)
+                            }
+                            else if (item.IndVistoriador)
+                            { // Se é vistoriador só importa aparecer na interface o endereço da cidade base
+                                if (item.Vistoriador != null && item.Vistoriador.EnderecoBase != null)
+                                {
+                                    @String.Format("{0}, {1}", item.Vistoriador.EnderecoBase.Logradouro.ReduzirTamanhoTexto(30), item.Vistoriador.EnderecoBase.Numero, item.Vistoriador.EnderecoBase.Bairro)<br>
+                                    @String.Format("{0} ({1}), {2}", item.Vistoriador.EnderecoBase.NomeMunicipio, item.Vistoriador.EnderecoBase.SiglaUf, item.Vistoriador.EnderecoBase.Cep)<br>
+                                }
+                                <i class="fa fa-phone"></i>
+                                @String.Format("{0}", item.Telefone)
+                            }
+                            else
+                            {
+                                if (item.Endereco != null)
+                                {
+                                    @String.Format("{0}, {1}", item.Endereco.Logradouro, item.Endereco.Numero, item.Endereco.Bairro)<br>
+                                    @String.Format("{0} ({1}), {2}", item.Endereco.NomeMunicipio, item.Endereco.SiglaUf, item.Endereco.Cep)<br>
+                                }
+                            }
+                            @if (!item.IndUsuarioSistema)
+                            {
+                                <input name="Id" type="checkbox" class="operador-select" value="@item.Id" />
+                            }
+
+                        </address>
+                        @*<div class="contact-box-footer">
+                                    <div class="m-t-xs btn-group">
+                                        <a class="btn btn-xs btn-white"><i class="fa fa-phone"></i> Telefone </a>
+                                        <a class="btn btn-xs btn-white"><i class="fa fa-envelope"></i>Email</a>
+                                    </div>
+                            </div>*@
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+@section scripts{
+    @*   @Scripts.Render("~/app/operacoescadastros") *@
+}
+@section Styles{
+    <style>
+        .operador-select {
+            position: absolute;
+            left: 25px;
+            bottom: 0px;
+        }
+    </style>
+}
+

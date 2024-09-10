@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TipoAssunto>
+@{
+    ViewBag.Title = "Tipo Assunto";
+}
+@using (Html.BeginPageHeading("Lista", Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
+    <button class="btn btn-primary" id="btnExcluir">Excluir</button>
+    <button class="btn btn-primary" id="btnAbrir">Abrir</button>
+}
+<div class="wrapper wrapper-content">
+    <div class="row"> 
+        @using (Html.BeginBox(maximizavel: true))
+        { 
+            <div class="row">
+                <div class="table-responsive">
+                    <table id="grade" class="grid-dataTables display table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w10px"></th>
+                                <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id)</th>
+                                <th class="">@Html.DisplayNameFor(m => m.NomeAssunto)</th> 
+                                <th class="w80px">@Html.DisplayNameFor(m => m.DataCadastro)</th>
+                                <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="@item.Id">
+                                    <td></td>
+                                    <td class="text-right">@item.Id </td>
+                                    <td>@item.NomeAssunto</td> 
+                                    <td class="text-center">@item.DataCadastro</td>
+                                    <td class="text-center">@item.DataModificacao</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>      
+        }
+        
+    </div>
+</div>
+@section Styles {
+    @*@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")*@
+}
+@section scripts{
+    @*
+        @Scripts.Render("~/app/operacoescadastros")
+    @Scripts.Render("~/plugins/dataTables")
+        *@
+   <script type="text/javascript"> 
+       var grade;
+        $(document).ready(function () {
+
+            grade = $('#grade').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                bExportacao : true,
+                ordering: true,
+                order: [[1, 'desc']],
+                columns : [
+                      { data: "0" },
+                      { data: "Id", "className": "text-right" }, 
+                      { data: "NomeAssunto", "className": "" },
+                      { data: "DataCadastro", "className": "text-center", type: 'date-euro' },
+                      { data: "DataModificacao", "className": "text-center", type: 'date-euro' },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        Id: obj.Id, 
+                        NomeAssunto: obj.NomeAssunto, 
+                        DataCadastro: obj.DataCadastro,
+                        DataModificacao: obj.DataModificacao,
+                        DT_RowId: obj.Id
+                    }
+                }, 
+
+
+            }); 
+
+            $("#btnAbrir").click(function () {
+                grade.abrirRegistroSelecionado("/TipoAssunto/Editar/"); 
+            });
+
+            $("#btnExcluir").click(function () {
+                grade.excluirRegistrosSelecionados("/TipoAssunto/Excluir/");
+            });  
+        }); 
+</script>
+}

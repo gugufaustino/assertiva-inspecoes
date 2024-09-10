@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Solicitacao>
+
+<div class="row">
+    <div class="table-responsive">
+        <table id="tbSolicitanteSolic" class="grid-dataTables display table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="">&nbsp;</th>
+
+                    <th class="w50px">@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                    <th class="w50px">@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                    <th class="">@Html.DisplayNameFor(m => m.TpSituacao)</th>
+                    <th>Data Situação</th>
+                    <th>@Html.DisplayNameFor(m => m.Vistoriador.Operador.NomeOperador)</th>
+                    <th>Situação Agenda</th>
+                    <th class="w120px">@Html.DisplayNameFor(m => m.Produto.NomeProduto)</th>
+                    <th class="">@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
+                    <th class="">@Html.DisplayNameFor(m => m.Endereco.NomeMunicipio)</th>
+                    <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
+                    <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th class="">&nbsp;</th>
+
+                    <th>@Html.DisplayShortNameFor(Model, m => m.Id) </th>
+                    <th>@Html.DisplayNameFor(m => m.CodSeguradora)</th>
+                    <th>@Html.DisplayNameFor(m => m.TpSituacao)</th>
+                    <th>Data Situação</th>
+                    <th>@Html.DisplayNameFor(m => m.Vistoriador.Operador.NomeOperador)</th>
+                    <th>Situação Agenda</th>
+                    <th>@Html.DisplayNameFor(m => m.Produto.NomeProduto)</th>
+                    <th>@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
+                    <th>@Html.DisplayNameFor(m => m.Endereco.NomeMunicipio)</th>
+                    <th>@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
+                    <th>@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                var ultimoMovimento = item.MovimentacaoProcesso.LastOrDefault();
+                    <tr id="@item.Id">
+                        <td></td>
+
+                        <td class="">@item.Id </td>
+                        <td class="">@item.CodSeguradora</td>
+                        <td class="text-center">@HtmlGridHelper.SituacaoProcesso(item.TpSituacao)  </td>
+                        <td class="text-center">@ultimoMovimento.DthMovimentacao.FormatoDataHora()  </td>
+                        <td class="">
+                            @if (item.TpSituacao == TipoSituacaoProcessoEnum.EnviadoParaVistoria || item.TpSituacao == TipoSituacaoProcessoEnum.ApropriadoVistoriador)
+                            {
+                                @MvcHtmlString.Create(item.Vistoriador == null ? string.Empty : HtmlGridHelper.TextoSubTexto(item.Vistoriador.Operador.NomeOperador, item.Vistoriador.EnderecoBase.NomeMunicipio).ToHtmlString())
+                            }
+                            else
+                            {
+                                @MvcHtmlString.Create(ultimoMovimento.OperadorOrigem == null ? string.Empty : HtmlGridHelper.TextoSubTexto(ultimoMovimento.OperadorOrigem.NomeOperador, "").ToHtmlString())
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (item.TpSituacao != TipoSituacaoProcessoEnum.CanceladoPelaSeguradora)
+                            {
+                                var enviadoVistoria = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria);
+
+                                @HtmlGridHelper.SituacaoAgenda(item.Agendamento, (enviadoVistoria == null ? (System.Nullable<DateTime>)null : enviadoVistoria.DthMovimentacao))
+                            }
+                        </td>
+                        <td class="">@item.Produto.NomeProduto</td>
+                        <td class="">@item.Cliente.NomeRazaoSocial</td>
+                        <td class="">@item.Endereco.NomeMunicipio (@item.Endereco.SiglaUf)</td>
+
+                        <td class="text-center">@item.DataCadastro</td>
+                        <td class="text-center">@item.DataModificacao</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    div.dataTables_wrapper {
+        width: 1900px;
+        margin: 0 auto;
+    }
+</style>
+

@@ -1,0 +1,443 @@
+﻿@model Operador
+@inject Differencial.Domain.Contracts.Util.IConfiguracaoAplicativo ConfiguracaoAplicativo
+@{
+    ViewBag.Title = "Operadores";
+}
+
+@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "Listar"))
+
+
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            @using (Html.Box(string.Empty, string.Empty, false, true))
+            {
+                <div class="ibox-content">
+                    @using (Html.BeginForm("Editar", "Operador", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        if (Model != null)
+                        {
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.UrlFoto)
+                            if (Model.Endereco != null && Model.Endereco.Id > 0)
+                            {
+                                @Html.HiddenFor(model => model.Endereco.Id)
+                            }
+                        }
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-10 b-r">
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(model => model.Id)
+                                        @Html.FwTextBoxFor(model => model.Id, true)
+                                    </div>
+                                    <div class="form-group col-md-7">
+                                        @Html.FwLabelFor(model => model.NomeOperador)
+                                        @Html.FwTextBoxFor(model => model.NomeOperador)
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label>Situação</label>
+                                        <input type="text" class="form-control text-center" value="Ativo" disabled="">
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(model => model.Cpf)
+                                        @Html.FwTextBoxFor(model => model.Cpf)
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(model => model.Rg)
+                                        @Html.FwTextBoxFor(model => model.Rg)
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        @Html.FwLabelFor(model => model.DataNascimento)
+                                        @Html.FwDateFor(model => model.DataNascimento)
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        @Html.FwLabelFor(model => model.Telefone)
+                                        @Html.FwPhoneBoxFor(model => model.Telefone)
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.FwLabelFor(model => model.Email)
+                                        @Html.FwTextBoxFor(model => model.Email)
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <h4>Foto&nbsp;<small>1x1</small></h4>
+                                    <p class="text-center" id="divBoxFoto" style="cursor: pointer;">
+                                        @{
+                                            var UrlFoto = Model != null && !String.IsNullOrEmpty(Model.UrlFoto) ? Model.UrlFoto : string.Empty;
+                                        }
+
+                                        <i class="fa fa-user medium-icon text-muted" id="imgFotoNone" style="@(String.IsNullOrEmpty(UrlFoto) ? string.Empty : " display:none" )"></i>
+
+                                        <img alt="image" width="100" height="100" class="img-circle" id="imgFoto" src="@(String.IsNullOrEmpty(UrlFoto) ? string.Empty : UtilWeb.ImagemBase64(ConfiguracaoAplicativo.RepositorioOperadorImagem + UrlFoto))" style="margin: auto;@(String.IsNullOrEmpty(UrlFoto) ? " display:none" : string.Empty )">
+
+                                    </p>
+                                    <input type='file' id="inputFoto" name="inputFoto" style="display:none" />
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed col-md-12"></div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label("Papéis do Operador no Sistema", new { @class = "control-label" })
+                                    <div class="col-sm-12">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(m => m.IndGerente)
+                                            Gerente
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(m => m.IndVistoriador)
+                                            Vistoriador
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(m => m.IndAnalista)
+                                            Analista
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                        <label class="checkbox-inline ">
+                                            @Html.CheckBoxFor(m => m.IndSolicitante)
+                                            Solicitante
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                        <label class="checkbox-inline ">
+                                            @Html.CheckBoxFor(m => m.IndFinanceiro)
+                                            Financeiro
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                        <label class="checkbox-inline ">
+                                            @Html.CheckBoxFor(m => m.IndAssessor)
+                                            Assessor
+                                        </label>&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tab1">Endereço</a></li>
+                                <li><a data-toggle="tab" href="#tabGerente">Gerente</a></li>
+                                <li><a data-toggle="tab" href="#tabVistoriador">Vistoriador</a></li>
+                                <li><a data-toggle="tab" href="#tabAnalista">Analista</a></li>
+                                <li><a data-toggle="tab" href="#tabSolicitante">Solicitante</a></li>
+                                <li><a data-toggle="tab" href="#tabHistorico">Histórico</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab1" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="row classContainerEndereco">
+                                            <div class="col-md-9 b-r">
+                                                @await Html.PartialAsync("Endereco/_Endereco")
+                                            </div>
+                                            <div class="col-md-3">
+                                                @await Html.PartialAsync("Endereco/_EnderecoMap")
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div id="tabGerente" class="tab-pane">
+                                    <div class="panel-body">
+                                        <p>Não há parametros de configuração nessa versão do sistema</p>
+                                    </div>
+                                </div>
+                                <div id="tabVistoriador" class="tab-pane">
+                                    <div class="panel-body">
+                                        @await Html.PartialAsync("_AbaVistoriador", Model)
+                                    </div>
+                                </div>
+                                <div id="tabAnalista" class="tab-pane">
+                                    <div class="panel-body">
+                                        @await Html.PartialAsync("_AbaAnalista", Model)
+                                    </div>
+                                </div>
+                                <div id="tabSolicitante" class="tab-pane">
+                                    <div class="panel-body">
+                                        @await Html.PartialAsync("_AbaSolicitante", Model)
+                                    </div>
+                                </div>
+                                <div id="tabHistorico" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            @{
+                                                List<LogAuditoria> lstLogAuditoria = (Model == null && ViewBag.lstLog == null) ? new List<LogAuditoria>() : ViewBag.lstLog;
+                                            }
+                                            @await Html.PartialAsync("LogAuditoria/_GridLogAuditoria", lstLogAuditoria, null)
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <div class="">
+                                        <button type="button" class="btn btn-primary" id="btnSalvar">Salvar</button>
+                                        <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+
+
+                                        <!-- Split button
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" id="btnSalvarDrop">
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Inserir)">Salvar e Inserir</a></li>
+                                                <li><a href="#" acaoretorno="@(Differencial.Web.DTO.RetornoSalvarEnum.Listar)">Salvar e Voltar</a></li>
+                                            </ul>
+                                            <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+                                        </div>-->
+
+                                        @Html.ActionLink("Cancelar", "Listar", null, htmlAttributes: new { @class = "btn btn-white" })
+
+                                        @HtmlAcaoHelper.BotaoConfirm("Gerar Acesso", "btnGerarAcesso", !(Html.ValueFor(m => m.Id).ToString().IsNullOrEmpty()),
+                                        "Deseja enviar e-mail de acesso ao sistema?",
+                                        Url.Action("GerarAcesso", "Operador", new { id = Html.ValueFor(m => m.Id).ToString() }),
+                                         BtnCorEnum.white, IconeEnum.SemIcone, BtnTamanhoEnum.Padrao)
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Styles {
+}
+@section Scripts {
+    <script type="text/javascript">
+        var table
+        var grideProdutoVisoriador;
+        $(document).ready(function () {
+            $(".nav-tabs a[disabled=disabled]").click(function () {
+                return false;
+            });
+            $("#divBoxFoto").click(function () {
+                $("#inputFoto").click()
+            });
+
+            $("#inputFoto").change(function () {
+                readURL(this);
+            });
+
+            $("input[name='Vistoriador.IndEnderecoBaseIgual']:radio").change(function () {
+                var bIndMesmoEnderecoPrincipal = ($(this).val() == "True");
+                $("#divVistoriadorEndereco input:not(#txtLatitudeLongitudeEnderecoBase)").each(function () {
+
+                    if (bIndMesmoEnderecoPrincipal) {
+                        $(this).attr('disabled', 'disabled');
+                        var sIdCampoReferencia = "#Endereco" + $(this).attr("id").replace("Vistoriador_EnderecoBase", "");
+
+                        $(this).val($(sIdCampoReferencia).val())
+                    }
+                    else
+                        $(this).removeAttr("disabled");
+                });
+
+
+                carregarMap($("#Vistoriador_EnderecoBase_Latitude").val(), $("#Vistoriador_EnderecoBase_Longitude").val(), $(".classContainerEndereco.vistoriador .divEnderecoMap").get(0));
+            });
+
+            $(".nav-tabs a[href=#tabVistoriador]").click(function () {
+
+                carregarMap($("#Vistoriador_EnderecoBase_Latitude").val(), $("#Vistoriador_EnderecoBase_Longitude").val(), $(".classContainerEndereco.vistoriador .divEnderecoMap").get(0));
+            });
+
+
+            $("#btnAtivarProdutoVistoria").click(function () {
+                ativarProdutoVistoria();
+            });
+            $("#btnDesativarProdutoVistoria").click(function () {
+                desativarProdutoVistoria();
+            });
+
+            $("#btnEditarValoresProdutoVistoria").click(function () {
+                editarRegistros();
+            });
+
+            var columns = [
+
+
+            ];
+
+            //grideProdutoVisoriador = $('#tbProdutoVisoriador').dataTableFw(true, true, true, true, columns);
+
+
+
+            grideProdutoVisoriador = $('#tbProdutoVisoriador').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                ordering: true,
+                pageLength: 500,
+                order: [[1, 'asc']],
+                columns: [
+                        { data: "0", },
+                        { data: "NomeSeguradora", "className": "" },
+                        { data: "NomeProduto", "className": "" },
+                        { data: "FaixaParametro", "className": "" },
+                        { data: "VlrQuilometroRodado", "className": " text-right" },
+                        { data: "VlrPagamentoVistoria", "className": "text-right" },
+                        { data: "DataModificacao", "className": "text-center" },
+                        { data: "IndAtivo", "className": "text-center" },
+                        { data: "KeyVistoriadorProdutoLancamentoValor", visible: false, searchable: false, },
+                        { data: "IdVistoriadorProduto", visible: false, searchable: false },
+                        { data: "IdProduto", visible: false, searchable: false },
+                        { data: "IdContratoLancamento", visible: false, searchable: false },
+                        { data: "IdContratoLancamentoValor", visible: false, searchable: false },
+                        { data: "DT_RowId", visible: false, searchable: false },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        KeyVistoriadorProdutoLancamentoValor: obj.KeyVistoriadorProdutoLancamentoValor,
+                        IdVistoriadorProduto: obj.IdVistoriadorProduto,
+                        IdProduto: obj.IdProduto,
+                        IdContratoLancamento: obj.IdContratoLancamento,
+                        IdContratoLancamentoValor: obj.IdContratoLancamentoValor,
+                        DT_RowId: obj.IdVistoriadorProduto, // Id do DataTable
+
+                        NomeProduto: obj.NomeProduto,
+                        NomeSeguradora: obj.NomeSeguradora,
+                        FaixaParametro: obj.FaixaParametro,
+                        VlrQuilometroRodado: obj.VlrQuilometroRodado,
+                        VlrPagamentoVistoria: obj.VlrPagamentoVistoria,
+                        DataModificacao: obj.DataModificacao,
+                        IndAtivo: obj.IndAtivo
+                    }
+                }
+            });
+
+            if ($("#Vistoriador_Id").val()) {
+                ajaxJsonResponseResult({
+                    bMostrarCarregando: false,
+                    url: "/Operador/ListarVistoriadorContratoLancamentoValor/",
+                    data: { IdVistoriador: $("#Vistoriador_Id").val() },
+                    fnSucesso: function (data) {
+                        grideProdutoVisoriador.atualizarDados(data.content)
+                    }
+                });
+            }
+
+
+        });
+
+        function ativarProdutoVistoria() {
+            var objRows = grideProdutoVisoriador.rows({ selected: true });
+            ezBSAlert({
+                type: "confirm",
+                modalSize: "",
+                headerText: "Confirmar",
+                messageText: "Confirma a ativação dos registros selecionados ?",  //+ objRows.ids().toArray().join(", ").replace(/ -1,/g, '').replace("-1,", "").replace("-1", "") +
+            }).done(function (e) {
+                if (e == true) {
+                    $.post('@Url.Action("Ativar", "Operador")', { IdVistoriador: $("#Vistoriador_Id").val(), Ids: objRows.ids().toArray() },
+                        function (data) {
+                            if (!data.success) {
+                                alertaResponseResult(data);
+                            } else {
+                                alertaResponseResult(data);
+                                grideProdutoVisoriador.atualizarDados(data.content)
+                            }
+                        });
+                }
+            });
+        }
+
+        function desativarProdutoVistoria() {
+            var objRows = grideProdutoVisoriador.rows({ selected: true });
+            ezBSAlert({
+                type: "confirm",
+                modalSize: "",
+                headerText: "Confirmar",
+                messageText: "Confirma a desativação dos registros selecionados ?", //+ objRows.ids().toArray().join(", ").replace(/ -1,/g, '').replace("-1,", "").replace("-1", "") +
+            }).done(function (e) {
+                if (e == true) {
+                    if (e == true) {
+                        $.post('@Url.Action("Desativar", "Operador")', { IdVistoriador: $("#Vistoriador_Id").val(), Ids: objRows.ids().toArray() },
+                            function (data) {
+                                if (!data.success) {
+                                    alertaResponseResult(data);
+                                } else {
+                                    alertaResponseResult(data);
+                                    grideProdutoVisoriador.atualizarDados(data.content)
+                                }
+                            });
+                    }
+
+                }
+
+            });
+
+        }
+
+        function editarRegistros() {
+            var objRows = grideProdutoVisoriador.rows({ selected: true });
+
+            $("#modalEditarProdutos #btnSalvarRegistros").unbind("click").bind("click", function () {
+                arrVistoriadorProduto = new Array();
+                for (var i = 0; i < objRows.data().toArray().length; i++) {
+                    arrVistoriadorProduto[i] = objRows.data().toArray()[i]["KeyVistoriadorProdutoLancamentoValor"]
+                    //    {
+                    //    IdVistoriadorProduto: objRows.data().toArray()[i]["IdVistoriadorProduto"],
+                    //    IdProduto :  objRows.data().toArray()[i]["IdProduto"],
+                    //    IdContratoLancamento: objRows.data().toArray()[i]["IdContratoLancamento"],
+                    //    IdContratoLancamentoValor: objRows.data().toArray()[i]["IdContratoLancamentoValor"]
+                    //}
+                }
+
+                $.post('@Url.Action("SalvarProdutoVistoriador", "Operador")',
+                    {
+                        IdVistoriador: $("#Vistoriador_Id").val(),
+                        arrVistoriadorProduto: arrVistoriadorProduto,
+                        VlrQuilometroRodado: $("#VlrQuilometroRodado").val(),
+                        VlrPagamentoVistoria: $("#VlrPagamentoVistoria").val()
+                    },
+                       function (data) {
+                           if (!data.success) {
+                               alertaResponseResult(data);
+                           } else {
+                               grideProdutoVisoriador.atualizarDados(data.content)
+                               $("#VlrQuilometroRodado").val("");
+                               $("#VlrPagamentoVistoria").val("")
+                               $('#modalEditarProdutos').modal('hide');
+                               alertaResponseResult(data);
+                           }
+                       });
+            });
+            $('#modalEditarProdutos').modal('show')
+        }
+
+
+
+
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgFoto').attr('src', e.target.result);
+                    $('#imgFotoNone').css("display", "none");
+                    $('#imgFoto').css("display", "block");
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+

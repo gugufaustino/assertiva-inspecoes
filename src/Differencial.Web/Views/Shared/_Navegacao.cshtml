@@ -1,0 +1,190 @@
+﻿@inject Differencial.Domain.Contracts.Util.IConfiguracaoAplicativo Configuration
+@inject Differencial.Domain.Contracts.Infra.IUsuarioService UsuarioService
+
+@{
+    var usuario = UsuarioService.UsuarioAutenticado;    
+
+}
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span>
+                        @if (String.IsNullOrEmpty(usuario.UrlFoto))
+                        {
+                            <i class="fa fa-user medium-icon text-muted"></i>
+                        }
+                        else
+                        {
+                            <img alt="image" class="img-circle" width="100" src="@(Configuration.PastaVirtualOperadorImagem + usuario.UrlFoto)" />
+
+                        }
+                    </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">@usuario.NomeOperador</strong>
+                                @*<b class="caret"></b>*@
+                            </span>
+                            @if (usuario.IndGerente)
+                            {
+                                <span class="text-muted text-xs block">Gerente</span>
+                            }
+                            @if (usuario.IndVistoriador)
+                            {
+                                <span class="text-muted text-xs block">Vistoriador</span>
+                            }
+                            @if (usuario.IndAnalista)
+                            {
+                                <span class="text-muted text-xs block">Analista</span>
+                            }
+                            @if (usuario.IndSolicitante)
+                            {
+                                <span class="text-muted text-xs block">Solicitante<br />@usuario.NomeSeguradoraSolicitante</span>
+                            }
+                            @if (usuario.IndFinanceiro)
+                            {
+                                <span class="text-muted text-xs block">Financeiro</span>
+                            }
+                            @if (usuario.IndAssessor)
+                            {
+                                <span class="text-muted text-xs block">Assessor</span>
+                            }
+                        </span>
+                    </a>
+                </div>
+                <div class="logo-element">
+                    Diff
+                </div>
+            </li>
+
+            @* ÁREA DE TRABALHO *@
+            @if (!usuario.IndUsuarioSistema)
+            {
+                <li class="@Html.IsSelected(controller: "Dashboards")">
+
+                    @* Papel Unico && Não Acessor && Não Financeiro *@
+                    @if (usuario.TipoPapel.Count == 1 && usuario.TipoPapel.First() != TipoPapelEnum.Assessor && usuario.TipoPapel.First() != TipoPapelEnum.Financeiro)
+                    {
+                        string strUrlAreaTrabalho = string.Empty;
+                        switch (usuario.TipoPapel.First())
+                        {
+                            case TipoPapelEnum.Gerente:
+                                strUrlAreaTrabalho = Url.Action("Gerente", "Dashboards");
+                                break;
+                            case TipoPapelEnum.Vistoriador:
+                                strUrlAreaTrabalho = Url.Action("Vistoriador", "Dashboards");
+                                break;
+                            case TipoPapelEnum.Analista:
+                                strUrlAreaTrabalho = Url.Action("Analista", "Dashboards");
+                                break;                        
+                            case TipoPapelEnum.Solicitante:
+                                strUrlAreaTrabalho = Url.Action("Solicitante", "Dashboards");
+                                break;
+                            case TipoPapelEnum.Assessor:
+                                break;
+                            default:
+                                break;
+                        }
+                        <a href="@strUrlAreaTrabalho">
+                            <i class="fa fa-th-large active"></i> <span class="nav-label" data-i18n="nav.dashboard">Área de Trabalho</span> <span class="@*fa arrow*@"></span>
+                        </a>
+                    }
+
+                    @* Multipapeis || Assessor || Financeiro *@
+                    else if (usuario.TipoPapel.Count > 1 || usuario.TipoPapel.Any(i => i == TipoPapelEnum.Assessor) || usuario.TipoPapel.Any(i => i == TipoPapelEnum.Financeiro))
+                    {
+                        <a href="#">
+                            <i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Área de Trabalho</span> <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
+                            @if (usuario.IndGerente || usuario.IndAssessor)
+                            {
+                                <li class="@Html.IsSelected(action: "Gerente")"><a href="@Url.Action("Gerente", "Dashboards")">Gerente</a></li>
+                            }
+                            @if (usuario.IndVistoriador)
+                            {
+                                <li class="@Html.IsSelected(action: "Vistoriador")"><a href="@Url.Action("Vistoriador", "Dashboards")">Vistoriador</a></li>
+                            }
+                            @if (usuario.IndAnalista || usuario.IndAssessor)
+                            {
+                                <li class="@Html.IsSelected(action: "Analista")"><a href="@Url.Action("Analista", "Dashboards")">Analista</a></li>
+                            }
+                            @if (usuario.IndFinanceiro)
+                            {
+                                <li class="@Html.IsSelected(action: "FinanceiroReceber")"><a href="@Url.Action("FinanceiroReceber", "Dashboards")">Financeiro - Recebimentos</a></li>
+                                <li class="@Html.IsSelected(action: "FinanceiroPagar")"><a href="@Url.Action("FinanceiroPagar", "Dashboards")">Financeiro - Pagamentos</a></li>
+                            }
+                            @if (usuario.IndSolicitante)
+                            {
+                                <li class="@Html.IsSelected(action: "Solicitante")"><a href="@Url.Action("Solicitante", "Dashboards")">Solicitante</a></li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+
+            @* CONSULTAS *@
+            @if (usuario.IndGerente || usuario.IndAssessor || usuario.IndFinanceiro)
+            {
+                <li class="@Html.IsSelected(controller: new string[] { "Consultas"})">
+                    <a>
+                        <i class="fa fa-list-alt"></i> <span class="nav-label" data-i18n="nav.forms">Consultas</span> <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: new string[] {"Consultas" }, cssClass: "in")">
+
+                        <li class="@Html.IsSelected(action: "TodasAgendas")"><a href="@Url.Action("TodasAgendas", "Consultas")">Todas Agendas</a></li>
+                        <li class="@Html.IsSelected(action: "TodasRotas")"><a href="@Url.Action("TodasRotas", "Consultas")">Todas Rotas</a></li>
+                        <li class="divider"> </li>
+                        <li class="@Html.IsSelected(action: "TodasSolicitacoes")"><a href="@Url.Action("TodasSolicitacoes", "Consultas")">Todas Solicitacoes</a></li>
+                        <li class="@Html.IsSelected(action: "TodasSolicitacoesConcluidas")"><a href="@Url.Action("TodasSolicitacoesConcluidas", "Consultas")">Solic. Concluídas</a></li>
+                        <li class="divider"> </li>
+                        <li class="@Html.IsSelected(action: "TodosLancamentosFinanceiros")"><a href="@Url.Action("TodosLancamentosFinanceiros", "Consultas")">Lançamentos Finan.</a></li>
+
+                    </ul>
+                </li>
+            }
+
+            @* CADASTROS *@
+            @if (usuario.IndGerente)
+            {
+                <li class="@Html.IsSelected(controller: new string[] { "Operador", "Seguradora", "TipoInspecao",  "Produto","Cliente", "TipoAssunto" })">
+                    <a>
+                        <i class="fa fa-edit"></i> <span class="nav-label" data-i18n="nav.forms">Cadastros</span> <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: new string[] {"Operador", "Seguradora", "TipoInspecao",  "Produto","Cliente", "TipoAssunto"}, cssClass: "in")">
+
+                        <li class="@Html.IsSelected(controller: "Operador")"><a href="@Url.Action("Listar", "Operador")">Operadores</a></li>
+                        <li class="@Html.IsSelected(controller: "Seguradora")"><a href="@Url.Action("Listar", "Seguradora")">Seguradoras</a></li>
+                        <li class="@Html.IsSelected(controller: "TipoInspecao")"><a href="@Url.Action("Listar", "TipoInspecao")">Tipos de Produto</a></li>
+                        <li class="@Html.IsSelected(controller: "Produto")"><a href="@Url.Action("Listar", "Produto")">Produtos</a></li>
+                        <li class="@Html.IsSelected(controller: "Cliente")"><a href="@Url.Action("Listar", "Cliente")">Clientes</a></li>
+                        <li class="@Html.IsSelected(controller: "TipoAssunto")"><a href="@Url.Action("Listar", "TipoAssunto")">Tipos Assunto</a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (usuario.IndUsuarioSistema)
+            {
+                <li class="@Html.IsSelected(controller: new string[] { "Municipio", "Cliente", "Operador", "Produto", "Seguradora", "TipoInspecao" })">
+                    <a>
+                        <i class="fa fa-edit"></i> <span class="nav-label" data-i18n="nav.forms">Cadastros</span> <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: new string[] {"Municipio", "Cliente", "Operador", "Produto", "Seguradora", "TipoInspecao"}, cssClass: "in")">
+                        <li class="@Html.IsSelected(controller: "Operador")"><a href="@Url.Action("Listar", "Operador")">Operadores</a></li>
+                    </ul>
+                </li>
+            }
+			@* <li class="@Html.IsSelected(controller: "Relatorios")">
+                <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.graphs">Relátorios</span><span class="fa arrow"></span> </a>
+            </li>
+
+            UTILITARIOS
+            <li class="@Html.IsSelected(controller: "Utilitarios")">
+                <a href="#"><i class="fa fa-flask"></i> <span class="nav-label" data-i18n="nav.metrics">Utilitários</span> </a>
+			</li> *@
+
+        </ul>
+    </div>
+</nav>

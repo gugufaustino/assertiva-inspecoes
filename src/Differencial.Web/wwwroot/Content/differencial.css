@@ -1,0 +1,124 @@
+/*!
+ * Arquivo de tema para atender a differencial
+ * Aplica-se aqui somente css de identidade
+ */
+
+.modal-open {
+    overflow: unset !important;
+    /*overflow: hidden;*/
+}
+
+.medium-icon {
+    font-size: 100px;
+}
+
+/*Botão Salvar - muda a cor do botão de drop*/
+.open > .dropdown-toggle.btn-primary:focus,
+.open > .dropdown-toggle.btn-primary:hover {
+    background-color: #901224;
+    border-color: #901224;
+    color: #FFFFFF;
+}
+
+.vistoriador-sugerido {
+    padding-top: 3px;
+    padding-bottom: 5px;
+}
+
+#tbVistoriadorSugerido td.col-Nome {
+    padding-top: 3px;
+    padding-bottom: 5px;
+}
+
+
+fieldset {
+    /*background-color: #f4f4f4; valor antigo*/
+    /*border-bottom: 1px solid #e5e5e5;*/
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+    fieldset.br5 {
+        border-right-color: #ffffff !important;
+        border-right-width: 8px !important;
+        border-right-style: solid !important;
+    }
+
+    fieldset legend {
+        font-weight: 700;
+        margin-top: 15px;
+        border-bottom: 1px solid #e5e5e5;
+        font-size: 14px;
+        color: inherit;
+    }
+
+        fieldset legend.col-form-legend {
+            padding-bottom: 0px;
+            margin-bottom: 3px;
+            margin-top: 6px;
+        }
+
+            fieldset legend.col-form-legend label {
+                margin-right: 10px;
+            }
+
+
+
+.tabs-container .tab-pane .panel-body {
+    min-height: 185px;
+}
+
+
+.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary.active[disabled], fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
+    background-color: #b43546;
+    border-color: #b43546;
+}
+
+
+/*.modal-open .modal {    
+    overflow-y: scroll !important;
+}*/
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+.form-group label.required {
+    margin-right: 10px;
+}
+.form-group label.required:after {
+    color: #c72c2c;
+    content: "*";
+    position: absolute;
+    margin-left: 3px;
+}
+
+
+
+span.field-validation-error {
+    color: #cc5965;
+    font-size: 12px;
+    position: absolute;
+}
+
+.radio label span.field-validation-error {
+    bottom: -16px;
+}

@@ -1,0 +1,75 @@
+﻿@model ContratoLancamento
+@{
+    var index = ViewData["index"];
+}
+<fieldset class="form-group col-md-7 fieldsetTabelaIntervaloEditavel">
+    @Html.Hidden("ContratoLancamento[" + index + "].Id", Model.Id)
+    @Html.Hidden("ContratoLancamento[" + index + "].IdContrato", Html.ValueFor(m => m.IdContrato))
+    @Html.Hidden("ContratoLancamento[" + index + "].TipoParametroQuantitativoVariavel", Html.ValueFor(m => m.TipoParametroQuantitativoVariavel))
+    <legend class="col-form-legend col-md-12 form-inline">
+        <label class="">Honorário por paramêtro</label>
+        <label class="pull-right">
+            @Model.TipoParametroQuantitativoVariavel.FwDisplayEnum(true)
+        </label>
+    </legend>
+
+    <div class="TabelaIntervaloEditavel col-md-12">
+        @for (int i = 0; i < Model.ContratoLancamentoValor.Count; i++)
+        {
+            var ctLancVal = Model.ContratoLancamentoValor.ElementAtOrDefault(i);
+            <div tbeditindex="@i" class="row">
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].Id", ctLancVal.Id)
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].TipoQuantitativoVariacao", ctLancVal.TipoQuantitativoVariacao)
+
+                @if (ctLancVal.TipoQuantitativoVariacao == TipoQuantitativoVariacaoEnum.UnicoNaoVariavel)
+                {
+                    <div class="col-md-6">
+                        @Html.FwLabel("", "UF", true, new { @class = "small" })
+                        @Html.FwEnumDropDownList("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].SiglaUf", "Selecione", (Enum) Enum.Parse(typeof(EstadoEnum), ctLancVal.SiglaUf), true, true, htmlAttributes: new { @class = "input-sm " }   )
+                    </div>
+                }
+                <div class="col-md-4">
+                    @Html.FwLabel("[" + index + "].lblValorLancamento", "Valor a Receber", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[" + i + "].ValorLancamento", ctLancVal.ValorLancamento, false, new { @class = "input-sm AcimaDe " }, true)
+                </div>
+                <div class="col-md-2"> 
+                    <button type="button" class="btn btn-default btn-sm" id="btnExcluirRowIntervaloEditavel">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                        <span class="">Excluír</span>
+                    </button>
+                </div>
+            </div>
+        }
+        <!-- TEMPLATE -->
+        <template class="t1">
+            <div tbeditindex="0" class="row">
+                @Html.Hidden("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].TipoQuantitativoVariacao", TipoQuantitativoVariacaoEnum.UnicoNaoVariavel)
+                <div class="col-md-6">
+                    @Html.FwLabel("", "UF", true, new { @class = "small" })
+                    @Html.FwEnumDropDownList("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].SiglaUf", "Selecione", typeof(EstadoEnum), false, true, new { @class = "input-sm " })
+                </div>
+                <div class="col-md-4">
+                    @Html.FwLabel("[" + index + "].lblValorLancamento", "Valor a Receber", true, new { @class = "small" })
+                    @Html.FwCurrency("ContratoLancamento[" + index + "].ContratoLancamentoValor[#].ValorLancamento", htmlAttributes: new { @class = "input-sm " }, requerido: true)
+                </div>
+                <div class="col-md-2"> 
+                    <button type="button" class="btn btn-default btn-sm" id="btnExcluirRowIntervaloEditavel">
+                        <span class="fa fa-trash-o" aria-hidden="true"></span>
+                        <span class="">Excluír</span>
+                    </button>
+                </div>
+            </div>
+        </template>
+        <!-- TEMPLATE -->
+        <div class="row">
+            <div class="form-group pull-right text-right  col-md-3">
+                <button type="button" id="btnAddRow" class="btn btn-default btn-sm t1" style="margin-top:7px" aria-haspopup="true" aria-expanded="false" ">
+                    <span class="fa fa-plus "></span>
+                    Adicionar 
+                    <span class="sr-only"></span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</fieldset>

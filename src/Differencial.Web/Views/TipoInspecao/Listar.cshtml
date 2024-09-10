@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TipoInspecao>
+@{
+    ViewBag.Title = "Tipos de Produto";
+
+}
+
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+    <a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
+    <input type="button" value="Excluir" class="btn btn-primary" id="btnExcluir" />
+    <a href="@Url.Action("Editar")" class="btn btn-primary" id="btnAbrir">Abrir</a>
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        @using (Html.BeginBox(maximizavel: true))
+        {
+
+            <div class="row">
+                <div class="table-responsive">
+                    <table id="grade" class="grid-dataTables display table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w10px">&nbsp;</th>
+                                <th class="w05Perc">@Html.DisplayNameFor(m => m.Id) </th>
+                                <th class="w50Perc">@Html.DisplayNameFor(m => m.NomeTipoInspecao)</th>
+                                <th class="w20Perc">@Html.DisplayNameFor(m => m.DataCadastro)</th>
+                                <th class="w20Perc">@Html.DisplayNameFor(m => m.DataModificacao)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="@item.Id">
+                                    <td></td>
+                                    <td class="text-right">@item.Id</td>
+                                    <td>@item.NomeTipoInspecao</td>
+                                    <td class="text-center">@item.DataCadastro</td>
+                                    <td class="text-center">@item.DataModificacao</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+
+        var grade;
+        $(document).ready(function () {
+
+            grade = $('#grade').Gride({
+                bSelecionavel: true,
+                bfiltroColuna: true,
+                bExportacao: true,
+                ordering: true,
+                order: [[1, 'desc']],
+                columns: [
+                    { data: "0" }, //select
+                    { data: "Id", "className": "text-right" },
+                    { data: "NomeTipoInspecao", "className": "" },
+                    { data: "DataCadastro", "className": "text-center", type: 'date-euro' },
+                    { data: "DataModificacao", "className": "text-center", type: 'date-euro' },
+                ],
+                mapJsonParaObjeto: function (obj) {
+                    return {
+                        "0": "",
+                        Id: obj.Id,
+                        NomeTipoInspecao: obj.NomeAssunto,
+                        DataCadastro: obj.DataCadastro,
+                        DataModificacao: obj.DataModificacao,
+                        DT_RowId: obj.Id
+                    }
+                },
+
+
+            });
+
+            $("#btnAbrir").click(function () {
+                grade.abrirRegistroSelecionado("/TipoInspecao/Editar/");
+            });
+
+            $("#btnExcluir").click(function () {
+                grade.excluirRegistrosSelecionados("/TipoInspecao/Excluir/");
+            });
+        });
+    </script>
+}
