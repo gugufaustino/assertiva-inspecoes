@@ -51,14 +51,6 @@
     <Folder Include="wwwroot\scripts\lib\signalr\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Web.Debug.config">
-      <DependentUpon>Web.config_</DependentUpon>
-    </Content>
-    <Content Update="Web.Release.config">
-      <DependentUpon>Web.config_</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Differencial.Domain\Differencial.Domain.csproj" />
     <ProjectReference Include="..\Differencial.IOC\Differencial.IOC.csproj" />
     <ProjectReference Include="..\Differencial.Service\Differencial.Service.csproj" />
@@ -99,15 +91,12 @@
     <Content Remove="Views\Home\AtivarAcesso.cshtml" />
     <Content Remove="Views\Home\Erro404.cshtml" />
     <Content Remove="Views\Home\TelaBloqueio.cshtml" />
+    <Content Remove="Web.Debug.config" />
+    <Content Remove="Web.Release.config" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Global.asax" />
     <None Remove="Web.config_" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web.config_">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Cliente\Editar.cshtml" />
