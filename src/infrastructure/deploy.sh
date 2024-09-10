@@ -8,9 +8,9 @@
 
 
 # Parâmetros
-RESOURCE_GROUP="rg-diff-brazil-dev"
+RESOURCE_GROUP="rg-assertiva-brazil-dev"
 LOCATION="brazilsouth"
-APP_SERVICE_PLAN_NAME="diffServicePlan"
+APP_SERVICE_PLAN_NAME="assertiva-app-plan-dev"
 
 # 1. Criar grupo de recursos (se ainda não existir)
  az group create --name $RESOURCE_GROUP --location $LOCATION
