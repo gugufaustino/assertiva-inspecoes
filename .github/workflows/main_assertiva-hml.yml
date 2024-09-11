@@ -28,13 +28,13 @@ jobs:
           $commitCount = git rev-list --count HEAD
           $version = "1.1.$commitCount"
           Write-Host "Build version: $version"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $env:GITHUB_ENV
 
       - name: dotnet build
-        run: dotnet build .\src\DifferencialApp.sln --configuration Release /p:Version=${{ env.VERSION }}
+        run: dotnet build .\src\DifferencialApp.sln --configuration Release -p:Version=${{ env.VERSION }}
 
       - name: dotnet publish
-        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true /p:Version=${{ env.VERSION }}
+        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true -p:Version=${{ env.VERSION }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

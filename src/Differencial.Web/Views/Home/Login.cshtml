@@ -47,8 +47,8 @@
         <div class="m-t">
             <div class="col-md-12 no-margins no-padding">
                 <small>Todos os direitos reservados &copy; @DateTime.Now.Date.Year</small>
-                <small>@(ConfiguracaoAplicativo.AppVersao.IsNullOrEmpty() ? string.Empty : $"{ConfiguracaoAplicativo.AppVersao}v") </small>
-                <!-- Badge do GitHub Actions -->
+               @*  <small>@(ConfiguracaoAplicativo.AppVersao.IsNullOrEmpty() ? string.Empty : $"{ConfiguracaoAplicativo.AppVersao}v") </small> *@
+                <small>@(ViewBag.Version).</small>
                 
                  
             </div>
