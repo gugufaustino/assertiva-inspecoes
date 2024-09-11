@@ -8,6 +8,8 @@ using Differencial.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Differencial.Web.Controllers
@@ -43,11 +45,12 @@ namespace Differencial.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index()        
+        public ActionResult Index()
         {
             if (_usuarioService.Autenticado())
                 return Redirect(@"~/Home/Inicio");
 
+            ViewBag.Version = GetVersion() + "v";
             return View("Login");
         }
         [AllowAnonymous]
@@ -67,7 +70,20 @@ namespace Differencial.Web.Controllers
         public ActionResult Login(string ReturnUrl = null)
         {
             ViewData["ReturnUrl"] = ReturnUrl;
+            ViewBag.Version = GetVersion() + "v";
             return View();
+        }
+        public static string GetVersion()
+        {
+            var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            if (version != null)
+                return version;
+
+            version = Environment.GetEnvironmentVariable("Version");
+            if (version != null)
+                return version;
+
+            return "NA";
         }
 
         public ActionResult Inicio()
