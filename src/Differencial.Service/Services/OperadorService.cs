@@ -1,24 +1,23 @@
+using Differencial.Domain;
 using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Contracts.Services;
-using Differencial.Domain.Entities;
-using Differencial.Domain.Filters;
-using Differencial.Domain.UOW;
-using System.Collections.Generic;
-using System;
-using System.Linq;
-using Differencial.Domain.DTO;
-using System.IO;
 using Differencial.Domain.Contracts.Util;
-using Differencial.Domain.Util.ExtensionMethods;
-using System.Globalization;
+using Differencial.Domain.DTO;
+using Differencial.Domain.Entities;
 using Differencial.Domain.Exceptions;
+using Differencial.Domain.Filters;
 using Differencial.Domain.Resources;
-using System.Text;
-using Differencial.Domain;
+using Differencial.Domain.UOW;
 using Differencial.Domain.Util;
-using System.Threading.Tasks;
-using Differencial.Service.Util;
+using Differencial.Domain.Util.ExtensionMethods;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Differencial.Service.Services
 {
@@ -518,7 +517,7 @@ namespace Differencial.Service.Services
             var operador = Buscar(idOperador);
             operador.IndAcessoSistema = true;
             operador.IndPrimeiroAcesso = true;
-            operador.Senha = CryptographyTDES.EncryptString(DateTime.Now.FormatoDataHora(), "Senha");
+            operador.Senha = CryptographyTDES.EncryptString(DateTime.Now.FormatoDataHora(), _configuracaoAplicativo.PrivateKey);
             _operadorRepositorio.Update(operador);
 
             StringBuilder sb = new StringBuilder(Email.HtmlEmailOperadorGerarPrimeiroAcesso);
@@ -538,7 +537,7 @@ namespace Differencial.Service.Services
                 if (!operador.IndAcessoSistema)
                     throw new ValidationException(MensagensValidacaoServicos.OperadorRnLogonAcessoSistema);
 
-                operador.Senha = CryptographyTDES.EncryptString(DateTime.Now.FormatoDataHora(), "Senha");
+                operador.Senha = CryptographyTDES.EncryptString(DateTime.Now.FormatoDataHora(), _configuracaoAplicativo.PrivateKey);
                 _operadorRepositorio.Update(operador);
 
 
@@ -565,7 +564,7 @@ namespace Differencial.Service.Services
                     throw new ValidationException(MensagensValidacaoServicos.OperadorRnMudarSenha);
 
                 operador.IndPrimeiroAcesso = false;
-                operador.Senha = CryptographyTDES.EncryptString(senhaNova, "Senha");
+                operador.Senha = CryptographyTDES.EncryptString(senhaNova, _configuracaoAplicativo.PrivateKey);
                 _operadorRepositorio.Update(operador);
             });
         }
@@ -587,7 +586,7 @@ namespace Differencial.Service.Services
                 if (!operador.IndAcessoSistema)
                     throw new ValidationException(MensagensValidacaoServicos.OperadorRnLogonAcessoSistema);
 
-                if (operador.Senha == CryptographyTDES.EncryptString(senha, "Senha"))
+                if (operador.Senha == CryptographyTDES.EncryptString(senha, _configuracaoAplicativo.PrivateKey))
                     return operador;
                 else
                     throw new ValidationException(MensagensValidacaoServicos.OperadorRnLogonSenhaInvalida);

@@ -62,7 +62,6 @@
     <Compile Remove="Models\DTO\RetornoSalvarEnum.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Views\Home\AtivarAcesso.cshtml" />
     <Content Remove="Views\Home\Erro404.cshtml" />
     <Content Remove="Views\Home\TelaBloqueio.cshtml" /> 
   </ItemGroup> 

@@ -8,5 +8,6 @@
         string PastaVirtualOperadorImagem { get; }
         string RepositorioAnexos { get; }
         string RepositorioSolicitacao { get; }
+        string PastaLog { get; }
     }
 }

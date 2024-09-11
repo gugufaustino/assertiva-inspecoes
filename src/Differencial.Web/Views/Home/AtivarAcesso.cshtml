@@ -7,11 +7,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Differencial - Inspeções de Risco</title>
-    <link href="~/fonts/googleapis.css?family=Open+Sans:400,300,600,700" rel='stylesheet' type='text/css'>
-
-    <!-- Primary Inspinia style -->
-    @Styles.Render("~/Content/css")
+    <title>@ViewBag.Title</title>
+     
+    <partial name="_StylePartial" />
+    <link href="~/Content/animate.css" rel="stylesheet">
     <style>
         .gray-bg {
             background-color: #edeef0;
@@ -34,7 +33,7 @@
             </p>
             <p><b>@ViewBag.NomeOperador</b></p>
 
-            @using (Html.BeginForm("AtivarAcesso", "Home", new { @id = ViewBag.Id, @token = ViewBag.Token }, FormMethod.Post, new { @class = "m-t", @role = "form", onsubmit = "return valido();" }))
+            @using (Html.BeginForm("AtivarAcesso", "Home", new { @id = ViewBag.Id, @token = ViewBag.Token }, FormMethod.Post, true, new { @class = "m-t", @role = "form", onsubmit = "return valido();" }))
             {
                 <div class="form-group">
                     <input type="password" class="form-control" id="novasenha" name="novasenha" placeholder="Nova Senha" required="">
@@ -51,8 +50,8 @@
 
 
     </div>
-    @Html.Partial("Dialog/_ModalMensagem")
-    @Scripts.Render("~/bundles/jquery")
+    <partial name="Dialog/_ModalMensagem" />
+    <partial name="_ScriptsjQueryBootstrapPartial" />
 
     <script>
 

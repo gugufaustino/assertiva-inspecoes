@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Differencial.Domain.Contracts.Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -8,9 +9,9 @@ namespace Differencial.Infra
     {
         private const string SEPARADOR = "-----------------------------------------------------------------------------------------";
 
-        internal static void Registrar(string mensagem, TipoLogEnum tipoLogEnum, IConfiguration configuration)
+        internal static void Registrar(string mensagem, TipoLogEnum tipoLogEnum, IConfiguracaoAplicativo configuration)
         {
-            var config = new Domain.Util.ConfiguracaoAplicativo(configuration);
+            
             var nomeArquivo = DateTime.Now.Date.ToString("yyyy-MM-dd") + ".log";
             //var subPasta = "";
             //switch (tipoLogEnum)
@@ -27,7 +28,7 @@ namespace Differencial.Infra
             //    default:
             //        throw new NotImplementedException();
             //}
-            var caminhoPasta = config.PastaLog + string.Format("\\{0}\\", tipoLogEnum.ToString());
+            var caminhoPasta = configuration.PastaLog + string.Format("\\{0}\\", tipoLogEnum.ToString());
 
             if (!Directory.Exists(caminhoPasta))
                 Directory.CreateDirectory(caminhoPasta);
@@ -51,9 +52,9 @@ namespace Differencial.Infra
 
     public class Log : ILog
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguracaoAplicativo configuration;
 
-        public Log(IConfiguration configuration)
+        public Log(IConfiguracaoAplicativo configuration)
         {
             this.configuration = configuration;            
         }

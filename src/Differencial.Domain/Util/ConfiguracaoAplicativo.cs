@@ -1,4 +1,5 @@
 ﻿using Differencial.Domain.Contracts.Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -8,9 +9,11 @@ namespace Differencial.Domain.Util
     public class ConfiguracaoAplicativo : IConfiguracaoAplicativo, IConfiguracaoEmail
     {
         private readonly IConfiguration _configuration;
-        public ConfiguracaoAplicativo(IConfiguration configuration)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ConfiguracaoAplicativo(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public string ConnectionString => _configuration.GetConnectionString("DifferencialConnection");
         public string NomeEmpresaCompleto => _configuration.GetValue<string>("NomeEmpresaCompleto");
@@ -19,7 +22,8 @@ namespace Differencial.Domain.Util
         public string UsuarioRoot => _configuration.GetValue<string>("APPVERSAO");
         public string UsuarioRootPwd => _configuration.GetValue<string>("UsuarioRootPwd");
         public string GoogleApiKey => _configuration.GetValue<string>("GoogleApiKey");
-        public string DominioAplicativo => _configuration.GetValue<string>("DominioAplicativo"); 
+        public string PrivateKey => _configuration.GetValue<string>("Private-Key");
+        public string DominioAplicativo => $"{_httpContextAccessor.HttpContext?.Request?.Scheme}://{_httpContextAccessor.HttpContext?.Request?.Host.Value}"; 
 
         #region Diretorios
         private string PastaRepositorio => AppDomain.CurrentDomain.BaseDirectory + _configuration.GetValue<string>("PastaRepositorioGlobal");

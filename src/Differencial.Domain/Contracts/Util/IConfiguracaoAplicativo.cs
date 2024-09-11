@@ -8,5 +8,6 @@
         public string UsuarioRoot { get; }
         public string UsuarioRootPwd { get; }
         string GoogleApiKey { get;   }
+        string PrivateKey { get;   }
     }
 }

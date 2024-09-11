@@ -6,6 +6,7 @@ using Differencial.Domain.Util.ExtensionMethods;
 using Differencial.Service.ServiceUtility;
 using Differencial.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace Differencial.Web.Controllers
 
         private readonly IArquivoAnexoService _arquivoService;
         private readonly IEnderecoService _enderecoService;
-
+        private readonly IHttpContextAccessor httpContextAccessor;
 
 
         public HomeController(
@@ -27,12 +28,14 @@ namespace Differencial.Web.Controllers
             IUsuarioService usuario,
             IArquivoAnexoService arquivoService
             , IEnderecoService enderecoService,
-            ISolicitacaoService solicitacaoServ)
+            ISolicitacaoService solicitacaoServ,
+            IHttpContextAccessor httpContextAccessor)
         {
             _operadorService = operadorService;
             _usuarioService = usuario;
             _arquivoService = arquivoService;
             _enderecoService = enderecoService;
+            this.httpContextAccessor = httpContextAccessor;
 
 
             //solicitacaoServ.BuscarSolicitacaoEndereco(1);
@@ -126,6 +129,7 @@ namespace Differencial.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult EsqueceuSenha()
         {
             return View();
@@ -133,8 +137,11 @@ namespace Differencial.Web.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
+        [AllowAnonymous]
         public ActionResult EsqueceuSenha(string usuario)
         {
+
+
             _operadorService.GerarNovoAcesso(usuario);
             var op = _operadorService.BuscarPorUsuario(usuario);
             Commit(op.Id);
@@ -142,6 +149,7 @@ namespace Differencial.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult AtivarAcesso(int id, string token)
         {
             ViewBag.Id = id;
@@ -152,6 +160,7 @@ namespace Differencial.Web.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
+        [AllowAnonymous]
         public Task<ActionResult> AtivarAcesso(int id, string token, string novasenha)
         {
             _operadorService.SalvarMudarSenha(id, token, novasenha);

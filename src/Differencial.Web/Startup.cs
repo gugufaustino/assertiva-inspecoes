@@ -22,6 +22,7 @@ namespace Differencial.Web
 
         public Startup(IHostEnvironment hostingEnvironment)
         {
+           
             var builder = new ConfigurationBuilder()
                                .SetBasePath(hostingEnvironment.ContentRootPath)
                                .AddJsonFile("appsettings.json", true, true)
@@ -88,6 +89,7 @@ namespace Differencial.Web
             }
             else {
                 //app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage(); //TODO melhorar isso
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
