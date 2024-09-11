@@ -47,10 +47,12 @@
         <div class="m-t">
             <div class="col-md-12 no-margins no-padding">
                 <small>Todos os direitos reservados &copy; @DateTime.Now.Date.Year</small>
+                <small>@(ConfiguracaoAplicativo.AppVersao.IsNullOrEmpty() ? string.Empty : $"{ConfiguracaoAplicativo.AppVersao}v") </small>
+                <!-- Badge do GitHub Actions -->
+                
+                 
             </div>
-            <div class="col-md-3 no-margins no-padding text-right hidden">
-                <small>@(ConfiguracaoAplicativo.AppVersao.IsNullOrEmpty()? string.Empty : $"{ConfiguracaoAplicativo.AppVersao}v") </small>
-            </div>
+           
         </div>
 
     </div>
