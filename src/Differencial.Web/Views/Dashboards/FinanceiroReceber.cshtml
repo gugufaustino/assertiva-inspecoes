@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<FinanceiroReceberDto>
 @{
-        ViewBag.Title = "Financeiro";
+        ViewBag.Title = "Financeiro Receber";
 
 
         var actionLink = new IHtmlContent[] {
@@ -21,7 +21,7 @@
 }
 <div class="wrapper wrapper-content">
     <div class="row">
-        @using (Html.BeginBox(titulo: "Competencia:", actionsLeft: actionLink, actionsRight: actionLinkRi))
+        @using (Html.BeginBox(titulo: "Competência:", actionsLeft: actionLink, actionsRight: actionLinkRi))
         {
             @Html.Hidden("mes", 4)
             @Html.Hidden("ano", 2022)
