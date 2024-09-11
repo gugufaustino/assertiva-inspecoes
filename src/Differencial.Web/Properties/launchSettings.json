@@ -8,8 +8,8 @@
       }
     },
     "Run Web - Dev": {
-      "commandName": "Project", 
-      "commandLineArgs": "-p:Version=1.2.3.4 p:AssemblyVersion=3.1.0 p:FileVersion=2.2 p:InformationalVersion=7.7 p:Version=6.0 p:AssemblyFileVersion=55",
+      "commandName": "Project",
+      "commandLineArgs": "Version=1.2.3.4 p:AssemblyVersion=3.1.0 p:FileVersion=2.2 p:InformationalVersion=7.7 p:Version=6.0 p:AssemblyFileVersion=55",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
