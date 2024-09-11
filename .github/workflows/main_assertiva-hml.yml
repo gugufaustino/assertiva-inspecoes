@@ -16,16 +16,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build .\src\DifferencialApp.sln --configuration Release
+      - name: Calculate Build Version
+        id: version
+        run: |
+          # Calcula o número de commits para usar como versão
+          VERSION="1.1.$(git rev-list --count HEAD)"
+          echo "Build version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: dotnet build
+        run: dotnet build .\src\DifferencialApp.sln --configuration Release /p:Version=${{ env.VERSION }}
 
       - name: dotnet publish
-        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true
+        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true /p:Version=${{ env.VERSION }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
