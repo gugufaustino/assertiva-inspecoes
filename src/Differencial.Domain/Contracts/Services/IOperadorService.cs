@@ -32,5 +32,10 @@ namespace Differencial.Domain.Contracts.Services
         void ExcluirSolicitante(int[] id);
 
         Task<Operador> BuscarParaEditar(int id);
+
+        new IEnumerable<Operador> Listar(OperadorFilter filtro);
+
+
+        IEnumerable<Operador> ListarOperadorCadastro(OperadorFilter filtro);
     }
 }

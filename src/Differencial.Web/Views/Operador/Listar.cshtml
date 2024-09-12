@@ -41,17 +41,7 @@
                             {
                                 <div class="font-bold">Gerente</div>
                                 @*<strong>  &nbsp;</strong>*@
-                            }
-                            @if (item.IndVistoriador)
-                            {
-                                <div class="font-bold">Vistoriador</div>
-                                <strong>@(item.Endereco != null ? item.Endereco.NomeMunicipio : "")&nbsp;</strong>
-                            }
-                            @if (item.IndSolicitante && !item.Solicitante.IsNull())
-                            {
-                                <div class="font-bold">Solicitante</div>
-                                <strong>@(item.Solicitante.Seguradora != null ? item.Solicitante.Seguradora.NomeSeguradora : "")&nbsp;</strong>
-                            }
+                            } 
                             @if (item.IndFinanceiro)
                             {
                                 <div class="font-bold">Financeiro</div>
@@ -59,6 +49,16 @@
                             @if (item.IndAssessor)
                             {
                                 <div class="font-bold">Assessor</div>
+                            }
+                            @if (item.IndSolicitante && !item.Solicitante.IsNull())
+                            {
+                                <div class="font-bold">Solicitante</div>
+                                <strong>@(item.Solicitante.Seguradora != null ? item.Solicitante.Seguradora.NomeSeguradora : "")&nbsp;</strong>
+                            }
+                            @if (item.IndVistoriador)
+                            {
+                                <div class="font-bold">Vistoriador</div>
+                                
                             }
                         </a>
 

@@ -23,14 +23,14 @@ namespace Differencial.Repository.Repositories
         {
             return await _dbSet
                     .Include(i => i.Endereco)
-                    .Include(i => i.Vistoriador).ThenInclude(i=> i.EnderecoBase)
+                    .Include(i => i.Vistoriador).ThenInclude(i => i.EnderecoBase)
                     .FirstOrDefaultAsync(i => i.Id == id);
         }
         public async Task<Operador> BuscarParaEditarUpdate(int id)
         {
             return await _dbSet
                     .Include(i => i.Endereco)
-                    .Include(i => i.Vistoriador).ThenInclude(i=> i.EnderecoBase)
+                    .Include(i => i.Vistoriador).ThenInclude(i => i.EnderecoBase)
                     .Include(i => i.Solicitante)
                     .Include(i => i.Analista)
                     .FirstOrDefaultAsync(i => i.Id == id);
@@ -49,6 +49,20 @@ namespace Differencial.Repository.Repositories
 
         }
 
+
+        public IEnumerable<Operador> ListarOperadorCadastro(OperadorFilter filter)
+        {
+
+            var query = _db.Operador
+                        .Include(i => i.Endereco)
+                        .Include(i => i.Vistoriador).ThenInclude(i => i.EnderecoBase)
+                        .Where(o => o.Solicitante == null || o.Solicitante.TipoSolicitante == Domain.TipoSolicitanteEnum.AcessoAoSistema); 
+
+            this.AplicarFiltro(ref query, filter);
+            var lst = query.ToList();
+            return lst;
+
+        }
         public override IEnumerable<Operador> Where<F>(F filter)
         {
             var query = from operador in _db.Operador
@@ -107,6 +121,7 @@ namespace Differencial.Repository.Repositories
             // Filtro
             base.ApplyBasicFilter(ref query, ref filter);
         }
+
 
 
     }

@@ -59,6 +59,13 @@ namespace Differencial.Service.Services
                 return _operadorRepositorio.Listar(filtro);
             });
         }
+        public IEnumerable<Operador> ListarOperadorCadastro(OperadorFilter filtro)
+        {
+            return TryCatch(() =>
+            {
+                return _operadorRepositorio.ListarOperadorCadastro(filtro);
+            });
+        }
 
         public void Salvar(Operador entidade, IFormFile inputFoto)
         {

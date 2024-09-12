@@ -113,8 +113,21 @@
                             }
                             @if (usuario.IndFinanceiro)
                             {
-                                <li class="@Html.IsSelected(action: "FinanceiroReceber")"><a href="@Url.Action("FinanceiroReceber", "Dashboards")">Financeiro - Recebimentos</a></li>
-                                <li class="@Html.IsSelected(action: "FinanceiroPagar")"><a href="@Url.Action("FinanceiroPagar", "Dashboards")">Financeiro - Pagamentos</a></li>
+                               @*  <li class="@Html.IsSelected(action: "FinanceiroReceber")"><a href="@Url.Action("FinanceiroReceber", "Dashboards")">Financeiro - A Receber</a></li>
+                                <li class="@Html.IsSelected(action: "FinanceiroPagar")"><a href="@Url.Action("FinanceiroPagar", "Dashboards")">Financeiro - A Pagar</a></li> *@
+                                <li class="@Html.IsSelected(action: "FinanceiroReceber") @Html.IsSelected(action: "FinanceiroPagar")">
+                                    <a href="#">Financeiro <span class="fa arrow"></span> </a>
+                                    <ul class="nav nav-third-level">
+                                        <li class="@Html.IsSelected(action: "FinanceiroReceber")">
+                                            <a href="@Url.Action("FinanceiroReceber", "Dashboards")">A Receber</a>
+                                        </li>
+                                       @*  <li class="@Html.IsSelected(action: "FinanceiroPagar")">
+                                            <a href="@Url.Action("FinanceiroPagar", "Dashboards")">A Pagar</a>
+                                        </li>  *@
+                                    </ul>
+                                
+                                </li>
+
                             }
                             @if (usuario.IndSolicitante)
                             {

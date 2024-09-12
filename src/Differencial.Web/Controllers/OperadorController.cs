@@ -54,7 +54,7 @@ namespace Differencial.Web.Controllers
 
         public ActionResult Listar()
         {
-            var lstOperadores = _service.Listar(new OperadorFilter() { CampoOrdenacao = CampoOrdenacaoOperador.NomeOperador });
+            var lstOperadores = _service.ListarOperadorCadastro(new OperadorFilter() { CampoOrdenacao = CampoOrdenacaoOperador.NomeOperador });
 
             ViewBag.ConfiguracaoAplicativo = _configuracaoAplicativo;
 

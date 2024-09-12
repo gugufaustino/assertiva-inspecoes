@@ -10,8 +10,10 @@ namespace Differencial.Domain.Contracts.Repositories
 {
     public interface IOperadorRepository : IRepository<Operador>
     {
-       IEnumerable<Operador> Listar(OperadorFilter filter);
+       IEnumerable<Operador> ListarOperadorCadastro(OperadorFilter filter);
        Task<Operador> BuscarParaEditarView(int id);
        Task<Operador> BuscarParaEditarUpdate(int id);
+   
+        IEnumerable<Operador> Listar(OperadorFilter filter);
     }
 }
