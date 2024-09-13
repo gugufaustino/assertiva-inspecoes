@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
-using Dapper.FluentMap;
 using Differencial.Domain.Contracts.Entities;
 using Differencial.Domain.Contracts.Infra;
 using Differencial.Domain.Contracts.Repositories;
@@ -8,16 +7,15 @@ using Differencial.Domain.Contracts.Util;
 using Differencial.Domain.Filters;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Data;
 
 namespace Differencial.Queries
 {
-    public class QueriesBase<T, F> : IQueryBase<T, F>
+	public class QueriesBase<T, F> : IQueryBase<T, F>
         where T : class, IKeyId
         where F : Pagination, new()
     {
@@ -55,15 +53,15 @@ namespace Differencial.Queries
                    + @" /**orderby**/ ";
             #endregion
 
-            if (FluentMapper.EntityMaps.IsEmpty)
-            {
-                FluentMapper.Initialize(c =>
-                {
-                    //c.AddMap(new LivroDapperMap());
-                    //c.AddMap(new AutorDapperMap());
-                    //c.ForDommel();
-                });
-            }
+            //if (Dapper.EntityMaps.IsEmpty)
+            //{
+            //    FluentMapper.Initialize(c =>
+            //    {
+            //        //c.AddMap(new LivroDapperMap());
+            //        //c.AddMap(new AutorDapperMap());
+            //        //c.ForDommel();
+            //    });
+            //}
 
             SqlMapperExtensions.TableNameMapper = (T) =>  // do something here to pluralize the name of the type
             {

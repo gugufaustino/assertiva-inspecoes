@@ -59,8 +59,7 @@ namespace Differencial.Domain.Util.ExtensionMethods
                 Directory.CreateDirectory(path);
 
             using var file = new FileStream(Path.Combine(path, filename), FileMode.Create);
-            file.Seek(0L, SeekOrigin.Begin);
-			 
+            file.Seek(0L, SeekOrigin.Begin);			 
 
 			 await arquivo.CopyToAsync(file);
 
