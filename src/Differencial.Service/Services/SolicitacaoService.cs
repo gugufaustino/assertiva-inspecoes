@@ -182,7 +182,7 @@ namespace Differencial.Service.Services
                 return _solicitacaoRepositorio.Where(filtro).ToList();
             });
         }
-        public void Salvar(Solicitacao entidade)
+        public void SalvarSolicitacao(Solicitacao entidade)
         {
             TryCatch(() =>
             {
@@ -1047,5 +1047,10 @@ namespace Differencial.Service.Services
             return _solicitacaoRepositorio.Include(i => i.MovimentacaoProcesso).ThenInclude(e => e.OperadorOrigem)
                                           .GetById(id);
         }
-    }
+
+		public void Salvar(Solicitacao entidade)
+		{
+			throw new NotImplementedException(); // por conta da impelemnetãção da IDashboar, q deve ser refatorada e separada desssas implementaçoes aqui
+		}
+	}
 }

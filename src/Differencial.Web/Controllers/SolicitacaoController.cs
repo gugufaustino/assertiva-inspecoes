@@ -213,8 +213,8 @@ namespace WEB.Controllers
             }
             else
             {
-                _solicitacaoService.Salvar(entidade);
-                //Commit();
+                _solicitacaoService.SalvarSolicitacao(entidade);
+                 Commit();
                 return base.RetornoSalvar(retornosalvar, entidade.Id);
             }
 
@@ -232,7 +232,7 @@ namespace WEB.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _solicitacaoService.Salvar(entidade);
+                    _solicitacaoService.SalvarSolicitacao(entidade);
                     Commit();
                     return RedirectToAction("Editar", new { Id = entidade.Id });
                 }

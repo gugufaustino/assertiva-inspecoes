@@ -3,11 +3,11 @@ using Differencial.Domain.Filters;
 using Differencial.Domain.Queries.Dao;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 namespace Differencial.Domain.Contracts.Services
 {
 
-    public interface ISolicitacaoService : IBaseService<Solicitacao, SolicitacaoFilter>
+	public interface ISolicitacaoService //: IBaseService<Solicitacao, SolicitacaoFilter>
     {
         void SalvarAtividadeDefinirVistoriador(int id, int idVistoriador, string txtJustificativaVistoriadorDefinido);
         void SalvarAtividadeCroqui(int id, IFormFile arquivocroquie, TipoArquivoAnexoEnum tipoArquivoAnexo);
@@ -38,5 +38,15 @@ namespace Differencial.Domain.Contracts.Services
         void CobrarVistoria( int usuarioServiceId);
         Solicitacao BuscarSolicitacaoEndereco(int id);
         Solicitacao BuscarComMovimento(int id);
-    }
+
+		void SalvarSolicitacao(Solicitacao entidade);
+		Solicitacao Buscar(int id);
+
+		IEnumerable<Solicitacao> Listar(SolicitacaoFilter filtro); 
+
+		void Excluir(int id);
+
+		void Excluir(int[] ids);
+
+	}
 }
