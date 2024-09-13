@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 
 namespace Differencial.Web
@@ -49,7 +52,12 @@ namespace Differencial.Web
             { 
                 mvcBuilder.AddRazorRuntimeCompilation();
             }
-     
+
+            services.AddLogging(builder => builder.AddConsole());
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+
+
+
 
             services.AddDbContext<DifferencialContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DifferencialConnection")));
 

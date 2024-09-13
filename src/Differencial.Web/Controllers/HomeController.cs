@@ -8,6 +8,7 @@ using Differencial.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -23,30 +24,41 @@ namespace Differencial.Web.Controllers
         private readonly IArquivoAnexoService _arquivoService;
         private readonly IEnderecoService _enderecoService;
         private readonly IHttpContextAccessor httpContextAccessor;
-
+        private readonly ILogger<HomeController> _logger;
 
         public HomeController(
             IOperadorService operadorService,
             IUsuarioService usuario,
-            IArquivoAnexoService arquivoService
-            , IEnderecoService enderecoService,
+            IArquivoAnexoService arquivoService,
+            IEnderecoService enderecoService,
             ISolicitacaoService solicitacaoServ,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, ILogger<HomeController> logger)
         {
             _operadorService = operadorService;
             _usuarioService = usuario;
             _arquivoService = arquivoService;
             _enderecoService = enderecoService;
             this.httpContextAccessor = httpContextAccessor;
+            _logger = logger;
 
+            _logger.LogInformation("Construtor da classe: ola mundo do log");
 
-            //solicitacaoServ.BuscarSolicitacaoEndereco(1);
 
         }
-
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Index()
         {
+
+
+            _logger.LogInformation("No método qualquer: ola mundo novamente ");
+
+
+
+
+
+
+
             if (_usuarioService.Autenticado())
                 return Redirect(@"~/Home/Inicio");
 

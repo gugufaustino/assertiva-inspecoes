@@ -40,7 +40,7 @@ namespace Differencial.Service.Services
             });
         }
 
-        public async void Salvar(Endereco entidade)
+        public   void Salvar(Endereco entidade)
         {
 
 
@@ -61,7 +61,7 @@ namespace Differencial.Service.Services
                 _enderecoRepositorio.Add(entidade);
             else
             {
-                Endereco oldEntidade = await _enderecoRepositorio.FindAsync(entidade.Id);
+                Endereco oldEntidade =   _enderecoRepositorio.Find(entidade.Id);
                 oldEntidade.Logradouro = entidade.Logradouro;
                 oldEntidade.Bairro = entidade.Bairro;
                 oldEntidade.Cep = entidade.Cep;

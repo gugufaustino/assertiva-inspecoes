@@ -11,8 +11,8 @@ namespace Differencial.Domain.Contracts.Services
     {
         IEnumerable<OperadorDistancia> ListarOperadorDistanciaPorProximidadeGeo(string siglaUf, string municipio, int idProduto, int idSolicitacao, int? IdContratoLancamentoValor, double latitude, double longitude);
 
-        void Salvar(Operador entidade, IFormFile inputFoto); 
-
+		Task Salvar(Operador entidade, IFormFile inputFoto); 
+        
         OperadorDistancia BuscarOperadorDistanciaSolicitacao(int idVistoriador, int idSolicitacao, string siglaUf, string municipio, double latDestino, double longDestino, int idProduto, int? IdContratoLancamentoValor);
 
         Operador BuscarPorToken(string tokenTransacao);

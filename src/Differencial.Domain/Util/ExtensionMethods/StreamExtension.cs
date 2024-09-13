@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Differencial.Domain.Util.ExtensionMethods
 {
@@ -52,14 +53,16 @@ namespace Differencial.Domain.Util.ExtensionMethods
         }
 
 
-        public static void Salvar(this IFormFile arquivo, string path, string filename)
+        public static async Task Salvar(this IFormFile arquivo, string path, string filename)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
             using var file = new FileStream(Path.Combine(path, filename), FileMode.Create);
             file.Seek(0L, SeekOrigin.Begin);
-            arquivo.CopyToAsync(file);
+			 
+
+			 await arquivo.CopyToAsync(file);
 
         }
     }

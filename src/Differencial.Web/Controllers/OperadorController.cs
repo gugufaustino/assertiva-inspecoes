@@ -122,16 +122,15 @@ namespace Differencial.Web.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
-        public ActionResult Editar(RetornoSalvarEnum retornosalvar, Operador entidade, IFormFile inputFoto)
+        public async Task<ActionResult> Editar(RetornoSalvarEnum retornosalvar, Operador entidade, IFormFile inputFoto)
         {
             List<SelectListItem> lstSeguradora = _seguradoraService.Listar(new SeguradoraFilter()).ToList().ToSelectList(i => i.Id, i => i.NomeSeguradora, entidade.Solicitante != null ? (object)entidade.Solicitante.IdSeguradora : null).ToList();
             ViewBag.lstSeguradora = lstSeguradora;
 
-            _service.Salvar(entidade, inputFoto);
+            await _service.Salvar(entidade, inputFoto);
             Commit();
-            return base.RetornoSalvar(retornosalvar, entidade.Id);
-
-            //return View(entidade);
+            return base.RetornoSalvar(retornosalvar, entidade.Id); 
+             
         }
 
 
