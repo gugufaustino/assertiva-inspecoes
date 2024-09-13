@@ -20,6 +20,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
+        
+      - name: Clear NuGet Cache
+        run: dotnet nuget locals all --clear
+
+      - name: NuGet Restore
+        run: dotnet restore .\src\DifferencialApp.sln
 
       - name: Calculate Build Version
         id: version
