@@ -120,7 +120,7 @@ namespace WEB.Controllers
         [HttpGet]
         public ActionResult Incluir()
         {
-             
+
             return View();
         }
 
@@ -136,7 +136,7 @@ namespace WEB.Controllers
             return RedirectToAction("Editar", new { Id = Id });
         }
 
-        [HttpGet]      
+        [HttpGet]
         public ActionResult Editar(int? Id)
         {
             ViewBag.OrigemForm = "Editar";
@@ -168,7 +168,7 @@ namespace WEB.Controllers
 
         private async Task<string> ApropriarVistoriadorPorTokenAsync(int? Id, string acao, string token)
         {
-            
+
             if (!token.IsNullOrEmpty())
             {
                 Operador op;
@@ -179,7 +179,7 @@ namespace WEB.Controllers
                     await _usuario.Autenticar(op);
 
                 if (!_usuario.Autenticado())
-                  return "~/Login";
+                    return "~/Login";
 
                 Solicitacao solicitacao = _solicitacaoRepository.GetById((int)Id);
                 if (solicitacao.IdVistoriador != op.Id)
@@ -198,10 +198,10 @@ namespace WEB.Controllers
         }
 
         [HttpPost]
-        //[ServiceFilter(typeof(TransactionFilter))]
         [Validacao(IgnorarId = true)]
-        [ValidationExceptionFilter]
-        public ActionResult Editar(RetornoSalvarEnum retornosalvar, Solicitacao entidade)
+      
+        [ServiceFilter(typeof(TransactionFilter))]
+        public async Task<ActionResult> EditarAsync(RetornoSalvarEnum retornosalvar, Solicitacao entidade)
         {
 
             CarregaDropDown(entidade);
@@ -213,17 +213,17 @@ namespace WEB.Controllers
             }
             else
             {
-                _solicitacaoService.SalvarSolicitacao(entidade);
-                 Commit();
+                await _solicitacaoService.SalvarSolicitacao(entidade);
+                Commit();
                 return base.RetornoSalvar(retornosalvar, entidade.Id);
             }
 
             return View(entidade);
         }
         [HttpPost]
-        [ServiceFilter(typeof(TransactionFilter))]
         [Validacao(IgnorarId = true)]
-        [ValidationExceptionFilter]
+         
+        [ServiceFilter(typeof(TransactionFilter))]
         public ActionResult Inserir(Solicitacao entidade)
         {
             try

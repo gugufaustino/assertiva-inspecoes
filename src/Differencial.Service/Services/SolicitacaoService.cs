@@ -182,22 +182,25 @@ namespace Differencial.Service.Services
                 return _solicitacaoRepositorio.Where(filtro).ToList();
             });
         }
-        public void SalvarSolicitacao(Solicitacao entidade)
+        public async Task SalvarSolicitacao(Solicitacao entidade)
         {
-            TryCatch(() =>
-            {
-                entidade.Cobertura = entidade.Cobertura.Where(c => c.NomeCobertura != null).ToList();
-                entidade.Validate();
-                RN_ValidarExisteContratoNoProduto(entidade.IdProduto);
-                _contratoService.ValidarContratoLancamentoValorParametro(entidade, TipoContratoParametroEnum.ValorRisco);
-                int? idContratoLancamentoValor = null;
-                if (_contratoService.IndicaContratoLancamentoValorRisco(entidade, out idContratoLancamentoValor))
-                    entidade.IdContratoLancamentoValor = idContratoLancamentoValor;
-                if (entidade.Id == 0)
-                    Inserir(entidade);
-                else
-                    Editar(entidade);
-            });
+           await TryCatchAsync(() => {
+               if (entidade.CodSistemaLegado == 999)
+                   throw new ValidationException("oloko ");
+
+               entidade.Cobertura = entidade.Cobertura.Where(c => c.NomeCobertura != null).ToList();
+               entidade.Validate();
+               RN_ValidarExisteContratoNoProduto(entidade.IdProduto);
+               _contratoService.ValidarContratoLancamentoValorParametro(entidade, TipoContratoParametroEnum.ValorRisco);
+               int? idContratoLancamentoValor = null;
+               if (_contratoService.IndicaContratoLancamentoValorRisco(entidade, out idContratoLancamentoValor))
+                   entidade.IdContratoLancamentoValor = idContratoLancamentoValor;
+               if (entidade.Id == 0)
+                   Inserir(entidade);
+               else
+                   Editar(entidade);
+               return Task.CompletedTask;
+           });
         }
         public void Excluir(int id)
         {
@@ -374,9 +377,9 @@ namespace Differencial.Service.Services
         }
         #endregion Lancamentos Financeiros
         #region WorkFlow Ações
-        public Task Enviar(int Id, string textoMovimentacao, IFormFile arquivo)
+        public async Task Enviar(int Id, string textoMovimentacao, IFormFile arquivo)
         {
-            return TryCatch(async () =>
+            await TryCatch(async () =>
               {
                   var solicitacao = await _solicitacaoRepositorio.BuscarParaEnviar(Id);
                   var movimentacaoRealizada = _workflow.Enviar(solicitacao, textoMovimentacao);

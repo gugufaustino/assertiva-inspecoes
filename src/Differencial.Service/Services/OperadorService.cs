@@ -77,7 +77,7 @@ namespace Differencial.Service.Services
 				entidade.Telefone = entidade.Telefone.IsNullOrEmpty() ? entidade.Telefone : entidade.Telefone.Trim();
 				#endregion  Tratamento Mínimo de Dados
 
-				entidade.Validate();
+                entidade.Validate();
 				RnEmailDuplicado(entidade.Id, entidade.Email);
 
 				if (entidade.Id == 0)

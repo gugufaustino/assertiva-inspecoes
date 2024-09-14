@@ -4,6 +4,7 @@ using Differencial.Domain.Queries.Dao;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace Differencial.Domain.Contracts.Services
 {
 
@@ -39,7 +40,7 @@ namespace Differencial.Domain.Contracts.Services
         Solicitacao BuscarSolicitacaoEndereco(int id);
         Solicitacao BuscarComMovimento(int id);
 
-		void SalvarSolicitacao(Solicitacao entidade);
+        Task SalvarSolicitacao(Solicitacao entidade);
 		Solicitacao Buscar(int id);
 
 		IEnumerable<Solicitacao> Listar(SolicitacaoFilter filtro); 
