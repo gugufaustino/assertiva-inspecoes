@@ -1,5 +1,7 @@
 ﻿using Differencial.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Differencial.Repository.Context
@@ -92,10 +94,12 @@ namespace Differencial.Repository.Context
             base.OnModelCreating(modelBuilder);
 
         }
-        public void SaveChanges(int usuarioaplicacao)
+        public void AppSaveChanges(int usuarioaplicacao)
         {
-            SetUserContext(usuarioaplicacao);
-            this.SaveChanges();
+ 
+                SetUserContext(usuarioaplicacao);
+                this.SaveChanges();
+           
         }
 
         #region Métodos auxiliares

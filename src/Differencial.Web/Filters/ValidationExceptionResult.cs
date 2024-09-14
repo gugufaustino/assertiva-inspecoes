@@ -1,5 +1,5 @@
-﻿using Differencial.Domain.Exceptions;
-using Differencial.Infra;
+﻿using Differencial.Domain.Contracts.Infra;
+using Differencial.Domain.Exceptions;
 using Differencial.Web.DTO;
 using Differencial.Web.Generico;
 using Microsoft.AspNetCore.Mvc;

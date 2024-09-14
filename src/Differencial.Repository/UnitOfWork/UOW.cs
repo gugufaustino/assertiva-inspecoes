@@ -1,29 +1,32 @@
 ﻿using Differencial.Domain.Contracts.Infra;
 using Differencial.Domain.UOW;
 using Differencial.Repository.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
-//using Microsoft.EntityFrameworkCore;
 
-namespace Differencial.Repository
+using System.ComponentModel.DataAnnotations;
+
+namespace Differencial.Repository.UnitOfWork
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-     
+
         private readonly IDifferencialContext _db;
-     
+        private readonly ILog Log;
         private IDbContextTransaction _transaction;
         private bool disposed = false;
-        
 
-        public UnitOfWork(IDbContextFactory dbContextFactory, IUsuarioService usuario)
+
+        public UnitOfWork(IDbContextFactory dbContextFactory, IUsuarioService usuario, ILog log)
         {
             _db = dbContextFactory.GetDbContext();
+            this.Log = log;
         }
 
         public IDbContextTransaction BeginTransaction()
         {
-            
+
             //Entity não suporta transações paralelas
             if (_transaction != null || _db.Database.CurrentTransaction != null)
             {
@@ -33,11 +36,11 @@ namespace Differencial.Repository
                 throw new NotSupportedException("transactions duplicada");
 #endif
             }
-            
+
             _transaction = _db.Database.BeginTransaction();
             return _transaction;
         }
-        
+
         public void RollbackTransaction()
         {
             if (_transaction != null)
@@ -50,23 +53,45 @@ namespace Differencial.Repository
                 _transaction.Commit();
         }
 
-        public void SaveChanges(int usuarioaplicacao)
+        public void AppSaveChanges(int usuarioaplicacao)
         {
-            _db.SaveChanges(usuarioaplicacao);
+            try
+            {
+                _db.AppSaveChanges(usuarioaplicacao);
+
+            }
+            catch (DbUpdateException dbUpEx)
+            {
+                if (dbUpEx.InnerException != null)
+                {
+                    // Extraindo mensagem de erro
+                    var message = dbUpEx.InnerException.Message;
+                    Log.Registrar(dbUpEx, message, TipoLogEnum.Erro);
+                    throw new Domain.Exceptions.ValidationException(message);
+                }
+                else
+                    throw;
+            }
+            catch (ValidationException validationEx)
+            {
+                var validationErrors = string.Join(Environment.NewLine, validationEx.ValidationResult.MemberNames);
+                Log.Registrar(validationEx, validationErrors, TipoLogEnum.Erro);
+                throw new Domain.Exceptions.ValidationException(validationErrors);
+            }
         }
 
-        public IDbContextTransaction GetTransactionAtiva()
+        public IDbContextTransaction GetTransactionAlive()
         {
             return _transaction;
         }
 
         #region Dispose
 
-     
+
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
@@ -75,7 +100,7 @@ namespace Differencial.Repository
                     _db.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
         public void Dispose()
         {

@@ -151,7 +151,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoService.Excluir( Id);
-            Commit();
+            AppSaveChanges();
             var lstSolicitacao = _dashboardsService.ListarSolicitacoesGerencia();
             var result = MontarListaSolicitacaoGerente(lstSolicitacao);
             return ResponseResult(true, content: result, message: MensagensSucesso.SucessoExcluir);
@@ -163,7 +163,7 @@ namespace WEB.Controllers
         public JsonResult ApropriarSolicitacao(int Id)
         {
             _solicitacaoWorkFlowService.Apropriar(Id);
-            Commit();
+            AppSaveChanges();
             var lstSolicitacao = _dashboardsService.ListarSolicitacoesAnalista();
             var result = MontarListaSolicitacaoAnalise(lstSolicitacao);
             return ResponseResult(true, content: result);

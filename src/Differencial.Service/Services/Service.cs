@@ -67,7 +67,7 @@ namespace Differencial.Service.Services
 
 		protected void SaveChange(int idUsuario)
 		{
-			_uow.SaveChanges(idUsuario);
+			_uow.AppSaveChanges(idUsuario);
 		}
 
 

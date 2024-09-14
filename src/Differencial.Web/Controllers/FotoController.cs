@@ -56,7 +56,7 @@ namespace WEB.Controllers
 
             };
             foto.GuidArquivo = _arquivoAnexoService.EnviarArquivoSolicitacao(idSolicitacao, TipoArquivoAnexoEnum.QuadroFotos, arquivo, dataModificacao, index);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, content: MontarArquivoAnexo(foto, false));
 
         }
@@ -67,7 +67,7 @@ namespace WEB.Controllers
         {
              
             _laudoFotoService.ExcluirFoto(idSolicitacao, new Guid(guidFoto));
-            Commit();
+            AppSaveChanges();
 
             return ResponseResult(true);
         }
@@ -114,7 +114,7 @@ namespace WEB.Controllers
             {
                 Dictionary<int, int> dicQuadroFotoPosicao = quadroFotoModel.ToDictionary(i => i.Id, e => e.QuadroFotosPosicao);
                 _laudoFotoService.SalvarQuadroFotoPosicao(id, dicQuadroFotoPosicao);
-                Commit();
+                AppSaveChanges();
             }
 
             return ResponseResult(true);
@@ -127,7 +127,7 @@ namespace WEB.Controllers
             Dictionary<int, string> dicArquivosNomes = quadroFotoModel.ToDictionary(i => i.Id, e => e.ArquivoNome);
 
             var lstFotos = _arquivoAnexoService.SalvarArquivoSolicitacaoRenomear(id, dicArquivosNomes);
-            Commit();
+            AppSaveChanges();
 
             var lstResult = lstFotos.Select(foto => MontarArquivoAnexo(foto)).ToList();
 
@@ -140,7 +140,7 @@ namespace WEB.Controllers
         public ActionResult SalvarQuadroFotosRemover(int Id, int IdSolicitacao)
         {
             _laudoFotoService.SalvarArquivoSolicitacaoQuadroFotosRemover(Id, IdSolicitacao);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true);
         }
 

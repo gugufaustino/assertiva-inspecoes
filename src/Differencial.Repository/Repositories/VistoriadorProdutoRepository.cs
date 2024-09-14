@@ -3,6 +3,7 @@ using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Repository.Context;
+using Differencial.Repository.Repositories.Base;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
+using Differencial.Repository.Repositories.Base;
 
 namespace Differencial.Repository.Repositories
 {

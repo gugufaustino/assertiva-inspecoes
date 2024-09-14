@@ -74,7 +74,7 @@ namespace Differencial.Web.Controllers
 
 
             _service.Salvar(model);
-            Commit();
+            AppSaveChanges();
 
             return base.RetornoSalvar(retornosalvar, model.Id);
 
@@ -89,7 +89,7 @@ namespace Differencial.Web.Controllers
                 _service.Excluir(item);
             }
 
-            Commit();
+            AppSaveChanges();
 
             return RedirectToAction("Listar", new { msg = Differencial.Domain.Resources.MensagensSucesso.SucessoExcluir });
         }

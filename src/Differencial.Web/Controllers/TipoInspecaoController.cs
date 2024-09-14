@@ -47,7 +47,7 @@ namespace Differencial.Web.Controllers
             if (ModelState.IsValid)
             {
                 _service.Salvar(entidade);
-                Commit();
+                AppSaveChanges();
 
                 return base.RetornoSalvar(retornosalvar, entidade.Id);
             }
@@ -64,7 +64,7 @@ namespace Differencial.Web.Controllers
 
             _service.Excluir(Id);
 
-            Commit();
+            AppSaveChanges();
 
             return RetornoSalvar(RetornoSalvarEnum.Listar, mensagemSucesso: MensagensSucesso.SucessoExcluir);
         }

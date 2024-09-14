@@ -4,13 +4,14 @@ using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Domain.Util.ExtensionMethods;
 using Differencial.Repository.Context;
+using Differencial.Repository.Repositories.Base;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Differencial.Repository.Repositories
 {
-	public class CoberturaRepository : RepositoryBase<Cobertura>, ICoberturaRepository
+    public class CoberturaRepository : RepositoryBase<Cobertura>, ICoberturaRepository
 	{
 		public CoberturaRepository(IDbContextFactory dbContextFactory, IUsuarioService usuario)
             : base(dbContextFactory, usuario)

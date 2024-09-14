@@ -1,6 +1,5 @@
-﻿using Differencial.Domain.Contracts.Util;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Differencial.Domain.Contracts.Infra;
+using Differencial.Domain.Contracts.Util;
 using System;
 using System.IO;
 namespace Differencial.Infra
@@ -39,16 +38,7 @@ namespace Differencial.Infra
                 + mensagem + Environment.NewLine
                 + SEPARADOR + Environment.NewLine + Environment.NewLine);
         }
-    }
-
-    public enum TipoLogEnum
-    {
-        Erro,
-        Informacao,
-        RegraNegocio
-
-    }
-
+    } 
 
     public class Log : ILog
     {

@@ -5,7 +5,7 @@ namespace Differencial.Repository.Context
 {
     public interface IDifferencialContext: IDisposable
     {
-        void SaveChanges(int usuarioaplicacao);
+        void AppSaveChanges(int usuarioaplicacao);
 
         DatabaseFacade Database { get; }
     }

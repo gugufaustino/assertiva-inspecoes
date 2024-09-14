@@ -128,7 +128,7 @@ namespace Differencial.Web.Controllers
             ViewBag.lstSeguradora = lstSeguradora;
 
             await _service.Salvar(entidade, inputFoto);
-            Commit();
+            AppSaveChanges();
             return base.RetornoSalvar(retornosalvar, entidade.Id); 
              
         }
@@ -141,7 +141,7 @@ namespace Differencial.Web.Controllers
         {
 
             _service.Excluir(Id);
-            Commit();
+            AppSaveChanges();
 
             return RedirectToAction("Listar", new { msg = "Excluído com sucesso!" });
         }
@@ -153,7 +153,7 @@ namespace Differencial.Web.Controllers
         {
 
             _vistoriadorProdutoService.Ativar(Ids);
-            Commit();
+            AppSaveChanges();
             var result = MontarListaDiponivelParaVistoriador(_produtoService.ListarDiponivelParaVistoriador(IdVistoriador));
             return ResponseResult(true, content: result);
 
@@ -165,7 +165,7 @@ namespace Differencial.Web.Controllers
         public JsonResult Desativar(int IdVistoriador, int[] Ids)
         {
             _vistoriadorProdutoService.Desativar(Ids);
-            Commit();
+            AppSaveChanges();
             var result = MontarListaDiponivelParaVistoriador(_produtoService.ListarDiponivelParaVistoriador(IdVistoriador));
             return ResponseResult(true, content: result);
 
@@ -177,7 +177,7 @@ namespace Differencial.Web.Controllers
         {
 
             _vistoriadorProdutoService.SalvarValoresVistoriadorProduto(IdVistoriador, arrVistoriadorProduto, VlrQuilometroRodado, VlrPagamentoVistoria);
-            Commit();
+            AppSaveChanges();
             var result = MontarListaDiponivelParaVistoriador(_produtoService.ListarDiponivelParaVistoriador(IdVistoriador));
 
             return ResponseResult(true, content: result);
@@ -302,7 +302,7 @@ namespace Differencial.Web.Controllers
         public JsonResult GerarAcesso(int Id)
         {
             _service.SalvarGerarAcesso(Id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, message: MensagensSucesso.OperadorGerarAcesso);
 
         }
@@ -327,7 +327,7 @@ namespace Differencial.Web.Controllers
         public JsonResult ExcluirTodasMinhasNotificacoes()
         {
             _notificacaoService.ExcluirTodasMinhas();
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true);
         }
         

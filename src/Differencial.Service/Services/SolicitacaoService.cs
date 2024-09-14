@@ -186,7 +186,7 @@ namespace Differencial.Service.Services
         {
            await TryCatchAsync(() => {
                if (entidade.CodSistemaLegado == 999)
-                   throw new ValidationException("oloko ");
+                   throw new InvalidCastException("oloko ");
 
                entidade.Cobertura = entidade.Cobertura.Where(c => c.NomeCobertura != null).ToList();
                entidade.Validate();

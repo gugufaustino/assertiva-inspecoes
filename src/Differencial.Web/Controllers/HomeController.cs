@@ -172,7 +172,7 @@ namespace Differencial.Web.Controllers
 
             _operadorService.GerarNovoAcesso(usuario);
             var op = _operadorService.BuscarPorUsuario(usuario);
-            Commit(op.Id);
+            AppSaveChanges(op.Id);
             return ResponseResult(true, message: MensagensSucesso.EsqueceuSenhaSucesso.Formata(usuario.ToLower()));
         }
 
@@ -192,7 +192,7 @@ namespace Differencial.Web.Controllers
         public Task<ActionResult> AtivarAcesso(int id, string token, string novasenha)
         {
             _operadorService.SalvarMudarSenha(id, token, novasenha);
-            Commit(id);
+            AppSaveChanges(id);
             return Login(_operadorService.Buscar(id).Email, novasenha, string.Empty);
         }
 

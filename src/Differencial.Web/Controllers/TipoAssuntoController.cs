@@ -69,7 +69,7 @@ namespace WEB.Controllers
             if (ModelState.IsValid)
             {
                 _service.Salvar(model);
-                Commit();
+                AppSaveChanges();
                 return RetornoSalvar(retornosalvar, model.Id);
             }
             ViewBag.lstLog = _serviceLogAuditoria.Listar(model.Id, model);
@@ -82,7 +82,7 @@ namespace WEB.Controllers
         {
 
             _service.Excluir(Id);
-            Commit();
+            AppSaveChanges();
             var result = MontarLista(Lista());
             return ResponseResult(true, content: result, message: MensagensSucesso.SucessoExcluir);
         }

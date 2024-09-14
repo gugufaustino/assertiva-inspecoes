@@ -10,6 +10,7 @@ using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Differencial.Domain.Contracts.Entities;
+using Differencial.Repository.Repositories.Base;
 
 namespace Differencial.Repository.Repositories
 {

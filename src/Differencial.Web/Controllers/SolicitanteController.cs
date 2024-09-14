@@ -47,7 +47,7 @@ namespace Differencial.Web.Controllers
         public JsonResult Editar(Operador entidade, int idSeguradora)
         {
             _service.SalvarSolicitanteSemAcesso(entidade, idSeguradora);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, content: entidade.Id, message: MensagensSucesso.SucessoSalvar);
         }
 
@@ -56,7 +56,7 @@ namespace Differencial.Web.Controllers
         public JsonResult Excluir(int[] Id)
         {
             _service.ExcluirSolicitante(Id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, message: MensagensSucesso.SucessoExcluir);
         }
 

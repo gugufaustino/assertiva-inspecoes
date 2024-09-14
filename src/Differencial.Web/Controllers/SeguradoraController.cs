@@ -56,7 +56,7 @@ namespace Differencial.Web.Controllers
 
                 _service.Salvar(model);
 
-                Commit();
+                AppSaveChanges();
                 return RetornoSalvar(retornosalvar, model.Id);
 
             }
@@ -69,7 +69,7 @@ namespace Differencial.Web.Controllers
         public ActionResult Excluir(int[] Id)
         {
             _service.Excluir(Id);
-            Commit();
+            AppSaveChanges();
             return base.RetornoSalvar(RetornoSalvarEnum.Listar, 0, Differencial.Domain.Resources.MensagensSucesso.SucessoExcluir);
 
         }
@@ -134,7 +134,7 @@ namespace Differencial.Web.Controllers
         public ActionResult EditarFilial(int idSeguradora, Filial entidade)
         {
             _serviceFilial.Salvar(entidade);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, content: entidade.Id, message: MensagensSucesso.SucessoSalvar);
         }
 
@@ -143,7 +143,7 @@ namespace Differencial.Web.Controllers
         public ActionResult ExcluirFilial(int[] Id)
         {
             _serviceFilial.Excluir(Id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, message: MensagensSucesso.SucessoExcluir);
         }
 

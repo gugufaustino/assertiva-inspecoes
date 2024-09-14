@@ -1,6 +1,6 @@
-﻿using Differencial.Domain.Exceptions;
+﻿using Differencial.Domain.Contracts.Infra;
+using Differencial.Domain.Exceptions;
 using Differencial.Domain.Util.ExtensionMethods;
-using Differencial.Infra;
 using Differencial.Web.DTO;
 using Differencial.Web.Filters;
 using Differencial.Web.Generico;
@@ -21,23 +21,31 @@ namespace Differencial.Web.Controllers
     {
 
         protected ILog Log => this.HttpContext.RequestServices.GetService(typeof(ILog)) as ILog;
-        /// <summary>
-        /// Pega a transação atual do contexto e tenta salvar as alterações no banco
-        /// </summary>
-        protected void Commit()
+
+
+
+
+        #region Methods that Save Operations
+         
+        protected void AppSaveChanges()
         {            
-            this.CommitTransaction(UtilWeb.UsuarioLogado.Id);
+            this.UnitOfWorkSaveChanges(UtilWeb.UsuarioLogado.Id);
         }
-
-        /// <summary>
-        /// Pega a transação atual do contexto e tenta salvar as alterações no banco
-        /// </summary>
-        /// 
-        protected void Commit(int IdOperador)
+ 
+        protected void AppSaveChanges(int IdOperador)
         {
-            this.CommitTransaction(IdOperador);
+            this.UnitOfWorkSaveChanges(IdOperador);
+        }
+         
+        private void UnitOfWorkSaveChanges(int usuarioaplicacao)
+        {
+            Domain.UOW.IUnitOfWork unitOfWork = (Domain.UOW.IUnitOfWork)HttpContext.RequestServices.GetService(typeof(Domain.UOW.IUnitOfWork));
+
+            unitOfWork.AppSaveChanges(usuarioaplicacao);
+            
         }
 
+        #endregion
 
 
         /// <summary>
@@ -101,63 +109,7 @@ namespace Differencial.Web.Controllers
             return jsonResult;
         }
 
-   
 
-        #region Métodos auxiliares
-
-        private void CommitTransaction(int usuarioaplicacao)
-        {
-            Domain.UOW.IUnitOfWork unitOfWork = (Domain.UOW.IUnitOfWork)HttpContext.RequestServices.GetService(typeof(Domain.UOW.IUnitOfWork));
-
-            try
-            {
-                unitOfWork.SaveChanges(usuarioaplicacao);
-            }
-            //catch (DbEntityValidationException dbEx)
-            //{
-            //    // temporario, ainda emconstrução do fw
-            //    var strProp = string.Empty;
-            //    foreach (var validationErrors in dbEx.EntityValidationErrors)
-            //    {
-            //        foreach (var validationError in validationErrors.ValidationErrors)
-            //        {
-            //            strProp += String.Format("Entity:{0} Property: {1} Error: {2}",
-            //                                    validationErrors.Entry.Entity.GetType().FullName,
-            //                                    validationError.PropertyName,
-            //                                    validationError.ErrorMessage);
-
-
-            //            Log.Registrar(dbEx, strProp, TipoLogEnum.Erro);
-            //        }
-            //    }
-            //    throw new DbEntityValidationException(strProp, dbEx);
-
-            //}
-            //catch (DbUpdateException dbUpEx)
-            //{
-            //    if (dbUpEx.InnerException.InnerException != null)
-            //    {
-            //        var mens = dbUpEx.InnerException.InnerException.Message;
-            //        foreach (var entityset in ((UpdateException)dbUpEx.InnerException).StateEntries)
-            //        {
-            //            mens += Environment.NewLine + entityset.EntitySet.Name;
-            //        }
-
-            //        Log.Registrar(dbUpEx, mens, TipoLogEnum.Erro);
-            //        throw new DbUpdateException(mens, dbUpEx);
-            //    }
-
-            //    Log.Registrar(dbUpEx, TipoLogEnum.Erro);
-            //    throw;
-            //}
-            catch (Exception ex)
-            {
-                Log.Registrar(ex, TipoLogEnum.Erro);
-                throw;
-            }
-        }
-
-        #endregion
 
         #region "Sobreescrita do JsonResult.Json"
 

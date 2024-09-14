@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Differencial.Repository
+namespace Differencial.Repository.Repositories.Base
 {
     public static class RepositoryQueryableExtensions
     {

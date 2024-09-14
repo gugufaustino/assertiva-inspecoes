@@ -12,7 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Differencial.Repository.Repositories
+namespace Differencial.Repository.Repositories.Base
 {
     public class RepositoryBase<T> : IRepository<T>
         where T : class, IEntity
@@ -89,7 +89,7 @@ namespace Differencial.Repository.Repositories
 
         public void Delete(int[] ids)
         {
-            var entity = _dbSet.Where<T>(x => ids.Contains(x.Id)).AsEnumerable().ToList();
+            var entity = _dbSet.Where(x => ids.Contains(x.Id)).AsEnumerable().ToList();
             _dbSet.RemoveRange(entity);
 
         }
@@ -184,7 +184,7 @@ namespace Differencial.Repository.Repositories
                     _db.Dispose();
                 }
             }
-            this.disposed = true;
+            disposed = true;
         }
 
         public void Dispose()
@@ -193,7 +193,7 @@ namespace Differencial.Repository.Repositories
             GC.SuppressFinalize(this);
         }
 
-  
+
     }
 
 

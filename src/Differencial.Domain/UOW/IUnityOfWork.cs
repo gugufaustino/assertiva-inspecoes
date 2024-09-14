@@ -9,7 +9,7 @@ namespace Differencial.Domain.UOW
         IDbContextTransaction BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction();
-        void SaveChanges(int usuarioaplicacao);
-        IDbContextTransaction GetTransactionAtiva();
+        void AppSaveChanges(int usuarioaplicacao);
+        IDbContextTransaction GetTransactionAlive();
     }
 }

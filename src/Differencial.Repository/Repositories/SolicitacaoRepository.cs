@@ -10,6 +10,7 @@ using Differencial.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Differencial.Repository.Repositories.Base;
 
 namespace Differencial.Repository.Repositories
 {

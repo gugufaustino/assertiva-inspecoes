@@ -4,6 +4,7 @@ using Differencial.Domain.Entities;
 using Differencial.Domain.EntitiesDTO;
 using Differencial.Domain.Filters;
 using Differencial.Repository.Context;
+using Differencial.Repository.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

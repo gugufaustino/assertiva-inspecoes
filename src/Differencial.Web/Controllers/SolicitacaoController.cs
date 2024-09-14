@@ -191,15 +191,14 @@ namespace WEB.Controllers
                         throw new ValidationException("Essa solicitação não pode mais ser apropriada.");
 
                     _solicitacaoWorkFlowService.Apropriar(Id.Value);
-                    Commit();
+                    AppSaveChanges();
                 }
             }
             return null;
         }
 
         [HttpPost]
-        [Validacao(IgnorarId = true)]
-      
+        [Validacao(IgnorarId = true)] 
         [ServiceFilter(typeof(TransactionFilter))]
         public async Task<ActionResult> EditarAsync(RetornoSalvarEnum retornosalvar, Solicitacao entidade)
         {
@@ -214,7 +213,7 @@ namespace WEB.Controllers
             else
             {
                 await _solicitacaoService.SalvarSolicitacao(entidade);
-                Commit();
+                AppSaveChanges();
                 return base.RetornoSalvar(retornosalvar, entidade.Id);
             }
 
@@ -233,7 +232,7 @@ namespace WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     _solicitacaoService.SalvarSolicitacao(entidade);
-                    Commit();
+                    AppSaveChanges();
                     return RedirectToAction("Editar", new { Id = entidade.Id });
                 }
                 else
@@ -289,7 +288,7 @@ namespace WEB.Controllers
         {
 
             var resinspecao = _solicitacaoService.Reinspecao(id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true, message: @"Solicitação de reinspeção gerada com sucesso. Consulte o registro <a href='/Solicitacao/Editar/{0}'> Cód.: {0}</a>".Formata(resinspecao.Id.ToString()));
 
 
@@ -430,7 +429,7 @@ namespace WEB.Controllers
         public ActionResult SalvarVistoriador(int Id, int IdVistoriador, string txtJustificativaVistoriadorDefinido)
         {
             _solicitacaoService.SalvarAtividadeDefinirVistoriador(Id, IdVistoriador, txtJustificativaVistoriadorDefinido);
-            Commit();
+            AppSaveChanges();
 
             TempData["abaAtiva"] = "idtabVistoriador";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
@@ -441,7 +440,7 @@ namespace WEB.Controllers
         public ActionResult EditarCustoDeslocamentoAcordado(int Id, decimal CustoDeslocamentoAcordado)
         {
             _solicitacaoService.PreAcordoCustoDeslocamento(Id, CustoDeslocamentoAcordado);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabVistoriador";
             return ResponseResult(true);
         }
@@ -452,7 +451,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoService.PreAcordoVlrPagamentoVistoriaAcordado(Id, VlrPagamentoVistoriaAcordado);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabVistoriador";
             return ResponseResult(true);
         }
@@ -499,7 +498,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoService.SalvarAtividadeInformarAgendamento(Id, rbtTipoNotificacao, comunicacaoAssuntoTexto);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabRelacionamento";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
         }
@@ -525,7 +524,7 @@ namespace WEB.Controllers
         {
             _solicitacaoService.RegistrarComunicacao(comunicacao, SalvarEnviar);
 
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabRelacionamento";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, comunicacao.IdSolicitacao);
         }
@@ -545,7 +544,7 @@ namespace WEB.Controllers
         public ActionResult DefinirAnalista(int Id, int IdAnalista)
         {
             _solicitacaoService.SalvarAtividadeDefinirAnalista(Id, IdAnalista);
-            Commit();
+            AppSaveChanges();
 
             TempData["abaAtiva"] = "idtabAnalista";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
@@ -577,7 +576,7 @@ namespace WEB.Controllers
                     break;
             }
 
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabAgenda";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
 
@@ -600,7 +599,7 @@ namespace WEB.Controllers
         public JsonResult SalvarAtividadeCroquiVistoriador(int Id, IFormFile arquivocroquie)
         {
             _solicitacaoService.SalvarAtividadeCroqui(Id, arquivocroquie, TipoArquivoAnexoEnum.Croqui);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabCroqui";
             return ResponseResult(true, message: MensagensSucesso.AtividadeSucesso);
         }
@@ -642,7 +641,7 @@ namespace WEB.Controllers
             DateTime? dataAgenda = rbtTipoIntinerario == TipoOpcaoInformarRota.RealizadoDeslocamentoIntinerarioDiferente ? DateTime.Parse(string.Format("{0} {1}", txtDataAgenda, txtHoraAgenda)) : default(DateTime);
 
             _solicitacaoService.SalvarAtividadeInformarRotaRealizada(Id, rbtTipoIntinerario, TxtJustificativaDeslocamentoRealizado, DeslocamentoRealizado, dataAgenda);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabRoda";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
 
@@ -653,7 +652,7 @@ namespace WEB.Controllers
         public ActionResult RealizarVistoria(int Id)
         {
             _solicitacaoService.SalvarAtividadeRealizarVistoria(Id);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabFotos";
             return ResponseResult(true, message: MensagensSucesso.AtividadeSucesso);
         }
@@ -702,7 +701,7 @@ namespace WEB.Controllers
         {
 
             await _solicitacaoWorkFlowService.Enviar(Id, txtMensagemMovimento, null);
-            Commit();
+            AppSaveChanges();
 
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
         }
@@ -713,7 +712,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoWorkFlowService.Apropriar(Id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true);
 
         }
@@ -731,7 +730,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoWorkFlowService.Cancelar(Id, txtMensagemMovimento);
-            Commit();
+            AppSaveChanges();
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
 
         }
@@ -751,7 +750,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoWorkFlowService.Devolver(Id, txtMotivo, tipoMotivo);
-            Commit();
+            AppSaveChanges();
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
 
         }
@@ -761,7 +760,7 @@ namespace WEB.Controllers
         public ActionResult Concluir(int Id)
         {
             _solicitacaoWorkFlowService.Concluir(Id);
-            Commit();
+            AppSaveChanges();
             return ResponseResult(true);
         }
 
@@ -774,7 +773,7 @@ namespace WEB.Controllers
         public JsonResult GerarValorizar(int Id)
         {
             _solicitacaoService.ValorizarFinanceiro(Id);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabLancamentosFinanceiros";
             return ResponseResult(true, message: MensagensSucesso.AtividadeSucesso);
         }
@@ -793,7 +792,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoService.RegistrarLancamentoFinanceiro(Id, lancamento);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabLancamentosFinanceiros";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
         }
@@ -807,7 +806,7 @@ namespace WEB.Controllers
         {
 
             _solicitacaoService.SalvarAtividadeLaudoAnalista(Id, arquivolaudoanalista, AreaConstruida, BlocoConstruido, CasaConstruida, QtdEquipamento, IndRelatorioExigenciaMelhoria);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabAnalise";
             return ResponseResult(true, message: MensagensSucesso.AtividadeSucesso);
         }
@@ -817,7 +816,7 @@ namespace WEB.Controllers
         public JsonResult SalvarAtividadeCroquiAnalista(int Id, IFormFile arquivocroquieanalista)
         {
             _solicitacaoService.SalvarAtividadeCroqui(Id, arquivocroquieanalista, TipoArquivoAnexoEnum.CroquiAnalista);
-            Commit();
+            AppSaveChanges();
             TempData["abaAtiva"] = "idtabCroquiAnalista";
             return ResponseResult(true, message: "Atividade Concluída!");
         }

@@ -4,6 +4,7 @@ using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Domain.Util.ExtensionMethods;
 using Differencial.Repository.Context;
+using Differencial.Repository.Repositories.Base;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;

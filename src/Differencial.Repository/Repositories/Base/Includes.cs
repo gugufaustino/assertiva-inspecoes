@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Differencial.Repository
+namespace Differencial.Repository.Repositories.Base
 {
     public class Includes<T> : IRepositoryIncludable<T>, IRepositoryQueryable<T>
       where T : class, IEntity
@@ -20,7 +20,7 @@ namespace Differencial.Repository
         public Includes(IRepository<T> repository)
         {
             _repository = repository;
-            _query = ((Repositories.RepositoryBase<T>)repository)._dbSet.AsQueryable();
+            _query = ((RepositoryBase<T>)repository)._dbSet.AsQueryable();
         }
 
         public IRepositoryIncludable<T, TProperty> Include<TProperty>(Expression<Func<T, TProperty>> navigation)
@@ -68,7 +68,7 @@ namespace Differencial.Repository
                 _query = (_query as IIncludableQueryable<T, ICollection<TPreviousProperty>>).ThenInclude(navigation);
             else
                 throw new NotImplementedException("Case Not Implemented at ThenInclude");
-  
+
 
             return this;
         }
