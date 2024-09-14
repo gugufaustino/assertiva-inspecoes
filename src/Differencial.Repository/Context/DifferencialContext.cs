@@ -65,15 +65,12 @@ namespace Differencial.Repository.Context
             //aplica padrão para entidades nao mapeadas
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties()))
-            {
-                if (property.ClrType == typeof(string))
-                    property.SetColumnType("varchar(1)");
-
+            { 
                 if (property.ClrType == typeof(decimal) || property.ClrType == typeof(decimal?))
                     property.SetColumnType("decimal(18,2)");
             }
 
-            // Adicionar Mappings
+            // mappeia todas classes mappings de uma vez só
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DifferencialContext).Assembly);
 
             //apos mapeamento, substitui as mapeadas nvarchar para varchar
@@ -81,8 +78,12 @@ namespace Differencial.Repository.Context
                 .SelectMany(t => t.GetProperties()))
             {
                 if (property.ClrType == typeof(string))
+                {
                     property.SetIsUnicode(false);
 
+                    if (property.GetMaxLength() == null)
+                        property.SetColumnType("varchar(1)");
+                }
             }
 
             //Impedindo exclusão em cascata

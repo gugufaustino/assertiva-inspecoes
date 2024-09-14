@@ -53,12 +53,12 @@
                         new Tab("idtabContratoFinanceiro",   "Financeiro" , abaAtiva == "idtabContratoFinanceiro"),
                         new Tab("idtabConfiguracao",   "Configurações" , abaAtiva == "idtabConfiguracao")
                         };
-
+                        
                         using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
                         {
                             using (Html.TabPane(lstTab[0]))
                             {
-                                <partial name="_ContratoFinanceiro" />
+                               <partial name="_ContratoFinanceiro" />   
                             }
 
                             using (Html.TabPane(lstTab[1]))

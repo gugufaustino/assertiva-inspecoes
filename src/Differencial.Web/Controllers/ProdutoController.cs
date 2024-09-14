@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.UOW;
+using System.Threading.Tasks;
 
 namespace Differencial.Web.Controllers
 {
@@ -40,12 +41,12 @@ namespace Differencial.Web.Controllers
             var lstProduto = produtoRepository.Listar(new ProdutoFilter() { CampoOrdenacao = CampoOrdenacaoProduto.IdSeguradora });
             return View(lstProduto);
         }
-        public ActionResult Editar(int? Id)
+        public async Task<ActionResult> Editar(int? Id)
         {
             Produto model = null;
             if (Id.HasValue)
             {
-                model = _service.Buscar(Id.Value);
+                model = await _service.BuscarParaEditar(Id.Value);
                 ViewBag.lstLog = _serviceLogAuditoria.Listar(model.Id, model);
             }
             CarregaDropDown(model);
@@ -96,8 +97,8 @@ namespace Differencial.Web.Controllers
 
         private void CarregaDropDown(Produto model)
         {
-            ViewBag.IdTipoInspecao = new SelectList(_tipoInspecaoService.Listar(new TipoInspecaoFilter()), "Id", "NomeTipoInspecao");
-            ViewBag.IdSeguradora = new SelectList(_seguradoraService.Listar(new SeguradoraFilter()), "Id", "NomeSeguradora");
+            ViewBag.IdTipoInspecao = new SelectList(_tipoInspecaoService.Listar(new TipoInspecaoFilter()), "Id", "NomeTipoInspecao", model?.IdTipoInspecao);
+            ViewBag.IdSeguradora = new SelectList(_seguradoraService.Listar(new SeguradoraFilter()), "Id", "NomeSeguradora", model?.IdSeguradora);
         }
 
     }

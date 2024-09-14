@@ -6,6 +6,7 @@ using Differencial.Domain.UOW;
 using System.Collections.Generic;
 using Differencial.Domain.DTO;
 using System.Linq;
+using System.Threading.Tasks;
 namespace Differencial.Service.Services
 {
     public class ProdutoService : Service, IProdutoService
@@ -88,6 +89,13 @@ namespace Differencial.Service.Services
             return TryCatch(() =>
             {
                 return _produtoRepositorio.Find(id);
+            });
+        }
+        public Task<Produto> BuscarParaEditar(int id)
+        {
+            return TryCatch(() =>
+            {
+                return _produtoRepositorio.BuscarParaEditarView(id);
             });
         }
 

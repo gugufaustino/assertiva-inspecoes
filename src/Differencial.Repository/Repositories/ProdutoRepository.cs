@@ -10,6 +10,7 @@ using Differencial.Domain.DTO;
 using Differencial.Domain.Contracts.Infra;
 using Microsoft.EntityFrameworkCore;
 using Differencial.Repository.Repositories.Base;
+using System.Threading.Tasks;
 
 namespace Differencial.Repository.Repositories
 {
@@ -124,6 +125,14 @@ namespace Differencial.Repository.Repositories
         public bool ExisteDadosFinanceiros(int idProduto)
         {
             return _db.ContratoLancamento.Any(i => i.Contrato.Produto.Id == idProduto);
+        }
+
+        public Task<Produto> BuscarParaEditarView(int id)
+        {
+            return _db.Produto
+                    .Include(i => i.Contrato)
+                    .ThenInclude(i => i.ContratoLancamento).ThenInclude(i=> i.ContratoLancamentoValor)
+                    .FirstOrDefaultNoTrackingAsync(x => x.Id == id);
         }
     }
 }

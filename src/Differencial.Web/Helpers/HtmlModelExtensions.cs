@@ -306,7 +306,7 @@ namespace Differencial.Web.Helpers
             if (!String.IsNullOrEmpty(descricaoTooltip))
             {
                 string htmlInformation = string.Format(" <i class=\"fa fa-question-circle text-muted\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"{0}\"></i>", descricaoTooltip);
-                builder.Append(htmlInformation);
+                builder.AppendHtml(htmlInformation);
             }
             return builder;
         }

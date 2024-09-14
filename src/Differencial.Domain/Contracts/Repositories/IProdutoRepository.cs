@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Domain.DTO;
+using System.Threading.Tasks;
 
 namespace Differencial.Domain.Contracts.Repositories
 {
@@ -11,5 +12,6 @@ namespace Differencial.Domain.Contracts.Repositories
 
         IEnumerable<Produto> Listar(ProdutoFilter filter);
         bool ExisteDadosFinanceiros(int idProduto);
+        Task<Produto> BuscarParaEditarView(int id);
     }
 }

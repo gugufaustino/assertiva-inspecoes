@@ -91,37 +91,37 @@
     var ctLanc = contrato.ContratoLancamento;
     var item = ctLanc.First(i=> i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.Comum);
     ViewData["index"] = 0;
-    @Html.PartialAsync("_HonorarioComum", item, ViewData)
+    @await Html.PartialAsync("_HonorarioComum", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.RelatorioMelhoria);
     ViewData["index"] = 1;
-    @Html.PartialAsync("_HonorarioComum", item, ViewData)
+    @await Html.PartialAsync("_HonorarioComum", item, ViewData)
 
 
     @Html.Raw("<div class='row'>")
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.ValorRisco);
     ViewData["index"] = 2;
-    @Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
+    @await Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.BlocoConstruido);
     ViewData["index"] = 3;
-    @Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
+    @await Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.CasaConstruida);
     ViewData["index"] = 4;
-    @Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
+    @await Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.AreaConstruida);
     ViewData["index"] = 5;
-    @Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
+    @await Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.Equipamento);
     ViewData["index"] = 6;
-    @Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
+    @await Html.PartialAsync("_TabelaIntervaloEditavel", item, ViewData)
 
     item = ctLanc.First(i => i.TipoParametroQuantitativoVariavel == TipoContratoParametroEnum.Estado);
     ViewData["index"] = 7;
-    @Html.PartialAsync("_TabelaEstado", item, ViewData)
+    @await Html.PartialAsync("_TabelaEstado", item, ViewData)
 
     @Html.Raw("</div>")
     
