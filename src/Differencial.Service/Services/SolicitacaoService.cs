@@ -92,12 +92,9 @@ namespace Differencial.Service.Services
             _solicitacaoQueries = solicitacaoQueries;
         }
         #region Listas Dashboards
-        public IEnumerable<Solicitacao> ListarSolicitacoesGerencia()
+        public async Task<List<Solicitacao>> ListarSolicitacoesGerencia()
         {
-            return TryCatch(() =>
-            {
-                return _solicitacaoRepositorio.ListarSolicitacoesGerencia();
-            });
+            return await _solicitacaoRepositorio.ListarSolicitacoesGerencia();
         }
         public IEnumerable<Solicitacao> ListarSolicitacoesVistoriador()
         {
@@ -106,20 +103,17 @@ namespace Differencial.Service.Services
                 return _solicitacaoRepositorio.ListarSolicitacoesVistoriador();
             });
         }
-        public IEnumerable<Solicitacao> ListarSolicitacoesAnalista()
+        public async Task<List<Solicitacao>> ListarSolicitacoesAnalista()
         {
-            return TryCatch(() =>
-            {
-                return _solicitacaoRepositorio.ListarSolicitacoesAnalista();
-            });
-        }
-        public IEnumerable<Solicitacao> ListarSolicitacoesAnalistaMinhas()
-        {
-            return TryCatch(() =>
-            {
-                return _solicitacaoRepositorio.ListarSolicitacoesAnalistaMinhas();
 
-            });
+            return await _solicitacaoRepositorio.ListarSolicitacoesAnalista();
+
+        }
+        public async Task<List<Solicitacao>> ListarSolicitacoesAnalistaMinhas()
+        {
+            return await _solicitacaoRepositorio.ListarSolicitacoesAnalistaMinhas();
+
+
         }
         public IEnumerable<Solicitacao> ListarSolicitacoesSolicitante()
         {
@@ -132,12 +126,9 @@ namespace Differencial.Service.Services
                         .ToList();
             });
         }
-        public List<Solicitacao> ListarSolicitacoesGerenciaAgendamento()
+        public async Task<List<Solicitacao>> ListarSolicitacoesGerenciaAgendamento()
         {
-            return TryCatch(() =>
-            {
-                return _solicitacaoRepositorio.ListarSolicitacoesGerenciaAgendamento();
-            });
+            return await _solicitacaoRepositorio.ListarSolicitacoesGerenciaAgendamento();
         }
         public IEnumerable<Solicitacao> ListarSolicitacoesFinanceiro()
         {
@@ -184,23 +175,24 @@ namespace Differencial.Service.Services
         }
         public async Task SalvarSolicitacao(Solicitacao entidade)
         {
-           await TryCatchAsync(() => {
-               if (entidade.CodSistemaLegado == 999)
-                   throw new InvalidCastException("oloko ");
+            await TryCatchAsync(() =>
+            {
+                if (entidade.CodSistemaLegado == 999)
+                    throw new ValidationException("oloko ");
 
-               entidade.Cobertura = entidade.Cobertura.Where(c => c.NomeCobertura != null).ToList();
-               entidade.Validate();
-               RN_ValidarExisteContratoNoProduto(entidade.IdProduto);
-               _contratoService.ValidarContratoLancamentoValorParametro(entidade, TipoContratoParametroEnum.ValorRisco);
-               int? idContratoLancamentoValor = null;
-               if (_contratoService.IndicaContratoLancamentoValorRisco(entidade, out idContratoLancamentoValor))
-                   entidade.IdContratoLancamentoValor = idContratoLancamentoValor;
-               if (entidade.Id == 0)
-                   Inserir(entidade);
-               else
-                   Editar(entidade);
-               return Task.CompletedTask;
-           });
+                entidade.Cobertura = entidade.Cobertura.Where(c => c.NomeCobertura != null).ToList();
+                entidade.Validate();
+                RN_ValidarExisteContratoNoProduto(entidade.IdProduto);
+                _contratoService.ValidarContratoLancamentoValorParametro(entidade, TipoContratoParametroEnum.ValorRisco);
+                int? idContratoLancamentoValor = null;
+                if (_contratoService.IndicaContratoLancamentoValorRisco(entidade, out idContratoLancamentoValor))
+                    entidade.IdContratoLancamentoValor = idContratoLancamentoValor;
+                if (entidade.Id == 0)
+                    Inserir(entidade);
+                else
+                    Editar(entidade);
+                return Task.CompletedTask;
+            });
         }
         public void Excluir(int id)
         {
@@ -211,7 +203,7 @@ namespace Differencial.Service.Services
                 && solic.TpSituacao != TipoSituacaoProcessoEnum.EmElaboracaoSolicitante
                 && solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
                     throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
-               
+
                 _arquivoAnexoService.Excluir(solic.Foto);
                 _coberturaService.Excluir(solic.Cobertura.Select(i => i.Id).ToArray());
                 _movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso.Select(i => i.Id).ToArray());
@@ -948,7 +940,7 @@ namespace Differencial.Service.Services
         #endregion
         public Solicitacao Reinspecao(int id)
         {
-            var original = BuscarUI(id);
+            var original = BuscarUI(id).Result;
 
             //Clonar Dados Solicitacao
             var reinspecao = original.ShallowClone();
@@ -1024,7 +1016,11 @@ namespace Differencial.Service.Services
         }
 
 
-        public Solicitacao BuscarUI(int id) => _solicitacaoRepositorio.BuscarUI(id);
+        public async Task<Solicitacao> BuscarUI(int id)
+        {
+            return await _solicitacaoRepositorio.BuscarUI(id);
+        }
+
         public Solicitacao BuscarParaAgendar(int id) => _solicitacaoRepositorio.Include(i => i.Cliente)
                                                                                 .Include(i => i.Vistoriador)
                                                                                 .GetById(id);
@@ -1051,9 +1047,9 @@ namespace Differencial.Service.Services
                                           .GetById(id);
         }
 
-		public void Salvar(Solicitacao entidade)
-		{
-			throw new NotImplementedException(); // por conta da impelemnetãção da IDashboar, q deve ser refatorada e separada desssas implementaçoes aqui
-		}
-	}
+        public void Salvar(Solicitacao entidade)
+        {
+            throw new NotImplementedException(); // por conta da impelemnetãção da IDashboar, q deve ser refatorada e separada desssas implementaçoes aqui
+        }
+    }
 }

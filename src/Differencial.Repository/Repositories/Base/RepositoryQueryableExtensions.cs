@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Differencial.Repository.Repositories.Base
 {
@@ -15,6 +16,10 @@ namespace Differencial.Repository.Repositories.Base
         public static T FirstOrDefaultNoTracking<T>(this IQueryable<T> _query, Expression<Func<T, bool>> predicate) where T : class, IEntity
         {
             return _query.AsNoTracking().FirstOrDefault(predicate);
+        }
+        public static async Task<T> FirstOrDefaultNoTrackingAsync<T>(this IQueryable<T> _query, Expression<Func<T, bool>> predicate) where T : class, IEntity
+        {
+            return await _query.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
         public static T FirsNoTrackingt<T>(this DbSet<T> _dbSet, Expression<Func<T, bool>> predicate) where T : class, IEntity
         {

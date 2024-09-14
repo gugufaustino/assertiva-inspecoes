@@ -33,7 +33,7 @@ namespace Differencial.Domain.Contracts.Services
         void RN_ValidarExiteVistoriadorDefinido(Solicitacao solicitacao);
         void RN_ValidarExiteLaudoConcluido(Solicitacao solicitacao);
         Solicitacao Reinspecao(int id);
-        Solicitacao BuscarUI(int id);
+        Task<Solicitacao> BuscarUI(int id);
         Solicitacao BuscarParaAgendar(int id);
         void EnviarEmailCobrancaVistoria(SolicitacaoCobrancaVistoriaDao solicitacao, int usuarioServiceId);
         void CobrarVistoria( int usuarioServiceId);

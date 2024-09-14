@@ -137,12 +137,12 @@ namespace WEB.Controllers
         }
 
         [HttpGet]
-        public ActionResult Editar(int? Id)
+        public async Task<ActionResult> Editar(int? Id)
         {
             ViewBag.OrigemForm = "Editar";
             Solicitacao entidade;
 
-            entidade = _solicitacaoService.BuscarUI(Id ?? 0);
+            entidade = await _solicitacaoService.BuscarUI(Id ?? 0);
 
             ViewBag.lstLancamentoFinanceiro = entidade.LancamentoFinanceiro.ToList();
             ViewBag.lstContratoParametroObrig = _contratoService.ParametrosObrigatorios(entidade.Produto.Contrato);

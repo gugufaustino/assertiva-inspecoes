@@ -21,7 +21,7 @@ namespace Differencial.Repository.Repositories
         {
         }
 
-        public Solicitacao BuscarUI(int id)
+        public Task<Solicitacao> BuscarUI(int id)
         {
             return _dbSet
                     .Include(i => i.Vistoriador.Operador)
@@ -40,10 +40,10 @@ namespace Differencial.Repository.Repositories
                     .Include(i => i.MovimentacaoProcesso).ThenInclude(e => e.OperadorOrigem)
                     .Include(i => i.AtividadeProcesso)
                     .AsNoTracking()
-                    .FirstOrDefaultNoTracking(w => w.Id == id);
+                    .FirstOrDefaultNoTrackingAsync(w => w.Id == id);
         }
 
-        public IEnumerable<Solicitacao> ListarSolicitacoesGerencia()
+        public Task<List<Solicitacao>> ListarSolicitacoesGerencia()
         {
             return _dbSet
                       .Include(i => i.Cliente)
@@ -55,9 +55,9 @@ namespace Differencial.Repository.Repositories
                                    || w.TpSituacao == TipoSituacaoProcessoEnum.ApropriadoGerente
                                    || w.TpSituacao == TipoSituacaoProcessoEnum.EmElaboracao
                                    || w.TpSituacao == TipoSituacaoProcessoEnum.EnviadoParaGerencia))
-                           .ToList();
+                           .ToListAsync();
         }
-        public IEnumerable<Solicitacao> ListarSolicitacoesAnalista()
+        public Task<List<Solicitacao>> ListarSolicitacoesAnalista()
         {
             return _dbSet
                       .Include(i => i.Cliente)
@@ -69,10 +69,10 @@ namespace Differencial.Repository.Repositories
                       .Include(i => i.MovimentacaoProcesso)
                        .Where(w => (w.IdOperadorApropriado != _usuario.Id && w.TpSituacao == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise)
                                    || (w.TpSituacao == TipoSituacaoProcessoEnum.EnviadoParaAnalise))
-                           .ToList();
+                      .ToListAsync();
         }
 
-        public IEnumerable<Solicitacao> ListarSolicitacoesAnalistaMinhas()
+        public Task<List<Solicitacao>> ListarSolicitacoesAnalistaMinhas()
         {
             return _dbSet
                        .Include(i => i.Cliente)
@@ -81,7 +81,7 @@ namespace Differencial.Repository.Repositories
                        .Include(i => i.AtividadeProcesso)
                        .Include(i => i.MovimentacaoProcesso)
                        .Where(w => (w.IdOperadorApropriado == _usuario.Id && w.TpSituacao == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise))
-                       .ToList();
+                       .ToListAsync();
         }
 
         public IEnumerable<Solicitacao> ListarSolicitacoesFinanceiro()
@@ -121,8 +121,10 @@ namespace Differencial.Repository.Repositories
                         .ToList();
         }
 
-        public List<Solicitacao> ListarSolicitacoesGerenciaAgendamento()
-        {
+        public Task<List<Solicitacao>> ListarSolicitacoesGerenciaAgendamento()
+        { 
+
+        
             return _dbSet
                         .Include(i => i.Agendamento)
                         .Include(i => i.Cliente)
@@ -132,10 +134,11 @@ namespace Differencial.Repository.Repositories
                         .Include(i => i.MovimentacaoProcesso)
                         .AsNoTracking()
                         .Where(w => w.IndRelacionamentoAgendaInformada == false
-                                && w.MovimentacaoProcesso.Any(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria)).ToList();
-        }
+                                && w.MovimentacaoProcesso.Any(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria)).
+                        ToListAsync();
+    }
 
-        public IEnumerable<Solicitacao> ListarSolicitacoesVistoriador()
+    public IEnumerable<Solicitacao> ListarSolicitacoesVistoriador()
         {
 
             return _dbSet

@@ -14,6 +14,7 @@ using System.Linq;
 using Differencial.Domain.Util.ExtensionMethods;
 using Differencial.Domain.UOW;
 using System;
+using System.Threading.Tasks;
 
 namespace WEB.Controllers
 {
@@ -52,7 +53,7 @@ namespace WEB.Controllers
             return RedirectToAction("Editar", "Solicitacao", new { id = id });
 
         }
-        public ActionResult Gerente()
+        public async Task<IActionResult> Gerente()
         { 
             var lstSeguradoras = _seguradoraService.Listar(new SeguradoraFilter { IndAtivo = true, CampoOrdenacao = CampoOrdenacaoSeguradora.NomeSeguradora }).ToList(); 
 
@@ -64,8 +65,8 @@ namespace WEB.Controllers
             ViewBag.gmailIndIntegracaoEmailAbilitada = true;
 
 
-            var lstSolicitacao = _dashboardsService.ListarSolicitacoesGerencia();
-            ViewBag.lstSolicAgenda = _dashboardsService.ListarSolicitacoesGerenciaAgendamento();
+            var lstSolicitacao = await _dashboardsService.ListarSolicitacoesGerencia();
+            ViewBag.lstSolicAgenda = await _dashboardsService.ListarSolicitacoesGerenciaAgendamento();
 
             return View(lstSolicitacao);
         }
@@ -76,10 +77,10 @@ namespace WEB.Controllers
             return View(lstSolicitacao);
         }
 
-        public ActionResult Analista()
+        public async Task<IActionResult> Analista()
         {
-            ViewBag.ListaMinhasTerefas = _dashboardsService.ListarSolicitacoesAnalistaMinhas();
-            ViewBag.ListaAnaliseTerefas = _dashboardsService.ListarSolicitacoesAnalista();
+            ViewBag.ListaMinhasTerefas = await _dashboardsService.ListarSolicitacoesAnalistaMinhas();
+            ViewBag.ListaAnaliseTerefas = await _dashboardsService.ListarSolicitacoesAnalista();
 
             return View();
         }
@@ -147,12 +148,12 @@ namespace WEB.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
-        public JsonResult Excluir(int[] Id)
+        public async Task<JsonResult> Excluir(int[] Id)
         {
 
             _solicitacaoService.Excluir( Id);
             AppSaveChanges();
-            var lstSolicitacao = _dashboardsService.ListarSolicitacoesGerencia();
+            var lstSolicitacao =  await _dashboardsService.ListarSolicitacoesGerencia();
             var result = MontarListaSolicitacaoGerente(lstSolicitacao);
             return ResponseResult(true, content: result, message: MensagensSucesso.SucessoExcluir);
 
@@ -160,19 +161,19 @@ namespace WEB.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
-        public JsonResult ApropriarSolicitacao(int Id)
+        public async Task<JsonResult> ApropriarSolicitacaoAsync(int Id)
         {
             _solicitacaoWorkFlowService.Apropriar(Id);
             AppSaveChanges();
-            var lstSolicitacao = _dashboardsService.ListarSolicitacoesAnalista();
+            var lstSolicitacao = await _dashboardsService.ListarSolicitacoesAnalista();
             var result = MontarListaSolicitacaoAnalise(lstSolicitacao);
             return ResponseResult(true, content: result);
         }
 
-        public JsonResult AtualizarSolicitacao()
+        public async Task<JsonResult> AtualizarSolicitacao()
         {
 
-            var lstSolicitacao = _dashboardsService.ListarSolicitacoesAnalistaMinhas();
+            var lstSolicitacao = await _dashboardsService.ListarSolicitacoesAnalistaMinhas();
             var result = MontarListaSolicitacaoAnaliseMinhas(lstSolicitacao);
             return ResponseResult(true, content: result);
         }
