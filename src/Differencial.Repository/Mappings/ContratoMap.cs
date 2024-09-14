@@ -7,8 +7,15 @@ namespace Differencial.Repository.Mappings
 	{ 
         public void Configure(EntityTypeBuilder<Contrato> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(t => t.Id).UseIdentityColumn();
+           
+            builder.Property(t => t.Id).ValueGeneratedNever();
+           
+            //builder
+            //        .HasOne(c => c.Produto) // Configura a relação de chave estrangeira
+            //        .WithMany() // Assume que Produto não possui uma coleção de Contratos, ajuste conforme necessário
+            //        .HasForeignKey(c => c.Id) // Define que Id é a FK
+            //        .OnDelete(DeleteBehavior.Restrict);
+
         }  
     }
 }

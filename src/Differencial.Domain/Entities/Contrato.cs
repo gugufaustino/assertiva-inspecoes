@@ -16,10 +16,13 @@ namespace Differencial.Domain.Entities
         {
             ContratoLancamento = new HashSet<ContratoLancamento>();
         }
+         
+        
+	 
 
         [Key, ForeignKey("Produto")]
         [Column("Id")]
-		public int Id { get; set; }
+        public int Id { get; set; }
 
         [Column("DtCadastro")]
         public DateTime DataCadastro { get; set; }
