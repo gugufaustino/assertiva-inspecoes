@@ -7,10 +7,10 @@ namespace Differencial.Domain.EntitiesMetadata
     {
 
 
-        [Display(Name = "Data Cadastro", ShortName = "Cadastro")]
+        [Display(Name = "Cadastro" )]
         public DateTime DataCadastro { get; set; }
 
-        [Display(Name = "Data Modificacao", ShortName = "Modificacao")]
+        [Display(Name = "Modificação" )]
         public DateTime DataModificacao { get; set; }
 
         [Display(Name = "Código Operador de Cadastro")]
