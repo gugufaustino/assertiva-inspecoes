@@ -1716,6 +1716,12 @@ div.dt-button-info {
     z-index: 100;
 }
 
+table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting {
+    padding-right: 10px !important;
+}
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    right: 4px; 
+}
 @media (max-width: 768px) {
     .html5buttons {
         float: none;
@@ -9760,6 +9766,9 @@ table .w100px {
 
 table .w80px {
     width: 80px !important;
+}
+table .w90px {
+    width: 90px !important;
 }
 
 table .w50px {

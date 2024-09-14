@@ -201,7 +201,7 @@
 
         using (Html.TabPane(lstTab[1]))
         {
-            @Html.Partial("AbaGestao/_AbaGestao")
+            @await Html.PartialAsync("AbaGestao/_AbaGestao")
         };
         using (Html.TabPane(lstTab[2]))
         {

@@ -44,51 +44,13 @@
     </div>
 </div>
 @section Styles {
-    @*@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")*@
+   
 }
 @section scripts{
-    @*
-        @Scripts.Render("~/app/operacoescadastros")
-    @Scripts.Render("~/plugins/dataTables")
-        *@
+    
    <script type="text/javascript"> 
-       var grade;
-        $(document).ready(function () {
+       var grade; 
+   </script>
 
-            grade = $('#grade').Gride({
-                bSelecionavel: true,
-                bfiltroColuna: true,
-                bExportacao : true,
-                ordering: true,
-                order: [[1, 'desc']],
-                columns : [
-                      { data: "0" },
-                      { data: "Id", "className": "text-right" }, 
-                      { data: "NomeAssunto", "className": "" },
-                      { data: "DataCadastro", "className": "text-center", type: 'date-euro' },
-                      { data: "DataModificacao", "className": "text-center", type: 'date-euro' },
-                ],
-                mapJsonParaObjeto: function (obj) {
-                    return {
-                        "0": "",
-                        Id: obj.Id, 
-                        NomeAssunto: obj.NomeAssunto, 
-                        DataCadastro: obj.DataCadastro,
-                        DataModificacao: obj.DataModificacao,
-                        DT_RowId: obj.Id
-                    }
-                }, 
-
-
-            }); 
-
-            $("#btnAbrir").click(function () {
-                grade.abrirRegistroSelecionado("/TipoAssunto/Editar/"); 
-            });
-
-            $("#btnExcluir").click(function () {
-                grade.excluirRegistrosSelecionados("/TipoAssunto/Excluir/");
-            });  
-        }); 
-</script>
+    <script asp-append-version="true" src="~/scripts/app/TipoAssunto/listar.js"></script>
 }

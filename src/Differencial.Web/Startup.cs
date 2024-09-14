@@ -122,7 +122,7 @@ namespace Differencial.Web
 
         private void ConfigureMvcOptions(MvcOptions mvcOptions)
         {
-            
+            mvcOptions.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
         }
 
     }
