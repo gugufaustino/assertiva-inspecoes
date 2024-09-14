@@ -5,9 +5,9 @@
 @Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "Listar"))
 
 
-<div class="wrapper wrapper-content">
+<div class="wrapper wrapper-content p-xxs">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 p-n">
             @using (Html.Box(string.Empty, string.Empty, false, true))
             {
             <div class="ibox-content">
@@ -65,23 +65,23 @@
                     {
                         using (Html.TabPane(lstTab[0]))
                         {
-                            @Html.PartialAsync("Endereco/_Endereco", Model)
+                            @await Html.PartialAsync("Endereco/_Endereco", Model)
                         }
                         using (Html.TabPane(lstTab[1]))
                         {
-                            @Html.PartialAsync("_AbaSolicitante")
+                            @await Html.PartialAsync("_AbaSolicitante")
                         }
                         using (Html.TabPane(lstTab[2]))
                         {
-                            @Html.PartialAsync("_AbaFilial")
+                            @await Html.PartialAsync("_AbaFilial")
                         }
                         using (Html.TabPane(lstTab[3]))
                         {
-                            @Html.PartialAsync("_AbaFinanceiro")
+                            @await Html.PartialAsync("_AbaFinanceiro")
                         }
                         using (Html.TabPane(lstTab[4]))
                         {
-                            @Html.PartialAsync("_AbaConfiguracao", Model)
+                            @await Html.PartialAsync("_AbaConfiguracao", Model)
                         }
                         using (Html.TabPane(lstTab[5]))
                         {
@@ -110,7 +110,7 @@
                                         <input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
                                     </div>
 
-                                    @Html.ActionLink("Cancelar", "Listar", null, new { @class = "btn btn-white" })
+                                    @Html.ActionLink("Cancelar", "Listar", null, htmlAttributes: new { @class = "btn btn-white" })
 
                                 </div>
 

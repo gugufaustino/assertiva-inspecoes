@@ -13,7 +13,7 @@
     <div class="row">
         @using (Html.BeginBox(string.Empty, null, false, true, false))
         {
-            @Html.PartialAsync("Solicitante/_GridSolicSolicitante")
+            @await Html.PartialAsync("Solicitante/_GridSolicSolicitante")
         }
     </div>
 </div>
