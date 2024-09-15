@@ -1,0 +1,140 @@
+﻿@model IEnumerable<FinanceiroReceberDto>
+@{
+	ViewBag.Title = "Financeiro Receber";
+
+
+	var actionLink = new IHtmlContent[] {
+			Html.DropDownList("competenciaMes", (SelectList)(ViewData["competenciaMes"] ?? new List<SelectListItem>()), new { @class = "select-competenciaMes form-control font-bold input-sm" })
+		};
+
+	var actionLinkRi = new HtmlString[] {
+			HtmlBotaoHelper.Botao("Faturar", "btnFaturar", btnClass: "btn-success btn-sm", spanClass: "fa fa-pencil"),
+			HtmlBotaoHelper.Botao("Liquidar", "btnLiquidar", btnClass: "btn-success btn-sm", spanClass: "fa fa-pencil"),
+			HtmlBotaoHelper.Botao("Visualizar", "btnVisualizar", btnClass: "btn-white btn-sm", spanClass: "fa fa-file-text")
+		};
+
+
+}
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
+{
+
+}
+<div class="wrapper wrapper-content">
+	<div class="row">
+		@using (Html.BeginBox(titulo: "Competência:", actionsLeft: actionLink, actionsRight: actionLinkRi))
+		{
+			@Html.Hidden("mes", 4)
+			@Html.Hidden("ano", 2022)
+			<div class="row">
+				<div class="table-responsive">
+					<table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th></th>
+								<th class="">Seguradora</th>
+								<th class="w130px">Tipo Situação</th>
+								<th class="w130px">Valor Total</th>
+								<th class="w130px">Faturado</th>
+								<th class="w130px">Liquidado</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td></td>
+								<td>
+								</td>
+
+								<td class="text-center">
+								</td>
+
+								<td class="text-right">
+								</td>
+								<td class="text-center">
+									<span class="label label-success">Concluído</span>
+								</td>
+								<td class="text-center">
+									<span class="label label-warning">Pendente</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@section scripts {
+	<script type="text/javascript">
+		var grideTodasSolic
+		$(document).ready(function () {
+			grideTodasSolic = $('#tbFinanceiroSolicVistoria').Gride({
+				bSelecionavel: true,
+				bfiltroColuna: true,
+				order: [[1, 'desc']],
+				autoWidth: false,
+				columns: [
+					{ data: "0" },
+					{ data: "NomeSeguradora", "className": "" },
+					{ data: "TpSituacao", "className": "" },
+					{ data: "ValorTotal", "className": "text-right", type: 'date-euro' },
+					{ data: "IndFaturado", "className": "text-center" },
+					{ data: "IndLiquidado", "className": "text-center" },
+				],
+				mapJsonParaObjeto: function (obj) {
+					return {
+						"0": "",
+						NomeSeguradora: obj.NomeSeguradora,
+						TpSituacao: obj.TpSituacao,
+						ValorTotal: obj.ValorLancamentoFinanceiro,
+						IndFaturado: "1",
+						IndLiquidado: "1",
+
+						DT_RowId: obj.Id
+					}
+				}
+			});
+
+
+			$("#competenciaMes").change(function () {
+				load($(this).val())
+			});
+
+
+			$("#btnVisualizar").click(function () {
+
+				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+
+				if (arrSel.length == 1) {
+					loadModal("/Dashboards/ReceberLancamentos/" + arrSel[0] + "?ano=" + $("#ano").val() + "&mes=" + $("#mes").val(), "modal-xl");
+				} else if (arrSel.length == 0) {
+					alertaMensagem("Selecione um item da lista");
+				} else {
+					alertaMensagem("Selecione apenas um item da lista");
+				}
+			});
+
+
+
+
+			function load(mesano) {
+				console.log(mesano)
+				$.post("/Dashboards/FinanceiroReceber/ListarDadosFinanceiroReceber", { mesano: mesano }, function (data) {
+					grideTodasSolic.atualizarDados(data.content);
+				});
+			}
+
+
+
+			load();
+
+		});
+	</script>
+}
+<style>
+	.select-competenciaMes {
+		display: inline-block;
+		width: initial;
+	}
+</style>

@@ -95,7 +95,7 @@ namespace Differencial.Web.Controllers
             if (version != null)
                 return version;
 
-            return "NA";
+            return "";
         }
 
         public ActionResult Inicio()

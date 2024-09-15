@@ -91,60 +91,8 @@ namespace WEB.Controllers
 
             return View(lstSolicitacao);
         }
-        
-        public ActionResult FinanceiroReceber(int ano, int mes)
-        {
-
-            var selectList = GerarCompetencias(new DateTime(2023, 1, 1), DateTime.Now);
-
-            ViewData["competenciaMes"] = selectList.ToSelectList(i => i.Key, i => i.Key, false);
-
-            var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroReceber(ano, mes);
-
-            return View(lstSolicitacao);
-        }
-
-        public static List<KeyValuePair<string, string>> GerarCompetencias(DateTime dataInicio, DateTime dataFim)
-        {
-            var listaCompetencias = new List<KeyValuePair<string, string>>();
-
-            var dataAtual = dataFim;
-
-            while (dataAtual >= dataInicio)
-            {
-                var key = $"{dataAtual.Month}/{dataAtual.Year}";
-                var value = $"{dataAtual.ToString("MMMM", new System.Globalization.CultureInfo("pt-BR"))}/{dataAtual.Year}";
-
-                listaCompetencias.Add(new KeyValuePair<string, string>(key, value));
-
-                dataAtual = dataAtual.AddMonths(-1);
-            }
-
-            return listaCompetencias;
-        }
-
-        [HttpGet]
-        public ActionResult ReceberLancamentos(int id, int ano, int mes)
-        {
-            var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroLancamentosReceber(id, ano, mes);
-            ViewData["NomeSeguradora"] = _seguradoraService.Buscar(id)?.NomeSeguradora;
-            ViewData["Mes"] = mes;
-            ViewData["Ano"] = ano;
-            return View("Financeiro/ReceberLancamentos", lstSolicitacao);
-        }
-        
-        public ActionResult FinanceiroPagar()
-        {
-            var lstSolicitacao = _dashboardsService.ListarSolicitacoesFinanceiro();
-
-            return View(lstSolicitacao);
-        }
-
-        [HttpGet]
-        public ActionResult Faturar(int Id)
-        {
-            return View("Financeiro/Faturar");
-        }
+ 
+ 
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
