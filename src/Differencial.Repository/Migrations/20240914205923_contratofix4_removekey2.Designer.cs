@@ -4,6 +4,7 @@ using Differencial.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Differencial.Repository.Migrations
 {
     [DbContext(typeof(DifferencialContext))]
-    partial class DifferencialContextModelSnapshot : ModelSnapshot
+    [Migration("20240914205923_contratofix4_removekey2")]
+    partial class contratofix4_removekey2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -522,9 +525,9 @@ namespace Differencial.Repository.Migrations
 
             modelBuilder.Entity("Differencial.Domain.Entities.Contrato", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Id3")
                         .HasColumnType("int")
-                        .HasColumnName("Id");
+                        .HasColumnName("Id3");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2")
@@ -534,6 +537,9 @@ namespace Differencial.Repository.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DtModificacao");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdOperadorCadastro")
                         .HasColumnType("int")
                         .HasColumnName("IdOperadorCadastro");
@@ -542,7 +548,7 @@ namespace Differencial.Repository.Migrations
                         .HasColumnType("int")
                         .HasColumnName("IdOperadorModificacao");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id3");
 
                     b.ToTable("Contrato");
                 });
@@ -2163,7 +2169,7 @@ namespace Differencial.Repository.Migrations
                 {
                     b.HasOne("Differencial.Domain.Entities.Produto", "Produto")
                         .WithOne("Contrato")
-                        .HasForeignKey("Differencial.Domain.Entities.Contrato", "Id")
+                        .HasForeignKey("Differencial.Domain.Entities.Contrato", "Id3")
                         .IsRequired();
 
                     b.Navigation("Produto");

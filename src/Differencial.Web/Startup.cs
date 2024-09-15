@@ -60,7 +60,7 @@ namespace Differencial.Web
 
 
             services.AddDbContext<DifferencialContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DifferencialConnection")));
-
+           
             //services.AddAutoMapper(typeof(Startup));
             Infra.AutoMapperConfig.RegisterAutoMapper();
 
@@ -91,6 +91,13 @@ namespace Differencial.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DifferencialContext>();
+                dbContext.Database.Migrate(); // Aplica as migrations automaticamente
+            } 
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

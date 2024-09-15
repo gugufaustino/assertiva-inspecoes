@@ -41,6 +41,7 @@ namespace Differencial.Web.Controllers
             var lstProduto = produtoRepository.Listar(new ProdutoFilter() { CampoOrdenacao = CampoOrdenacaoProduto.IdSeguradora });
             return View(lstProduto);
         }
+
         public async Task<ActionResult> Editar(int? Id)
         {
             Produto model = null;
