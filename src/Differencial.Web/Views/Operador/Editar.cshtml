@@ -323,6 +323,14 @@
 
         function ativarProdutoVistoria() {
             var objRows = grideProdutoVisoriador.rows({ selected: true });
+
+           
+            if (objRows.ids().toArray().length == 0) {
+                alertaMensagem("Selecione ao menos um item da lista");
+                return;
+            }
+            
+
             ezBSAlert({
                 type: "confirm",
                 modalSize: "",
@@ -345,6 +353,12 @@
 
         function desativarProdutoVistoria() {
             var objRows = grideProdutoVisoriador.rows({ selected: true });
+            
+            if (objRows.ids().toArray().length == 0) {
+                alertaMensagem("Selecione ao menos um item da lista");
+                return;
+            }
+
             ezBSAlert({
                 type: "confirm",
                 modalSize: "",
@@ -372,6 +386,12 @@
 
         function editarRegistros() {
             var objRows = grideProdutoVisoriador.rows({ selected: true });
+
+            
+            if (objRows.ids().toArray().length == 0) { 
+                alertaMensagem("Selecione ao menos um item da lista");
+                return;
+            }
 
             $("#modalEditarProdutos #btnSalvarRegistros").unbind("click").bind("click", function () {
                 arrVistoriadorProduto = new Array();
