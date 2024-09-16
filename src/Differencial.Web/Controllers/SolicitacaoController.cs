@@ -200,7 +200,7 @@ namespace WEB.Controllers
         [HttpPost]
         [Validacao(IgnorarId = true)] 
         [ServiceFilter(typeof(TransactionFilter))]
-        public async Task<ActionResult> EditarAsync(RetornoSalvarEnum retornosalvar, Solicitacao entidade)
+        public async Task<ActionResult> Editar(RetornoSalvarEnum retornosalvar, Solicitacao entidade)
         {
 
             CarregaDropDown(entidade);
