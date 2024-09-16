@@ -9,6 +9,7 @@ namespace Differencial.Domain.EntitiesMetadata
         [Display(Name = "Código")]
         public int Id { get; set; }
 
+        [Required]
         [MaxLength(250)]
         [Display(Name = "Nome Assunto", ShortName = "Nome Assunto")]
         public string NomeAssunto { get; set; }

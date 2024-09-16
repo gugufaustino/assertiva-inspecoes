@@ -10002,3 +10002,10 @@ fieldset[disabled] .form-control {
     
 }
 
+
+
+.tab-disabled a {
+    pointer-events: none; /* Desabilita o clique */
+    cursor: not-allowed !important; /* Muda o cursor para indicar que a aba está desativada */
+    color: #ccc !important; /* Altera a cor do texto para indicar que a aba está desativada */
+}

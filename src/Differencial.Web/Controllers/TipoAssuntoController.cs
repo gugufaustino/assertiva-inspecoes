@@ -1,13 +1,12 @@
 ﻿using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Contracts.Services;
 using Differencial.Domain.Entities;
+using Differencial.Domain.Exceptions;
 using Differencial.Domain.Filters;
 using Differencial.Domain.Resources;
 using Differencial.Domain.UOW;
 using Differencial.Web.Controllers;
 using Differencial.Web.DTO;
-using Differencial.Web.Filters;
-using Differencial.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +46,7 @@ namespace WEB.Controllers
 
         private IEnumerable<TipoAssunto> Lista()
         {
-           return _tipoAssuntoRepositorio.Where(new TipoAssuntoFilter { CampoOrdenacao = CampoOrdenacaoTipoAssunto.Id });
+            return _tipoAssuntoRepositorio.Where(new TipoAssuntoFilter { CampoOrdenacao = CampoOrdenacaoTipoAssunto.Id });
         }
 
         [HttpGet]
@@ -66,21 +65,23 @@ namespace WEB.Controllers
         [ServiceFilter(typeof(TransactionFilter))]
         public ActionResult Editar(RetornoSalvarEnum retornosalvar, TipoAssunto model)
         {
-            if (ModelState.IsValid)
-            {
-                _service.Salvar(model);
-                AppSaveChanges();
-                return RetornoSalvar(retornosalvar, model.Id);
-            }
             ViewBag.lstLog = _serviceLogAuditoria.Listar(model.Id, model);
-            return View(model);
-        }
-        [HttpPost]
 
+            if (!ModelState.IsValid) return View(model);
+
+            if (model.NomeAssunto == "999")
+                throw new ValidationException("validation");
+
+            _service.Salvar(model);
+            AppSaveChanges();
+            return RetornoSalvar(retornosalvar, model.Id);
+
+        }
+        
+        [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
         public ActionResult Excluir(int[] Id)
-        {
-
+        { 
             _service.Excluir(Id);
             AppSaveChanges();
             var result = MontarLista(Lista());

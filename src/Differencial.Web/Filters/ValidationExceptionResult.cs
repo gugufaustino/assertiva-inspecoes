@@ -27,7 +27,7 @@ namespace Differencial.Web.Controllers
                 success = false,
             };
 
-            if (ex.GetType() == typeof(ValidationException))
+            if (ex.GetType() == typeof(ValidationException)) // bloco comentado por que as Exceptions são pegas manuais no ation-post e o model-state-valid é pego pelo validation-sumary
             {
                 responseResultDTO.TipoResponseResult = TipoResponseResultEnum.Atencao;
                 responseResultDTO.title = "Validação";

@@ -279,6 +279,7 @@ namespace Differencial.Web.Controllers
             {
                 case RetornoSalvarEnum.Listar:
                     return RedirectToAction("Listar", htmlRouteValues);
+                     
                 case RetornoSalvarEnum.Editar:
 
                     htmlRouteValues.Add("Id", Id);
@@ -361,7 +362,7 @@ namespace Differencial.Web.Controllers
             return errorsReturn;
         }
 
-        protected void GetValidationException(ValidationException vEx)
+        protected void CatchValidationExceptionToViewData(ValidationException vEx)
         {
             ViewData["ResponseResult"] = new ValidationExceptionResult(this.Log, this.Url).ResponseResultException(vEx);
         }

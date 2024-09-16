@@ -242,7 +242,7 @@ namespace WEB.Controllers
             }
             catch (ValidationException vEx)
             {
-                GetValidationException(vEx);
+                CatchValidationExceptionToViewData(vEx);
             }
             return View(entidade);
         }

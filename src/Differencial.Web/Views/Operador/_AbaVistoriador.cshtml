@@ -8,11 +8,14 @@
 {
     @Html.HiddenFor(m => m.Vistoriador.EnderecoBase.Id)
 }
+@{
+
+}
 
 <div class="tabs-container">
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#tabCidadeBase">Cidade Base</a></li>
-        <li><a data-toggle="tab" href="#tabProdutos">Produtos</a></li>
+        <li class='@(Model?.Vistoriador == null? "tab-disabled" : "")' ><a data-toggle="tab" href="#tabProdutos" class="disabled">Produtos</a></li>
         @*<li><a data-toggle="tab" href="#tabDadosBancarios">Dados Bancários</a></li>*@
     </ul>
     <div class="tab-content">

@@ -1,0 +1,31 @@
+﻿@using Differencial.Web.DTO;
+@model ResponseResultDTO;
+@{
+    var mess = Model?.message;
+
+}
+
+@if (ViewData["ResponseResult"] != null)
+{
+    var responseResult = (ResponseResultDTO)ViewData["ResponseResult"];
+    <div class="alert alert-warning">
+        1: @responseResult.message 
+
+    </div>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    
+    <div class="alert alert-warning">
+        2: @Html.ValidationSummary()
+    </div>
+}
+    
+@if (Model?.showMessage == true)
+{
+    
+    <div class="alert alert-success">
+        @Model.message
+    </div>
+}
+             

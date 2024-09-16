@@ -128,17 +128,17 @@ namespace Differencial.Web.Controllers
 			List<SelectListItem> lstSeguradora = _seguradoraService.Listar(new SeguradoraFilter()).ToList().ToSelectList(i => i.Id, i => i.NomeSeguradora, entidade.Solicitante != null ? (object)entidade.Solicitante.IdSeguradora : null).ToList();
 			ViewBag.lstSeguradora = lstSeguradora;
 
-			try
-			{
+			//try
+			//{
 				await _service.Salvar(entidade, inputFoto);
 				AppSaveChanges();
 				return base.RetornoSalvar(retornosalvar, entidade.Id);
-			}
-			catch (ValidationException vEx)
-			{
-				GetValidationException(vEx);
-			}
-			return View(entidade);
+			//}
+			//catch (ValidationException vEx)
+			//{
+			//	CatchValidationExceptionToViewData(vEx);
+			//}
+			//return View(entidade);
 		} 
 
 		[HttpPost]
