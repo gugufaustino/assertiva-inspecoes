@@ -23,8 +23,8 @@
 	<div class="row">
 		@using (Html.BeginBox(titulo: "Competência:", actionsLeft: actionLink, actionsRight: actionLinkRi))
 		{
-			@Html.Hidden("mes", 4)
-			@Html.Hidden("ano", 2022)
+		@* 	@Html.Hidden("mes", 4)
+			@Html.Hidden("ano", 2022) *@
 			<div class="row">
 				<div class="table-responsive">
 					<table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
@@ -107,7 +107,7 @@
 				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length == 1) {
-					loadModal("/Dashboards/ReceberLancamentos/" + arrSel[0] + "?ano=" + $("#ano").val() + "&mes=" + $("#mes").val(), "modal-xl");
+					loadModal("/Dashboards/ReceberLancamentos/" + arrSel[0] + "?competenciaMes=" + $("#competenciaMes").val() , "modal-xl");
 				} else if (arrSel.length == 0) {
 					alertaMensagem("Selecione um item da lista");
 				} else {
@@ -116,18 +116,16 @@
 			});
 
 
-
-
-			function load(mesano) {
-				console.log(mesano)
-				$.post("/Dashboards/FinanceiroReceber/ListarDadosFinanceiroReceber", { mesano: mesano }, function (data) {
+			function load(competenciaMes) {
+				 
+				$.post("/Dashboards/FinanceiroReceber/ListarDadosFinanceiroReceber", { mesano: competenciaMes }, function (data) {
 					grideTodasSolic.atualizarDados(data.content);
 				});
 			}
 
 
 
-			load();
+			load($("#competenciaMes").val());
 
 		});
 	</script>

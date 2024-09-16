@@ -32,7 +32,7 @@ namespace Differencial.Repository.Repositories
             return _dbSet
                         .Include(i=> i.EnderecoBase)
                         .Include(i=> i.VistoriadorProduto)
-                        .Include(i => i.Operador).ThenInclude(i=> i.Vistoriador)
+                        .Include(i => i.Operador) 
                         .Where(op => lstIdOperadores.Contains(op.Id)).ToList();
         }
 

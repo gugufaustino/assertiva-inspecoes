@@ -308,7 +308,8 @@ namespace Differencial.Service.Services
         private DateTime DataSintetico(Seguradora seguradora, TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiroEnum)
         {
             int diaFechamentoInspecoes = seguradora.ContabilInspecoesDiaFim;
-            int diaLancamentoSintetico = tipoLancamentoFinanceiroEnum == TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador ? seguradora.ContabilInspetorDia : seguradora.ContabilEmpresaDia;
+            int diaLancamentoSintetico = tipoLancamentoFinanceiroEnum == TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador ? seguradora.ContabilInspetorDia 
+                                                                                                                                    : seguradora.ContabilEmpresaDia;
             bool mesAdicional = diaFechamentoInspecoes > diaLancamentoSintetico;
             int diaLancamento = DateTime.Now.Date.Day;
             DateTime DthLancamentoSintetico;

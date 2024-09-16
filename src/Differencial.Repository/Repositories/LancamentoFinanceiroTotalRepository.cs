@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using static Azure.Core.HttpHeader;
 
 namespace Differencial.Repository.Repositories
 {
@@ -37,13 +38,17 @@ namespace Differencial.Repository.Repositories
                                             on solicitacao.Id equals lancamento.IdSolicitacao
                         join seguradora in _db.Seguradora on solicitacao.IdSeguradora equals seguradora.Id
                         group new { lancamento.TipoLancamentoFinanceiro, lancamento.ValorLancamentoFinanceiroTotal, lancamento.DthLancamentoPagamento, seguradora.NomeSeguradora, solicitacao.TpSituacao, }
-                            by new { solicitacao.IdSeguradora , seguradora.NomeSeguradora, lancamento.TipoLancamentoFinanceiro, 
+                            by new { solicitacao.IdSeguradora,
+                                    seguradora.NomeSeguradora,
+                                    lancamento.TipoLancamentoFinanceiro, 
                                     Mes = lancamento.DthLancamentoPagamento.Date.Month,
                                     Ano = lancamento.DthLancamentoPagamento.Date.Year,
                             } into gp                        
-                        where gp.Key.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora
+                        where gp.Key.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora 
+                                && gp.Key.Mes == mes
+                                && gp.Key.Ano == ano
 
-                        select new FinanceiroReceberDto(
+						select new FinanceiroReceberDto(
                                         gp.Key.IdSeguradora,
                                         gp.Key.NomeSeguradora,
                                         gp.Key.TipoLancamentoFinanceiro,

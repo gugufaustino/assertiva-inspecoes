@@ -28,8 +28,12 @@ namespace Differencial.Repository.Repositories
 
         public override IEnumerable<Solicitante> Where<F>(F filter)
         {
-            var query = from solicitante in _db.Solicitante select solicitante;
-            this.AplicarFiltro(ref query, filter as SolicitanteFilter);
+            var query = _db.Solicitante
+                            .Include(s => s.Operador)
+                            .AsNoTracking();
+
+
+			this.AplicarFiltro(ref query, filter as SolicitanteFilter);
             return query.ToList();
         }
 

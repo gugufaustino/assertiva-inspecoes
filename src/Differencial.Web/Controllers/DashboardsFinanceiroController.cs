@@ -37,19 +37,22 @@ namespace WEB.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult FinanceiroReceber(int ano, int mes)
+        public IActionResult FinanceiroReceber()
         { 
             var selectList = GerarCompetencias(new DateTime(2023, 1, 1), DateTime.Now); 
             ViewData["competenciaMes"] = selectList.ToSelectList(i => i.Key, i => i.Key, false); 
-            /// var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroReceber(ano, mes); 
+             
             return View();
         }
 
 		[HttpPost("ListarDadosFinanceiroReceber")]		 
         public IActionResult ListarDadosFinanceiroReceber(string mesano)
-
 		{
-            var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroReceber(2024, 1);
+            var mes = int.Parse(mesano.Split('/')[0]);
+            var ano = int.Parse(mesano.Split('/')[1]);
+
+
+			var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroReceber(ano, mes);
             return ResponseResult(true, content: lstSolicitacao);
         }
 

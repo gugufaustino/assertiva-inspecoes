@@ -10,97 +10,96 @@ using System.Text.Json;
 
 namespace Differencial.Web.Filters
 {
-    public class ValidationExceptionFilter : ExceptionFilterAttribute, IExceptionFilter, IActionFilter
-    {
-        private Microsoft.AspNetCore.Mvc.Controller mycontroller;
+	public class ValidationExceptionFilter : ExceptionFilterAttribute, IExceptionFilter, IActionFilter
+	{
+		private Microsoft.AspNetCore.Mvc.Controller mycontroller;
 
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
+		public void OnActionExecuted(ActionExecutedContext context)
+		{
 
-        }
+		}
 
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
+		public void OnActionExecuting(ActionExecutingContext context)
+		{
 #pragma warning disable UA0002 // Types should be upgraded
-            mycontroller = (Controller)context.Controller;
+			mycontroller = (Controller)context.Controller;
 #pragma warning restore UA0002 // Types should be upgraded
-        }
+		}
 
-        public override void OnException(ExceptionContext filterContext)
-        {
+		public override void OnException(ExceptionContext filterContext)
+		{
 
-            base.OnException(filterContext);
+			base.OnException(filterContext);
 
-            var baseController = new Controllers.BaseController();
-            
-            ILog logger = filterContext.HttpContext.RequestServices.GetService<ILog>();
+			var baseController = new Controllers.BaseController();
 
-            var validationResult = new ValidationExceptionResult(logger, baseController.Url);
-            Exception exception = filterContext.Exception;
+			ILog logger = filterContext.HttpContext.RequestServices.GetService<ILog>();
 
-            if (exception.GetType() == typeof(ValidationException))
-            {
-                if (Controllers.HttpRequestExtensions.IsAjaxRequest(filterContext.HttpContext.Request))
-                {
-                    filterContext.ExceptionHandled = true;
-                    filterContext.Result = baseController.Json(validationResult.ResponseResultException(exception));
+			var validationResult = new ValidationExceptionResult(logger, baseController.Url);
+			Exception exception = filterContext.Exception;
 
-                }
-                else
-                {
-                    if (filterContext.Result is ViewResult)
-                    {
-                        ((ViewResult)filterContext.Result).ViewData["ResponseResult"] = validationResult.ResponseResultException(exception);
+			if (exception is ValidationException)
+			{
+				// Se for uma requisição Ajax
+				if (Controllers.HttpRequestExtensions.IsAjaxRequest(filterContext.HttpContext.Request))
+				{
+					filterContext.ExceptionHandled = true;
+					filterContext.Result = baseController.Json(validationResult.ResponseResultException(exception));
 
-                    }
-                    else
-                    {
-                        var request = filterContext.HttpContext.Request;
-                        // Se pagina é a mesma
+				}
+				else
+				{
+					// Verifica se a Result atual é uma ViewResult
+					if (filterContext.Result is ViewResult viewResult)
+					{
+						viewResult.ViewData["ResponseResult"] = validationResult.ResponseResultException(exception);
 
-                        var UrlReferrer = request.GetTypedHeaders().Referer;
+					}
+					else
+					{
+						var request = filterContext.HttpContext.Request;
+						var refererUrl = request.GetTypedHeaders().Referer;
 
-                        //var uri = new Uri(request.QueryString.ToUriComponent());
-
-                        //if (UrlReferrer == null || (UrlReferrer != null && UrlReferrer.GetLeftPart(UriPartial.Path) == uri.GetLeftPart(UriPartial.Path)))
-                        //{
-                        //    filterContext.Result = baseController.View();
-                        //}
-                        //else
-                        {
-                            string controller = filterContext.RouteData.Values["controller"].ToString();
-                            string action = filterContext.RouteData.Values["action"].ToString();
-                            string id = filterContext.RouteData.Values.ContainsKey("id") ? filterContext.RouteData.Values["id"].ToString() : string.Empty;
+						if (refererUrl != null && refererUrl.AbsolutePath.Split('/').Length >=3)
+						{
+							string controller = filterContext.RouteData.Values["controller"].ToString();
+							string action = filterContext.RouteData.Values["action"].ToString();
+							string id = filterContext.RouteData.Values.ContainsKey("id") ? filterContext.RouteData.Values["id"].ToString() : string.Empty;
 
 
+							var strControllerActionUrl = refererUrl.AbsolutePath.Split('/');
+							var route = new Microsoft.AspNetCore.Routing.RouteValueDictionary();
 
-                            var url = UrlReferrer;
+							if (!string.IsNullOrEmpty(id))
+								route.Add("id", id);
 
-                            var strControllerActionUrl = url.AbsolutePath.Split('/');
-                            var route = new Microsoft.AspNetCore.Routing.RouteValueDictionary();
+							// Adiciona os parâmetros da QueryString, se houver
+							if (!string.IsNullOrEmpty(refererUrl.Query))
+							{
+								var queryParams = refererUrl.Query.Substring(1).Split('&');
+								foreach (var param in queryParams)
+								{
+									var keyValue = param.Split('=');
+									route.Add(keyValue[0], keyValue[1]);
+								}
+							}
 
+							// Redireciona para a página anterior
+							
+							filterContext.Result = baseController.RedirectToAction(strControllerActionUrl[2], strControllerActionUrl[1], route);
+							((Differencial.Web.Controllers.BaseController)mycontroller).TempData["ResponseResult"] = JsonSerializer.Serialize(validationResult.ResponseResultException(exception));
+						}
+						else
+						{   // Caso não tenha Referer, retorna para uma View padrão
 
-                            if (!String.IsNullOrEmpty(id))
-                                route.Add("id", id);
+							filterContext.Result = baseController.View();
+							((Differencial.Web.Controllers.BaseController)mycontroller).TempData["ResponseResult"] = JsonSerializer.Serialize(validationResult.ResponseResultException(exception));
+						
+						}
+					}
+				}
 
-                            if (!String.IsNullOrEmpty(url.Query))
-                            {
-                                var query = url.Query.Substring(1).Split('&');
-                                foreach (var param in query)
-                                {
-                                    route.Add(param.Split('=')[0], param.Substring(param.IndexOf("=") + 1));
-                                }
-                            }
-
-
-                            filterContext.Result = baseController.RedirectToAction(strControllerActionUrl[2], strControllerActionUrl[1], route);
-                            ((Differencial.Web.Controllers.BaseController)mycontroller).TempData["ResponseResult"] = JsonSerializer.Serialize(validationResult.ResponseResultException(exception));
-
-                        }
-                    }
-                }
-            }
-
-        }
-    }
+			}
+		}
+	}
 }

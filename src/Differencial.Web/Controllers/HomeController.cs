@@ -49,15 +49,7 @@ namespace Differencial.Web.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-
-
-            _logger.LogInformation("No método qualquer: ola mundo novamente ");
-
-
-
-
-
-
+             
 
             if (_usuarioService.Autenticado())
                 return Redirect(@"~/Home/Inicio");

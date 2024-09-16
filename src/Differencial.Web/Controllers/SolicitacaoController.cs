@@ -334,9 +334,15 @@ namespace WEB.Controllers
         [HttpGet]
         public JsonResult SelecionarSolicitantes(int idSeguradora)
         {
-            return ResponseResult(true, content: _solicitanteService.Listar(new SolicitanteFilter { IdSeguradora = idSeguradora, CampoOrdenacao = CampoOrdenacaoSolicitante.NomeSolicitante })
-                .Select(i => new { i.Id, i.Operador.NomeOperador }));
-        }
+            var lstSolics = _solicitanteService.Listar(new SolicitanteFilter { IdSeguradora = idSeguradora, CampoOrdenacao = CampoOrdenacaoSolicitante.NomeSolicitante });
+
+
+            if (lstSolics.Any())
+                return ResponseResult(true, content: lstSolics.Select(i => new { i.Id, i.Operador.NomeOperador }));
+            else
+                return ResponseResult(true);
+
+		}
 
         [HttpGet]
         public JsonResult SelecionarSolicitante(int idSolicitante)
