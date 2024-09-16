@@ -21,9 +21,9 @@ namespace Differencial.Domain.Exceptions
         {
         }
 
-        protected ServiceException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+        //protected ServiceException(SerializationInfo info, StreamingContext context)
+        //    : base(info, context)
+        //{
+        //}
     }
 }

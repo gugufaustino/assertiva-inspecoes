@@ -15,7 +15,7 @@ namespace Differencial.Domain.Util.ExtensionMethods
             return obj == null || obj.Count == 0;
         }
 
-        public static bool IsNullOrEmpty<t>(this ICollection<t> obj) where t : class
+        public static bool IsNullOrEmpty<T>(this ICollection<T> obj) where T : class
         {
             return obj == null || obj.Count == 0;
         }

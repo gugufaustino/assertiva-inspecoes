@@ -223,7 +223,7 @@ namespace WEB.Controllers
         [Validacao(IgnorarId = true)]
          
         [ServiceFilter(typeof(TransactionFilter))]
-        public ActionResult Inserir(Solicitacao entidade)
+        public async Task<ActionResult> Inserir(Solicitacao entidade)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace WEB.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _solicitacaoService.SalvarSolicitacao(entidade);
+                    await _solicitacaoService.SalvarSolicitacao(entidade);
                     AppSaveChanges();
                     return RedirectToAction("Editar", new { Id = entidade.Id });
                 }
