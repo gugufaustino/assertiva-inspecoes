@@ -10,6 +10,6 @@ namespace Differencial.Domain.Contracts.Services
 
 		void Salvar(  Comunicacao entidade);
 
-		void Excluir(  int id);
+		void Excluir(IEnumerable<Comunicacao> comunicacaos);
 	}
 }

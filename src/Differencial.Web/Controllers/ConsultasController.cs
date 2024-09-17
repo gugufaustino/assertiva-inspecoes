@@ -44,7 +44,7 @@ namespace Differencial.Web.Controllers
         }
         public ActionResult TodasRotas()
         {
-            var lstSolic = _consultasService.Listar(new SolicitacaoFilter());
+            var lstSolic = _consultasService.ListarTodasRotas(new SolicitacaoFilter());
 
          lstSolic  = lstSolic.Where(w=> w.IdVistoriador != null && w.AtividadeProcesso.Any(a=>a.TipoAtividade == TipoAtividadeEnum.PrestacaoContaKm))
                                     .OrderBy(o => o.Vistoriador.Operador.NomeOperador);

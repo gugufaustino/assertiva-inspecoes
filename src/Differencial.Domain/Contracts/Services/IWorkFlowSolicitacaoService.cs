@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Differencial.Domain.Contracts.Services
 {
-    public interface IWorkFlowSolicitacaoService : IBaseService<Solicitacao, SolicitacaoFilter>
+    public interface IWorkFlowSolicitacaoService //: IBaseService<Solicitacao, SolicitacaoFilter>
     {
         Task Enviar(int Id, string txtMensagemMovimento, IFormFile arquivo); 
         void Apropriar(int Id);

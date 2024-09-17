@@ -170,7 +170,7 @@ namespace Differencial.Service.Services
         }
 
         #endregion "Consultas"
-        public IEnumerable<Solicitacao> Listar(SolicitacaoFilter filtro)
+        public IEnumerable<Solicitacao> ListarTodasRotas(SolicitacaoFilter filtro)
         {
             return TryCatch(() =>
             {
@@ -198,19 +198,20 @@ namespace Differencial.Service.Services
                 return Task.CompletedTask;
             });
         }
-        public void Excluir(int id)
+        public async Task Excluir(int id)
         {
-            TryCatch(() =>
+			await TryCatch(async () =>
             {
-                var solic = _solicitacaoRepositorio.BuscarParaExcluir(id).Result;
+                var solic = await _solicitacaoRepositorio.BuscarParaExcluir(id);
+               
                 if (solic.TpSituacao != TipoSituacaoProcessoEnum.EmElaboracao
                 && solic.TpSituacao != TipoSituacaoProcessoEnum.EmElaboracaoSolicitante
                 && solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
                     throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
 
-                // _arquivoAnexoService.Excluir(solic.Foto);
+                
                 _laudoFotoService.ExcluirFotoLaudoFoto(solic.Foto);
-
+                _comunicacaoService.Excluir(solic.Comunicacao);
 				_coberturaService.Excluir(solic.Cobertura.Select(i => i.Id).ToArray());
                 _movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso.Select(i => i.Id).ToArray());
                 _atividadeService.Excluir(solic.AtividadeProcesso.Select(i => i.Id).ToArray());
@@ -223,7 +224,7 @@ namespace Differencial.Service.Services
             {
                 foreach (var id in ids)
                 {
-                    Excluir(id);
+                    Excluir(id) ;
                 }
             });
         }
@@ -1054,9 +1055,14 @@ namespace Differencial.Service.Services
                                           .GetById(id);
         }
 
-        public void Salvar(Solicitacao entidade)
-        {
-            throw new NotImplementedException(); // por conta da impelemnetãção da IDashboar, q deve ser refatorada e separada desssas implementaçoes aqui
-        }
-    }
+  //      public void Salvar(Solicitacao entidade)
+  //      {
+  //          throw new NotImplementedException(); // por conta da impelemnetãção da IDashboar, q deve ser refatorada e separada desssas implementaçoes aqui
+  //      }
+
+		//void IBaseService<Solicitacao, SolicitacaoFilter>.Excluir(int id)
+		//{
+		//	throw new NotImplementedException();
+		//}
+	}
 }

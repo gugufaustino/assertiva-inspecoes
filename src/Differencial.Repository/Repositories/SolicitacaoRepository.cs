@@ -223,6 +223,7 @@ namespace Differencial.Repository.Repositories
 					.Include(i => i.Endereco)
 					.Include(i => i.Cliente.ClienteEndereco)
 					.Include(i => i.Cobertura)
+					.Include(i => i.Comunicacao)
 					.Include(i => i.Agendamento)
 					.Include(i => i.LancamentoFinanceiro)
 					.Include(i => i.OperadorCadastro)

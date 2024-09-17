@@ -43,9 +43,9 @@ namespace Differencial.Domain.Contracts.Services
         Task SalvarSolicitacao(Solicitacao entidade);
 		Solicitacao Buscar(int id);
 
-		IEnumerable<Solicitacao> Listar(SolicitacaoFilter filtro); 
+		IEnumerable<Solicitacao> ListarTodasRotas(SolicitacaoFilter filtro);
 
-		void Excluir(int id);
+		Task Excluir(int id);
 
 		void Excluir(int[] ids);
 

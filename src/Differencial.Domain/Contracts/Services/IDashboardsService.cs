@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Differencial.Domain.Contracts.Services
 {
-    public interface IDashboardsService : IBaseService<Solicitacao, SolicitacaoFilter>
+    public interface IDashboardsService //: IBaseService<Solicitacao, SolicitacaoFilter>
     {      
         IEnumerable<Solicitacao> ListarSolicitacoesVistoriador();
         Task<List<Solicitacao>> ListarSolicitacoesGerencia();
