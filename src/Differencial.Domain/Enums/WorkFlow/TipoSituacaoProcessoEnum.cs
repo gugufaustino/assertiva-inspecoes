@@ -8,15 +8,15 @@ namespace Differencial.Domain
     {
         [SituacaoProcesso(Name = "Em Elaboração", ShortName = "Elaboração",
         WFPapelAtuante = (int)TipoPapelEnum.Gerente,
-        WFTipoAcaoPapelAtuante = new[] { WFTipoAcao.Apropriar },
-        WFTipoAcaoOperadorApropriado = new[] { WFTipoAcao.Gravar, WFTipoAcao.Enviar })]
+        WFTipoAcaoPapelAtuante = [WFTipoAcao.Apropriar],
+        WFTipoAcaoOperadorApropriado = [WFTipoAcao.Gravar, WFTipoAcao.Enviar])]
         EmElaboracao = 1,
 
 
         [SituacaoProcesso(Name = "Apropriado Pelo Gerente", ShortName = "Aprop. Gerente", IndGerarAtividade = true,
         WFPapelAtuante = (int)TipoPapelEnum.Gerente, 
-        WFTipoAcaoPapelAtuante = new[] { WFTipoAcao.Apropriar },
-        WFTipoAcaoOperadorApropriado = new[] { WFTipoAcao.Gravar, WFTipoAcao.Enviar, WFTipoAcao.Cancelar, WFTipoAcao.Devolver })]
+        WFTipoAcaoPapelAtuante = [WFTipoAcao.Apropriar],
+        WFTipoAcaoOperadorApropriado = [WFTipoAcao.Gravar, WFTipoAcao.Enviar, WFTipoAcao.Cancelar ])]
         ApropriadoGerente = 2,
 
 

@@ -8,6 +8,9 @@
 
 }
 @Html.AntiForgeryToken()
+<!-- dependencia do botão salvar -->
+<input type="hidden" id="retornosalvar" name="retornosalvar" value="@(Differencial.Web.DTO.RetornoSalvarEnum.Editar)" />
+
 <div class="row">
 
     <div class="form-group col-md-4">

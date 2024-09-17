@@ -75,7 +75,7 @@ namespace Differencial.Web.Helpers
             return new BoxDisposableContainer(writer, _lstHtmlDispose);
         }
 
-        public static IDisposable BeginBox(this IHtmlHelper htmlHelper, string titulo = "", string tituloMenor = "", bool? minimizavel = false, bool? maximizavel = true, bool? removivel = false, object htmlAttributes = null, IHtmlContent[] actionsLeft = null, HtmlString[] actionsRight = null, params HtmlString[] lstActionLinksConfig)
+        public static IDisposable BeginBox(this IHtmlHelper htmlHelper, string titulo = "", string tituloMenor = "", bool? minimizavel = false, bool? maximizavel = true, bool? removivel = false, object htmlAttributes = null, IHtmlContent[] actionsLeft = null, IHtmlContent[] actionsRight = null, params HtmlString[] lstActionLinksConfig)
         {
 
             var urlfullscreen = Controllers.BaseController.UrlFullScreen();
@@ -85,15 +85,15 @@ namespace Differencial.Web.Helpers
             writer.WriteLine("<div class=\"ibox float-e-margins {0} \" >", (urlfullscreen.HasValue && urlfullscreen.Value == true) ? "fullscreen" : "");
             writer.WriteLine("<div class=\"ibox-title\" >");
 
-            #region "pull-left"
+            #region "pull-left h5"
             writer.WriteLine("<div class=\"pull-left\" >");
-            #region "h5"
+             
             tituloMenor = String.IsNullOrEmpty(tituloMenor) ? string.Empty : "<small class=\"m-l-sm\">" + tituloMenor + "</small>";
             writer.WriteLine("<h5 style='margin-top: 8px; margin-right:10px; margin-left: 5px; '>{0}{1}</h5>", titulo, tituloMenor);
             if (actionsLeft != null && actionsLeft.Any())
                 foreach (var item in actionsLeft)
                     writer.WriteLine(item);
-            #endregion
+             
 
             writer.Write("</div>");
             #endregion

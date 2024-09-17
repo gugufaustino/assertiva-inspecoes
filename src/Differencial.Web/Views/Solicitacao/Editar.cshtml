@@ -1,330 +1,332 @@
 ﻿@model Solicitacao
 @{
-    ViewBag.lstAcoesDisponiveis = HtmlWorkFlowHelper.AcoesDisponiveis(ViewData.Model);
-    ViewBag.lstAtivDisponiveis = HtmlAtividadeHelper.AtividadesDisponiveis(ViewData.Model);
+	ViewBag.lstAcoesDisponiveis = HtmlWorkFlowHelper.AcoesDisponiveis(ViewData.Model);
+	ViewBag.lstAtivDisponiveis = HtmlAtividadeHelper.AtividadesDisponiveis(ViewData.Model);
 
-    ViewBag.lstContratoParametroObrig = ViewBag.lstContratoParametroObrig;
+	ViewBag.lstContratoParametroObrig = ViewBag.lstContratoParametroObrig;
 
-    ViewBag.Title = "Solicitação de Vistoria";
-    string linkSolicitacao = string.Format("<a href=\"{0}\">Cód. {0}</a>", Model != null && Model.Id > 0 ? Model.Id.ToString() : "#");
-    
+	ViewBag.Title = "Solicitação de Vistoria";
+	string linkSolicitacao = string.Format("<a href=\"{0}\">Cód. {0}</a>", Model != null && Model.Id > 0 ? Model.Id.ToString() : "#");
+	var linkAcoes = await Html.PartialAsync("WorkFlow/_BotoesAcoes");
+
+
 }
 @*@Html.PageHeading("Novo", @Html.ActionLink("Início", "Inicio", "Home"), @Html.ActionLink("Lista", "DashboardGerente", "Dashboards"))*@
 
 <div class="wrapper wrapper-content p-xxs">
-    <div class="row">
-        <div class="col-sm-12 p-n">
-            @using (Html.Box(linkSolicitacao, string.Empty @*"Terça 16:21 - 12.06.2017"*@, false, true, false))
-            {
-                <div class="ibox-content">
-                    <div class="feed-activity-list">
-                        @using (Html.BeginForm())
-                        {
-                            @Html.HiddenFor(m => m.IdCliente);
-                            @Html.HiddenFor(m => m.Cliente.Id);
-                            @Html.HiddenFor(m => m.Endereco.Id);
-                            @Html.HiddenFor(m => m.IdEnderecoCliente);
-                            @Html.Partial("_Form")
-                            <br />
-                            @Html.Partial("WorkFlow/_BotoesAcoes")
-                        }
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-sm-12 p-n">
+			@using (Html.BeginBox(linkSolicitacao, maximizavel: true, actionsRight: [linkAcoes]))
+			{
+
+				<div class="feed-activity-list">
+					@using (Html.BeginForm())
+					{
+						@Html.HiddenFor(m => m.IdCliente)
+						@Html.HiddenFor(m => m.Cliente.Id)
+						@Html.HiddenFor(m => m.Endereco.Id)
+						@Html.HiddenFor(m => m.IdEnderecoCliente)
+						@await Html.PartialAsync("_Form")
+						<br />
+						
+					}
+
+				</div>
+			}
+		</div>
+	</div>
 </div>
 
 
-@section Endbody{
+@section Endbody {
 
-    <!-- Menu Area Tmp -->
-    <ul class="dropdown-menu" id="demo1-menu">
-        <li>
-            <a class="demo1-preview btnInserirQuadroFotosFim">
-                <span class="fa fa-step-forward" aria-hidden="true"> </span>&nbsp; Inserir <span class="demo1-count">0</span> foto(s) no fim
-            </a>
-        </li>
-        <li>
-            <a class="demo1-preview btnInserirQuadroFotosEm">
-                <span class="fa fa-step-forward" aria-hidden="true"> </span>&nbsp; Inserir <span class="demo1-count">0</span> foto(s) em ...
-            </a>
-        </li>
-        <li class="divider"></li>
-        <li><a class="demo1-edit btnRenomear"> <span aria-hidden="true" class="fa fa-pencil"></span>&nbsp; Renomear <span class="demo1-count">0</span> foto(s)</a></li>
-        @*<li><a class="demo1-edit">Classificar <span class="demo1-count">0</span> Arquivo(s)</a></li>*@
-        <li class="divider"></li>
-        @*<li><a class="demo1-trash btnExcluirTemp"><span class="fa fa-trash-o "></span>&nbsp; Excluír <span class="demo1-count">0</span> foto(s)</a></li>*@
-    </ul>
+	<!-- Menu Area Tmp -->
+	<ul class="dropdown-menu" id="demo1-menu">
+		<li>
+			<a class="demo1-preview btnInserirQuadroFotosFim">
+				<span class="fa fa-step-forward" aria-hidden="true"> </span>&nbsp; Inserir <span class="demo1-count">0</span> foto(s) no fim
+			</a>
+		</li>
+		<li>
+			<a class="demo1-preview btnInserirQuadroFotosEm">
+				<span class="fa fa-step-forward" aria-hidden="true"> </span>&nbsp; Inserir <span class="demo1-count">0</span> foto(s) em ...
+			</a>
+		</li>
+		<li class="divider"></li>
+		<li><a class="demo1-edit btnRenomear"> <span aria-hidden="true" class="fa fa-pencil"></span>&nbsp; Renomear <span class="demo1-count">0</span> foto(s)</a></li>
+		@*<li><a class="demo1-edit">Classificar <span class="demo1-count">0</span> Arquivo(s)</a></li>*@
+		<li class="divider"></li>
+		@*<li><a class="demo1-trash btnExcluirTemp"><span class="fa fa-trash-o "></span>&nbsp; Excluír <span class="demo1-count">0</span> foto(s)</a></li>*@
+	</ul>
 
 
-    <!-- Menu Quadro Fotos -->
-    <ul class="dropdown-menu" id="demo2-menu">
-        <li><a class="demo1-preview btnReposicionar"> <span aria-hidden="true" class="fa fa-sort"></span>&nbsp; Posicionar foto em ...</a></li>
-        <li><a class="demo1-preview btnRemoverQuadro"> <span aria-hidden="true" class="fa fa-reply"></span>&nbsp; Remover do quadro</a></li>
+	<!-- Menu Quadro Fotos -->
+	<ul class="dropdown-menu" id="demo2-menu">
+		<li><a class="demo1-preview btnReposicionar"> <span aria-hidden="true" class="fa fa-sort"></span>&nbsp; Posicionar foto em ...</a></li>
+		<li><a class="demo1-preview btnRemoverQuadro"> <span aria-hidden="true" class="fa fa-reply"></span>&nbsp; Remover do quadro</a></li>
 
-    </ul>
+	</ul>
 }
 
 @section Styles {
-    <link href="~/Content/differencialQuadroFotos.css" rel="stylesheet" />
-    @*@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+	<link href="~/Content/differencialQuadroFotos.css" rel="stylesheet" />
+	@*@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
     @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")*@
 
-    <style>
-        .inmodal .modal-header {
-            padding: 15px;
-            text-align: left;
-        }
+	<style>
+		.inmodal .modal-header {
+			padding: 15px;
+			text-align: left;
+		}
 
-        .hr-line-dashed {
-            border-top: 1px dashed #B3B3B3;
-            /* color: #D24646; */
-            /* background-color: #F8FAFB; */
-            height: 1px;
-            margin: 20px 0;
-        }
+		.hr-line-dashed {
+			border-top: 1px dashed #B3B3B3;
+			/* color: #D24646; */
+			/* background-color: #F8FAFB; */
+			height: 1px;
+			margin: 20px 0;
+		}
 
-        /* bootstrap hack: fix content width inside hidden tabs */
-        .tab-content > .tab-pane,
-        .pill-content > .pill-pane {
-            display: block; /* undo display:none          */
-            height: 0; /* height:0 is also invisible */
-            overflow-y: hidden; /* no-overflow                */
-        }
+		/* bootstrap hack: fix content width inside hidden tabs */
+		.tab-content > .tab-pane,
+		.pill-content > .pill-pane {
+			display: block; /* undo display:none          */
+			height: 0; /* height:0 is also invisible */
+			overflow-y: hidden; /* no-overflow                */
+		}
 
-        .tab-content > .active,
-        .pill-content > .active {
-            height: auto; /* let the content decide it  */
-        }
-        /* bootstrap hack end */
-        .tabs-container .tab-pane .panel-body {
-            min-height: 380px !important;
-        }
-    </style>
+		.tab-content > .active,
+		.pill-content > .active {
+			height: auto; /* let the content decide it  */
+		}
+		/* bootstrap hack end */
+		.tabs-container .tab-pane .panel-body {
+			min-height: 380px !important;
+		}
+	</style>
 }
 
-@section Scripts{ 
-  
-    <script src="~/Scripts/plugins/finderSelect/jquery.finderSelect.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+@section Scripts {
 
-    <script src="~/Scripts/plugins-diff/util-progress-bar.js"></script>
-    <script type="text/javascript">
-        var myDZo;
-        var appBoxTemp;
-        var appBoxQuadro;
-        var fSelectBoxTemp;
-        var fselBoxQuadro;
-        var clickAbaQuadroInicializar = 0;
-        var clickAbaQuadroInspecao = 0;
-        var progressBar;
-        var idSolicitacaoInspecao = @Html.Raw(Html.ValueFor(m => m.Id).ToString());
+	<script src="~/Scripts/plugins/finderSelect/jquery.finderSelect.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 
-
-        $(document).ready(function () {
-            var acaoExterna = '@(ViewBag.Acao ?? "")';
-            fnAcaoExterna(acaoExterna);
-
-            progress = Progress({title : ""})
-
-            $('.nav-tabs a[href="#idtabFotos"]').click(function(){
-                if(clickAbaQuadroInspecao < 1)
-                    AbaQuadroInspecao()
-            });
-
-            $('.nav-tabs a[href="#idtabQuadroFotos"]').click(function(){
-                if(clickAbaQuadroInicializar < 1)
-                    AbaQuadroInicializar()
-            });
-
-            Dropzone.autoDiscover = false;
-
-            Dropzone.options.myDZ = {
-                //Variaveis Customizadas
-                _urlExcluir: '@Url.Action("Excluir", "Foto")',
-                _chaveEntidade: idSolicitacaoInspecao,
-                _urlCarregarArquivos: '@Url.Action("FotosInspecao", "Foto")',
-
-                autoQueue : true,
-                autoProcessQueue: true,
-                dictDefaultMessage: "Drag & Drop - Arraste & Solte arquivos aqui para carregar.",
-                dictFileSizeUnits : { tb: "Tb", gb: "Gb", mb: "Mb", kb: "Kb", b: "b" },
-
-                thumbnailWidth: 180,
-                thumbnailHeight: 120,
-
-                resizeWidth: null,
-                resizeHeight: null,
-                resizeMimeType: 'image/jpeg',
-                resizeQuality: 1,
-
-                addRemoveLinks: true,
-                dictRemoveFile: "Excluir",
-                dictCancelUpload: "Cancelar",
-                dictRemoveFileConfirmation: "Você deseja excluír realmente esse arquivo?",
-
-                uploadMultiple: false,
-                parallelUploads: 10,
-                maxFiles: 600,
-                dictMaxFilesExceeded : "Você exedeu o limite de 600 arquivos que podem ser enviados.",
-
-                acceptedFiles: "image/*",
-                dictInvalidFileType : "Você não pode enviar arquivo desse tipo.",
-                url: "/Foto/Enviar",
-
-                paramName: "arquivo",
-
-                //// Dropzone settings
-                init: function () {
-                    var myDropzone = this;
-
-                    this.element.querySelector("button[id=btnEnviarFotos]").addEventListener("click", function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-
-                    });
-                    this.element.querySelector("button[id=btnRemoverErro]").addEventListener("click", function (e) {
-                        //e.preventDefault();          
-                        //e.stopPropagation();
-
-                        for (var i = myDropzone.getRejectedFiles().length - 1; i < myDropzone.getRejectedFiles().length; i--) {
-                            var oFile = myDropzone.getRejectedFiles()[i];
-                            myDropzone.removeFile(oFile);
-                        }
-
-                    });
-                    //this.on("addedfile", function (file, ee) { // fire indiferente do status
-
-                    //    var sGuid = file.GuidFoto
-                    //    if(sGuid != undefined){
-                    //        $(file._removeLink).attr("data-dz-remove", sGuid);
-                    //    }
-
-                    //});
-                    this.on('sending', function (file, xhr, formData) {
-                        progress.incSend(myDropzone.getQueuedFiles().length)
-                         
-                        formData.append('dataModificacao', file.lastModifiedDate.toISOString());
-                        formData.append('idSolicitacao',  myDropzone.options._chaveEntidade );
-
-                        var i = myDropzone.files.findIndex(function (item) { return item.size == file.size && item.name == file.name ;});
-                        formData.append('index', i);
-
-                    });
-                    this.on("processing", function (file) {
-                       
-                        //var qtd = myDropzone.getQueuedFiles().length
-                        //progressBar = ProgressBar({progresstotalrequest : qtd, title : "Enviando " + qtd + " arquivos" })
-                    });
-
-                    //All of these receive the file as first parameter:
-                    this.on("complete", function (file) { //Called when the upload was either successful or erroneous.
-                        progress.incComplete();
-                    });
-
-                    this.on("success", function (file, response) {
-                        $(file._removeLink).attr("data-dz-remove", response.content.GuidFoto);
-                    });
-                  
-                    this.on("removedfile", function (file) {
-                        var guidFile =  $(file._removeLink).attr("data-dz-remove");
-
-                        if(guidFile != ""){
-                            $.post( myDropzone.options._urlExcluir , { idSolicitacao: myDropzone.options._chaveEntidade , guidFoto: guidFile });
-                        }
-                    });                                       
-
-                },
-
-                carregarArquivos: function(){
-                    var myDropzone = this;
-
-                    $.post(myDropzone._urlCarregarArquivos , { idSolicitacao: myDropzone._chaveEntidade },
-                        function(response) {
-
-                            if(!response.success){
-                                alertaMensagem(response.message);
-                            }else{
-
-                                for (var i = 0; i < response.content.length; i++) {
-                                    var Foto = response.content[i];
-                                    var objFile = {
-                                        name: Foto.ArquivoNome + Foto.ArquivoExtencao,
-                                        size: Foto.ArquivoTamanhoBytes,
-                                        ImgData : Foto.ImgData,
-                                        lastModified: Foto.ArquivoDataModificacao,
-                                        accepted:true,
-                                    };
-
-                                    myDropzone.addedfile.call(myDZo, objFile);
-                                    myDropzone.thumbnail.call(myDZo, objFile, objFile.ImgData );
-                                    myDZo.files.push(objFile);
-                                    $(myDZo.files[i]._removeLink).attr("data-dz-remove",  Foto.GuidFoto);
-                                }
-
-                            }
-                        });
-
-                }
-
-            }
-
-            myDZo = new Dropzone("div#myDropzone", Dropzone.options.myDZ );
-
-            //AbaQuadroInicializar(); TODO Pendente de refactoração no backend
-
-            var columnsLanFin = [
-                       { data: "TipoLancamentoFinanceiro", "className": "" },
-                       { data: "ValorLancamentoFinanceiro", "className": "text-right" },
-                       { data: "IndLancamentoFinanceiroContabil", "className": "text-center" },
-                       { data: "DescricaoLancamentoFinanceiro", "className": "" },
-                       { data: "Data", "className": "text-center" },
-            ];
-            grideLancamentosFinanceiros = $('#tbLancamentoFinanceiro').dataTableFw(false, false, false, true, columnsLanFin);
-
-        });
-
-        function AbaQuadroInspecao() {
-            clickAbaQuadroInspecao++;
-            myDZo.options.carregarArquivos();
-        }
-
-        function AbaQuadroInicializar() {
-            clickAbaQuadroInicializar++;
-            appBoxTemp =  new Vue({
-                el: '#box-fotos1',
-                data: {  fotos: []  }
-            });
-
-            appBoxQuadro =  new Vue({
-                el: '#box-fotos2',
-                data: {  fotos: []  }
-            });
-
-            $.ajax({
-                bMostrarCarregando: false,
-                type: "POST",
-                dataType: 'json',
-                url: '@Url.Action("QuadroFotos", "Foto")',
-                data:  { idSolicitacao: idSolicitacaoInspecao },
-                success:  function (response) {
-                    appBoxTemp.fotos = response.content.lstFotosTemp;
-                    appBoxQuadro.fotos = response.content.lstQuadroFotos;
-
-                    fSelectBoxTemp = $("#box-fotos1").finderSelect({ children: "div.col-sm-6", totalSelector: ".demo1-count", menuSelector: "#demo1-menu" });
-                    fselBoxQuadro = $("#box-fotos2").finderSelect({ children: "div.col-sm-6", totalSelector: ".demo1-count" , menuSelector: "#demo2-menu", enableShiftClick: false, enableCtrlClick: false });
-                },
-
-            });
-
-        }
+	<script src="~/Scripts/plugins-diff/util-progress-bar.js"></script>
+	<script type="text/javascript">
+		var myDZo;
+		var appBoxTemp;
+		var appBoxQuadro;
+		var fSelectBoxTemp;
+		var fselBoxQuadro;
+		var clickAbaQuadroInicializar = 0;
+		var clickAbaQuadroInspecao = 0;
+		var progressBar;
+		var idSolicitacaoInspecao = @Html.Raw(Html.ValueFor(m => m.Id).ToString());
 
 
-    </script>
-    <script asp-append-version="true" src="~/scripts/app/Solicitacao/workFlow.js"></script>
-    <script asp-append-version="true" src="~/scripts/app/Solicitacao/quadroFotos.js"></script>
-    <script asp-append-version="true" src="~/scripts/app/Solicitacao/comumSolicitacao.js"></script>
+		$(document).ready(function () {
+			var acaoExterna = '@(ViewBag.Acao ?? "")';
+			fnAcaoExterna(acaoExterna);
+
+			progress = Progress({ title: "" })
+
+			$('.nav-tabs a[href="#idtabFotos"]').click(function () {
+				if (clickAbaQuadroInspecao < 1)
+					AbaQuadroInspecao()
+			});
+
+			$('.nav-tabs a[href="#idtabQuadroFotos"]').click(function () {
+				if (clickAbaQuadroInicializar < 1)
+					AbaQuadroInicializar()
+			});
+
+			Dropzone.autoDiscover = false;
+
+			Dropzone.options.myDZ = {
+				//Variaveis Customizadas
+				_urlExcluir: '@Url.Action("Excluir", "Foto")',
+				_chaveEntidade: idSolicitacaoInspecao,
+				_urlCarregarArquivos: '@Url.Action("FotosInspecao", "Foto")',
+
+				autoQueue: true,
+				autoProcessQueue: true,
+				dictDefaultMessage: "Drag & Drop - Arraste & Solte arquivos aqui para carregar.",
+				dictFileSizeUnits: { tb: "Tb", gb: "Gb", mb: "Mb", kb: "Kb", b: "b" },
+
+				thumbnailWidth: 180,
+				thumbnailHeight: 120,
+
+				resizeWidth: null,
+				resizeHeight: null,
+				resizeMimeType: 'image/jpeg',
+				resizeQuality: 1,
+
+				addRemoveLinks: true,
+				dictRemoveFile: "Excluir",
+				dictCancelUpload: "Cancelar",
+				dictRemoveFileConfirmation: "Você deseja excluír realmente esse arquivo?",
+
+				uploadMultiple: false,
+				parallelUploads: 10,
+				maxFiles: 600,
+				dictMaxFilesExceeded: "Você exedeu o limite de 600 arquivos que podem ser enviados.",
+
+				acceptedFiles: "image/*",
+				dictInvalidFileType: "Você não pode enviar arquivo desse tipo.",
+				url: "/Foto/Enviar",
+
+				paramName: "arquivo",
+
+				//// Dropzone settings
+				init: function () {
+					var myDropzone = this;
+
+					this.element.querySelector("button[id=btnEnviarFotos]").addEventListener("click", function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+						myDropzone.processQueue();
+
+					});
+					this.element.querySelector("button[id=btnRemoverErro]").addEventListener("click", function (e) {
+						//e.preventDefault();
+						//e.stopPropagation();
+
+						for (var i = myDropzone.getRejectedFiles().length - 1; i < myDropzone.getRejectedFiles().length; i--) {
+							var oFile = myDropzone.getRejectedFiles()[i];
+							myDropzone.removeFile(oFile);
+						}
+
+					});
+					//this.on("addedfile", function (file, ee) { // fire indiferente do status
+
+					//    var sGuid = file.GuidFoto
+					//    if(sGuid != undefined){
+					//        $(file._removeLink).attr("data-dz-remove", sGuid);
+					//    }
+
+					//});
+					this.on('sending', function (file, xhr, formData) {
+						progress.incSend(myDropzone.getQueuedFiles().length)
+
+						formData.append('dataModificacao', file.lastModifiedDate.toISOString());
+						formData.append('idSolicitacao', myDropzone.options._chaveEntidade);
+
+						var i = myDropzone.files.findIndex(function (item) { return item.size == file.size && item.name == file.name; });
+						formData.append('index', i);
+
+					});
+					this.on("processing", function (file) {
+
+						//var qtd = myDropzone.getQueuedFiles().length
+						//progressBar = ProgressBar({progresstotalrequest : qtd, title : "Enviando " + qtd + " arquivos" })
+					});
+
+					//All of these receive the file as first parameter:
+					this.on("complete", function (file) { //Called when the upload was either successful or erroneous.
+						progress.incComplete();
+					});
+
+					this.on("success", function (file, response) {
+						$(file._removeLink).attr("data-dz-remove", response.content.GuidFoto);
+					});
+
+					this.on("removedfile", function (file) {
+						var guidFile = $(file._removeLink).attr("data-dz-remove");
+
+						if (guidFile != "") {
+							$.post(myDropzone.options._urlExcluir, { idSolicitacao: myDropzone.options._chaveEntidade, guidFoto: guidFile });
+						}
+					});
+
+				},
+
+				carregarArquivos: function () {
+					var myDropzone = this;
+
+					$.post(myDropzone._urlCarregarArquivos, { idSolicitacao: myDropzone._chaveEntidade },
+						function (response) {
+
+							if (!response.success) {
+								alertaMensagem(response.message);
+							} else {
+
+								for (var i = 0; i < response.content.length; i++) {
+									var Foto = response.content[i];
+									var objFile = {
+										name: Foto.ArquivoNome + Foto.ArquivoExtencao,
+										size: Foto.ArquivoTamanhoBytes,
+										ImgData: Foto.ImgData,
+										lastModified: Foto.ArquivoDataModificacao,
+										accepted: true,
+									};
+
+									myDropzone.addedfile.call(myDZo, objFile);
+									myDropzone.thumbnail.call(myDZo, objFile, objFile.ImgData);
+									myDZo.files.push(objFile);
+									$(myDZo.files[i]._removeLink).attr("data-dz-remove", Foto.GuidFoto);
+								}
+
+							}
+						});
+
+				}
+
+			}
+
+			myDZo = new Dropzone("div#myDropzone", Dropzone.options.myDZ);
+
+			//AbaQuadroInicializar(); TODO Pendente de refactoração no backend
+
+			var columnsLanFin = [
+				{ data: "TipoLancamentoFinanceiro", "className": "" },
+				{ data: "ValorLancamentoFinanceiro", "className": "text-right" },
+				{ data: "IndLancamentoFinanceiroContabil", "className": "text-center" },
+				{ data: "DescricaoLancamentoFinanceiro", "className": "" },
+				{ data: "Data", "className": "text-center" },
+			];
+			grideLancamentosFinanceiros = $('#tbLancamentoFinanceiro').dataTableFw(false, false, false, true, columnsLanFin);
+
+		});
+
+		function AbaQuadroInspecao() {
+			clickAbaQuadroInspecao++;
+			myDZo.options.carregarArquivos();
+		}
+
+		function AbaQuadroInicializar() {
+			clickAbaQuadroInicializar++;
+			appBoxTemp = new Vue({
+				el: '#box-fotos1',
+				data: { fotos: [] }
+			});
+
+			appBoxQuadro = new Vue({
+				el: '#box-fotos2',
+				data: { fotos: [] }
+			});
+
+			$.ajax({
+				bMostrarCarregando: false,
+				type: "POST",
+				dataType: 'json',
+				url: '@Url.Action("QuadroFotos", "Foto")',
+				data: { idSolicitacao: idSolicitacaoInspecao },
+				success: function (response) {
+					appBoxTemp.fotos = response.content.lstFotosTemp;
+					appBoxQuadro.fotos = response.content.lstQuadroFotos;
+
+					fSelectBoxTemp = $("#box-fotos1").finderSelect({ children: "div.col-sm-6", totalSelector: ".demo1-count", menuSelector: "#demo1-menu" });
+					fselBoxQuadro = $("#box-fotos2").finderSelect({ children: "div.col-sm-6", totalSelector: ".demo1-count", menuSelector: "#demo2-menu", enableShiftClick: false, enableCtrlClick: false });
+				},
+
+			});
+
+		}
+
+
+	</script>
+	<script asp-append-version="true" src="~/scripts/app/Solicitacao/workFlow.js"></script>
+	<script asp-append-version="true" src="~/scripts/app/Solicitacao/quadroFotos.js"></script>
+	<script asp-append-version="true" src="~/scripts/app/Solicitacao/comumSolicitacao.js"></script>
 
 }
