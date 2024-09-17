@@ -5,12 +5,9 @@
 }
 
 <div class="wrapper wrapper-content p-xxs">
-    <div class="row">
-        @using (Html.BeginBox("Solicitações de Vistoria", maximizavel: true, minimizavel: true, removivel: true))
-        {
-            @await Html.PartialAsync("Gerente/_GridSolicVistoria");
-        }
-    </div>
+    
+    @await Html.PartialAsync("Gerente/_GridSolicVistoria")
+       
     <div class="row">
         @*@if (!usuario.IndAssessor)
             {

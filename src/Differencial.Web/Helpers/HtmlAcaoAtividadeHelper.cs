@@ -241,6 +241,18 @@ namespace Differencial.Web.Helpers
             }
             return new HtmlString(shtml);
         }
-      
+
+        public static HtmlString BotaoLink(string label, string href, string id = "", bool indRenderizar = true, BtnTamanhoEnum btnTamanho = BtnTamanhoEnum.Padrao, string btnClass = "", string spanClass = "")
+        {
+            var shtml = string.Empty;
+            if (indRenderizar)
+            {
+                shtml = string.Format("<a href='{0}' class='btn {1} {2}' id='{3}'>", href, btnClass, HtmlAcaoHelper.htmlBtnTamanhoEnum(btnTamanho), id);
+                shtml += string.Format("{0} &nbsp;<span class='{1}'></span>", label, spanClass);
+                shtml += "</a>";
+            }
+            return new HtmlString(shtml);
+        }
+
     }
 }
