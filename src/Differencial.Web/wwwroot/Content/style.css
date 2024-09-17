@@ -783,18 +783,20 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .btn-primary {
     /*background-color: #1ab394;
   border-color: #1ab394;*/
-    /*Cor diferrencial*/
+    /*Cor diferrencial
     background-color: #b43546;
-    border-color: #b43546;
+    border-color: #b43546;*/
     color: #FFFFFF;
+    background-color: #b31482;
+    border-color: #b31482;
 }
 
     .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
         /*background-color: #18a689;
   border-color: #18a689;*/
         /*Cor diferrencial*/
-        background-color: #901224;
-        border-color: #901224;
+        background-color: #7f0d5c;
+        border-color: #7f0d5c;
         color: #FFFFFF;
     }
 
@@ -9922,8 +9924,8 @@ table .w10px {
     left: 40%;
     border: 4px solid #bbc3c7;
     border-radius: 50%;
-    border-top: 4px solid #bb4e5d;
-    border-bottom: 4px solid #bb4e5d;
+    border-top: 4px solid #b31482;
+    border-bottom: 4px solid #b31482;
     width: 32px;
     height: 32px;
     -webkit-animation: spin 1s linear infinite;

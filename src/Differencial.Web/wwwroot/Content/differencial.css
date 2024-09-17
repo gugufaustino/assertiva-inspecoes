@@ -104,12 +104,12 @@ fieldset {
 .form-group label.required {
     margin-right: 10px;
 }
-.form-group label.required:after {
-    color: #c72c2c;
-    content: "*";
-    position: absolute;
-    margin-left: 3px;
-}
+    .form-group label.required:after {
+        color: #b31482;
+        content: "*";
+        position: absolute;
+        margin-left: 3px;
+    }
 
 
 
