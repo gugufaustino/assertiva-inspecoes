@@ -11,11 +11,12 @@ namespace Differencial.Domain.Contracts.Services
 
 		void Salvar( LaudoFoto entidade);
 
-		void Excluir(  int id);
+ 
 
         void SalvarQuadroFotoPosicao(int idSolicitacao, Dictionary<int, int> dicQuadroFotoPosicao);
 
         void SalvarArquivoSolicitacaoQuadroFotosRemover(int id, int idSolicitacao);
-        void ExcluirFoto(int idSolicitacao, Guid guid);
-    }
+        void ExcluirFotoLaudoFoto(int idSolicitacao, Guid guid);
+		void ExcluirFotoLaudoFoto(ICollection<ArquivoAnexo> foto);
+	}
 }

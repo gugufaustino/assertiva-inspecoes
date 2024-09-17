@@ -55,7 +55,7 @@ namespace WEB.Controllers
                 LaudoFoto = laudoFoto
 
             };
-            foto.GuidArquivo = _arquivoAnexoService.EnviarArquivoSolicitacao(idSolicitacao, TipoArquivoAnexoEnum.QuadroFotos, arquivo, dataModificacao, index);
+            foto.GuidArquivo = _arquivoAnexoService.EnviarArquivoSolicitacao(idSolicitacao, TipoArquivoAnexoEnum.QuadroFotos, arquivo, dataModificacao, index, laudoFoto : laudoFoto);
             AppSaveChanges();
             return ResponseResult(true, content: MontarArquivoAnexo(foto, false));
 
@@ -66,7 +66,7 @@ namespace WEB.Controllers
         public ActionResult Excluir(int idSolicitacao, string guidFoto)
         {
              
-            _laudoFotoService.ExcluirFoto(idSolicitacao, new Guid(guidFoto));
+            _laudoFotoService.ExcluirFotoLaudoFoto(idSolicitacao, new Guid(guidFoto));
             AppSaveChanges();
 
             return ResponseResult(true);

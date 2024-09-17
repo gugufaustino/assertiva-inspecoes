@@ -47,7 +47,9 @@ namespace Differencial.Service.Services
         IAtividadeProcessoService _atividadeService;
         INotificacaoService _notificacaoService;
         ISolicitacaoQueries _solicitacaoQueries;
-        public SolicitacaoService(IUnitOfWork uow, ISolicitacaoRepository solicitacaoRepositorio,
+		private readonly ILaudoFotoService _laudoFotoService;
+
+		public SolicitacaoService(IUnitOfWork uow, ISolicitacaoRepository solicitacaoRepositorio,
             IEnderecoService enderecoService,
             IClienteService clienteService,
             IProdutoService produtoService,
@@ -66,7 +68,8 @@ namespace Differencial.Service.Services
             IComunicacaoService comunicacaoService,
             IAtividadeProcessoService atividadeService,
             INotificacaoService notificacaoService,
-            ISolicitacaoQueries solicitacaoQueries)
+            ISolicitacaoQueries solicitacaoQueries,
+			ILaudoFotoService laudoFotoService)
             : base(uow)
         {
             _solicitacaoRepositorio = solicitacaoRepositorio;
@@ -90,7 +93,8 @@ namespace Differencial.Service.Services
             _notificacaoService = notificacaoService;
 
             _solicitacaoQueries = solicitacaoQueries;
-        }
+			_laudoFotoService = laudoFotoService;
+		}
         #region Listas Dashboards
         public async Task<List<Solicitacao>> ListarSolicitacoesGerencia()
         {
@@ -204,8 +208,10 @@ namespace Differencial.Service.Services
                 && solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
                     throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
 
-                _arquivoAnexoService.Excluir(solic.Foto);
-                _coberturaService.Excluir(solic.Cobertura.Select(i => i.Id).ToArray());
+                // _arquivoAnexoService.Excluir(solic.Foto);
+                _laudoFotoService.ExcluirFotoLaudoFoto(solic.Foto);
+
+				_coberturaService.Excluir(solic.Cobertura.Select(i => i.Id).ToArray());
                 _movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso.Select(i => i.Id).ToArray());
                 _atividadeService.Excluir(solic.AtividadeProcesso.Select(i => i.Id).ToArray());
                 _solicitacaoRepositorio.Delete(id);
