@@ -33,9 +33,18 @@ namespace Differencial.Repository.Mappings
             builder.Property(t => t.IndUrgente).IsRequired();
             builder.Property(t => t.IdFilial);
             builder.Property(t => t.ControleDthEmailCobrancaVistoria);
+            
+            
+            builder.Property(t => t.SolicitanteNome).HasMaxLength(250); 
+            builder.Property(t => t.SolicitanteTelefone).HasMaxLength(13); ;
+            builder.Property(t => t.SolicitanteEmail).HasMaxLength(250);
+            builder.Property(t => t.VistoriadorCidadeBase).HasMaxLength(250); 
+            builder.Property(t => t.TxtJustificativaAnalistaDefinido).HasMaxLength(1000); 
+            builder.Property(t => t.NomeOperadorAgendaInformada).HasMaxLength(250); 
 
-            // 1 : N =>
-            builder.HasMany(f => f.AtividadeProcesso)
+
+			// 1 : N =>
+			builder.HasMany(f => f.AtividadeProcesso)
                    .WithOne(p => p.Solicitacao)
                    .HasForeignKey(prop => prop.IdSolicitacao);
             

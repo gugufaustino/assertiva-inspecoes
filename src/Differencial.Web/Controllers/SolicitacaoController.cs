@@ -465,7 +465,7 @@ namespace WEB.Controllers
         [HttpGet]
         public ActionResult InformarAgendamento(int Id)
         {
-            Solicitacao solicitacao = _solicitacaoService.Buscar(Id);
+            Solicitacao solicitacao = _solicitacaoService.BuscarParaInformarAgendamento(Id);
 
             _solicitacaoService.RN_ValidarExiteAgendamento(solicitacao);
 

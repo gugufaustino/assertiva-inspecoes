@@ -33,7 +33,7 @@ namespace Differencial.Repository.Repositories
 					.Include(i => i.Endereco)
 					.Include(i => i.Cliente.ClienteEndereco)
 					.Include(i => i.Cobertura)
-					.Include(i => i.Comunicacao)
+					.Include(i => i.Comunicacao).ThenInclude(e=> e.Operador)
 					.Include(i => i.Agendamento)
 					.Include(i => i.LancamentoFinanceiro)
 					.Include(i => i.OperadorCadastro)
@@ -207,9 +207,13 @@ namespace Differencial.Repository.Repositories
 		}
 		public Task<Solicitacao> BuscarComContrato(int id)
 		{
-			return _dbSet.Include(i => i.Produto).ThenInclude(t => t.Contrato).ThenInclude(e => e.ContratoLancamento)
-						.Include(c => c.Produto.Contrato.Produto.Seguradora)
-						.FirstAsync(i => i.Id == id);
+			return _dbSet
+						.Include(i => i.Produto.Seguradora)	
+						.Include(i => i.Produto)
+								.ThenInclude(t => t.Contrato)
+								.ThenInclude(e => e.ContratoLancamento)
+								.ThenInclude(e => e.ContratoLancamentoValor) 
+								.FirstAsync(i => i.Id == id);
 		}
 
 		public Task<Solicitacao> BuscarParaExcluir(int id)

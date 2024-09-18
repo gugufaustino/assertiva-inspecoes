@@ -63,10 +63,10 @@
                                     @item.DataCadastro.FormatoDataHora()
                                 </td>
                                 <td class="w130px">
-                                    @item.Operador.NomeOperador
+                                    @item?.Operador?.NomeOperador
                                 </td>
                                 <td class="text-center w100px">
-                                    @item.TipoComunicacao.FwDisplayEnum(true)
+                                    @item.TipoComunicacao.FwDisplayEnum()
                                 </td>
                                 <td class="w150px small">
                                     @item.Assunto

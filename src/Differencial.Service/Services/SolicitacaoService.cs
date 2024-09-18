@@ -601,7 +601,10 @@ namespace Differencial.Service.Services
         {
             TryCatch(() =>
             {
-                var solicitacao = Buscar(id);
+                var solicitacao = _solicitacaoRepositorio
+                                            .Include(i => i.Seguradora)
+                                            .Include(i => i.Agendamento)
+                                            .GetById(id);
                 // verifica se seguradora recebe por email
                 var IndAgendaRepostaPorEmail = solicitacao.Seguradora.IndAgendaRepostaPorEmail;
                 // campos da atividade
@@ -649,9 +652,10 @@ namespace Differencial.Service.Services
         {
             TryCatch(() =>
             {
-                var solic = _solicitacaoRepositorio.BuscarComContrato(id).Result;
+				var solic = _solicitacaoRepositorio.BuscarComContrato(id).Result;
 
-                var lstParamObrig = _contratoService.ParametrosObrigatorios(solic.Produto.Contrato);
+
+				var lstParamObrig = _contratoService.ParametrosObrigatorios(solic.Produto.Contrato);
                 if (lstParamObrig.Contains(TipoContratoParametroEnum.AreaConstruida))
                     solic.AreaConstruida = areaConstruida;
                 if (lstParamObrig.Contains(TipoContratoParametroEnum.BlocoConstruido))
@@ -661,8 +665,10 @@ namespace Differencial.Service.Services
                 if (lstParamObrig.Contains(TipoContratoParametroEnum.Equipamento))
                     solic.QtdEquipamento = qtdEquipamento;
                 if (lstParamObrig.Contains(TipoContratoParametroEnum.RelatorioMelhoria))
-                    solic.IndRelatorioExigenciaMelhoria = indRelatorioExigenciaMelhoria.Value;
+                    solic.IndRelatorioExigenciaMelhoria = indRelatorioExigenciaMelhoria ?? false;
+                
                 _atividadeService.Concluir(TipoAtividadeEnum.ElaborarEnviarLaudo, solic);
+
                 if (arquivolaudoanalista != null)
                     _arquivoAnexoService.EnviarArquivoSolicitacao(id, TipoArquivoAnexoEnum.LaudoAnalise, arquivolaudoanalista);
             });
@@ -682,13 +688,16 @@ namespace Differencial.Service.Services
             _comunicacaoService.Salvar(entidade);
             if (indEnviarEmail)
             {
-                var solicitacao = Buscar(entidade.IdSolicitacao);
+                var solicitacao = _solicitacaoRepositorio
+                                                .Include(i => i.Seguradora)
+                                                .Include(i => i.Vistoriador).ThenInclude(e=> e.Operador)
+                                                .GetById(entidade.IdSolicitacao);
                 var strEmailDestinatario = "";
-                if (entidade.TipoComunicacao == Domain.TipoComunicacaoEnum.ContatoSeguradora)
+                if (entidade.TipoComunicacao == TipoComunicacaoEnum.ContatoSeguradora)
                 {
                     strEmailDestinatario = solicitacao.Seguradora.EmailRemetenteSolicitacao;
                 }
-                else if (entidade.TipoComunicacao == Domain.TipoComunicacaoEnum.ContatoVistoriador)
+                else if (entidade.TipoComunicacao == TipoComunicacaoEnum.ContatoVistoriador)
                 {
                     strEmailDestinatario = solicitacao.Vistoriador.Operador.Email;
                 }
@@ -1030,7 +1039,12 @@ namespace Differencial.Service.Services
         }
 
         public Solicitacao BuscarParaAgendar(int id) => _solicitacaoRepositorio.Include(i => i.Cliente)
+                                                                                .Include(i => i.Vistoriador) 
+                                                                                .GetById(id);
+        public Solicitacao BuscarParaInformarAgendamento(int id) => _solicitacaoRepositorio.Include(i => i.Cliente)
                                                                                 .Include(i => i.Vistoriador)
+                                                                                .Include(i => i.Seguradora)
+                                                                                .Include(i => i.Agendamento)
                                                                                 .GetById(id);
 
         public void CobrarVistoria(int usuarioServiceId)

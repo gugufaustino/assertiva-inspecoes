@@ -49,5 +49,7 @@ namespace Differencial.Domain.Contracts.Services
 
 		void Excluir(int[] ids);
 
+        Solicitacao BuscarParaInformarAgendamento(int id);
+
 	}
 }
