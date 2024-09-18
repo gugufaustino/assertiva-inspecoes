@@ -29,7 +29,7 @@
 							<tr>
 								<th></th>
 								<th class="">Seguradora</th>
-								<th class="w130px">Tipo Situação</th>
+								<th class="w180px">Tipo Situação</th>
 								<th class="w130px">Valor Total</th>
 								<th class="w130px">Faturado</th>
 								<th class="w130px">Liquidado</th>
@@ -74,7 +74,7 @@
 				columns: [
 					{ data: "0" },
 					{ data: "NomeSeguradora", "className": "" },
-					{ data: "TpSituacao", "className": "" },
+					{ data: "NomeSituacao", "className": "text-center" },
 					{ data: "ValorTotal", "className": "text-right", type: 'date-euro' },
 					{ data: "IndFaturado", "className": "text-center" },
 					{ data: "IndLiquidado", "className": "text-center" },
@@ -84,9 +84,10 @@
 						"0": "",
 						NomeSeguradora: obj.NomeSeguradora,
 						TpSituacao: obj.TpSituacao,
+						NomeSituacao: "Enviado Para Financeiro",
 						ValorTotal: obj.ValorLancamentoFinanceiro,
-						IndFaturado: "1",
-						IndLiquidado: "1",
+						IndFaturado: "Pendente",
+						IndLiquidado: "Pendente",
 
 						DT_RowId: obj.Id
 					}
@@ -104,7 +105,7 @@
 				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length == 1) {
-					loadModal("/Dashboards/ReceberLancamentos/" + arrSel[0] + "?competenciaMes=" + $("#competenciaMes").val() , "modal-xl");
+					loadModal("/Dashboards/FinanceiroReceber/ReceberLancamentos?id=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
 				} else if (arrSel.length == 0) {
 					alertaMensagem("Selecione um item da lista");
 				} else {

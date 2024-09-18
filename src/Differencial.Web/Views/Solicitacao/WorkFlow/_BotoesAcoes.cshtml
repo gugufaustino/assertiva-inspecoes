@@ -5,12 +5,12 @@
 	List<WFTipoAcao> lstAcoesDisponivel = ViewBag.lstAcoesDisponiveis;
 }
 
-@if (Model?.Id > 0 && (UsuarioService.UsuarioAutenticado.IndGerente || UsuarioService.UsuarioAutenticado.IndAssessor))
+@* @if (Model?.Id > 0 && (UsuarioService.UsuarioAutenticado.IndGerente || UsuarioService.UsuarioAutenticado.IndAssessor))
 {
 	@HtmlAcaoHelper.BotaoConfirm("Reinspeção", "btnReinspecao", true, "Deseja gerar uma nova solicitação como Reinspeção?",
 											@Url.Action("Reinspecao", "Solicitacao", new { id = Html.ValueFor(m => m.Id).ToString() })
 											, BtnCorEnum.white, IconeEnum.SemIcone, BtnTamanhoEnum.Pequena)
-}
+} *@
 
 @if (lstAcoesDisponivel.Contains(WFTipoAcao.Apropriar))
 {
