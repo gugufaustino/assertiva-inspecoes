@@ -10,7 +10,10 @@ namespace Differencial.Web.Configurations
         public static IApplicationBuilder UseGlobalizationConfig(this IApplicationBuilder app)
         {
             var defaultCulture = new CultureInfo("pt-BR");
-            app.UseRequestLocalization(new RequestLocalizationOptions
+			CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
+			app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture(defaultCulture),
                 SupportedCultures = new List<CultureInfo> { defaultCulture },
