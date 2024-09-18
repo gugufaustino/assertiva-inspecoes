@@ -99,7 +99,7 @@ namespace WEB.Controllers
         public async Task<JsonResult> Excluir(int[] Id)
         {
 
-            _solicitacaoService.Excluir( Id);
+             await _solicitacaoService.Excluir( Id);
             AppSaveChanges();
             var lstSolicitacao =  await _dashboardsService.ListarSolicitacoesGerencia();
             var result = MontarListaSolicitacaoGerente(lstSolicitacao);

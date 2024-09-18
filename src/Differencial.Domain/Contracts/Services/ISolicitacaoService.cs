@@ -47,7 +47,7 @@ namespace Differencial.Domain.Contracts.Services
 
 		Task Excluir(int id);
 
-		void Excluir(int[] ids);
+		Task Excluir(int[] ids);
 
         Solicitacao BuscarParaInformarAgendamento(int id);
 
