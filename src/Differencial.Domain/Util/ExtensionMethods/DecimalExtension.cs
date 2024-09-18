@@ -9,7 +9,7 @@
         /// <returns>Formato 5 Ex:"5,00"</returns>
         public static string FormatoMoeda(this decimal? valor)
         {
-            return valor == null ? "" : valor.Value.ToString("N");
+            return valor == null ? "" : valor.Value.ToString("N2");
         }
 
         /// <summary>
@@ -19,7 +19,7 @@
         /// <returns>Formato 5 Ex:"5,00"</returns>
         public static string FormataMoeda(this decimal valor)
         {
-            return valor.ToString("N");
+            return valor.ToString("N2");
         }
     }
 }

@@ -11,8 +11,8 @@
 @using (Html.BeginForm("SalvarVistoriador", "Solicitacao", new {Id = ViewBag.Id }, FormMethod.Post, true, new { Id = "formSalvarVistoriador" }))
 {
     @Html.Hidden("txtJustificativaVistoriadorDefinido","")
-    <div class="modal-body no-padding-top-bottom">
-        <div class="row">
+    <div class="modal-body p-n">
+        
             <div class="table-responsive" style="border-top: 0;">
                 <table id="tbVistoriadorSugerido" class="table table-striped no-margins">
                     <thead>
@@ -64,10 +64,10 @@
                                         </a>
                                     </td>
                                     <td class="text-center">  <i class="text-muted @(item.IndHistoricoMesmaCidade ? "fa fa-check" : "fa fa-times")"></i></td>
-                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrPagamentoVistoria.HasValue ? "R$" + item.VlrPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
-                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrQuilometroRodado.HasValue ? "R$" + item.VlrQuilometroRodado.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrPagamentoVistoria.HasValue ? "R$ " + item.VlrPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrQuilometroRodado.HasValue ? "R$ " + item.VlrQuilometroRodado.FormatoMoeda() : string.Empty)</td>
                                     <td class="text-right" style="padding-right: 20px;">@item.DistanciaRota.Value.ToString("0.0") km</td>
-                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.HasValue ? "R$" + item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
+                                    <td class="text-right" style="padding-right: 20px;">@(item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.HasValue ? "R$ " + item.VlrTotalQuilometroRodadoMaisPagamentoVistoria.FormatoMoeda() : string.Empty)</td>
                                     <td class="text-center">
                                         @if (item.IndSolicitacaoMesmaCidade)
                                         {
@@ -97,7 +97,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
