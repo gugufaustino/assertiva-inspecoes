@@ -109,7 +109,7 @@ namespace WEB.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
-        public async Task<JsonResult> ApropriarSolicitacaoAsync(int Id)
+        public async Task<JsonResult> ApropriarSolicitacao(int Id)
         {
             _solicitacaoWorkFlowService.Apropriar(Id);
             AppSaveChanges();
@@ -184,7 +184,7 @@ namespace WEB.Controllers
                         item.Id,
                         item.CodSeguradora,
                         SeguradoraProduto = HtmlGridHelper.TextoSubTexto(item.Produto.Seguradora.NomeSeguradora, item.Produto.NomeProduto).ToString(),
-                        ClienteRazaoSocial = HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco + "- " + item.Endereco.SiglaUf).ToString(),
+                        ClienteRazaoSocial = HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco.NomeMunicipio + "- " + item.Endereco.SiglaUf).ToString(),
                         DataApropriado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise).DthMovimentacao.ToString(),
                         ElaborarCroquiAnalise = HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise).ToString(),
                         ElaborarQuadro = HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise).ToString(),

@@ -1,74 +1,100 @@
 ﻿@model IEnumerable<Differencial.Domain.Entities.Produto>
 @{
-    ViewBag.Title = "Produtos";
+	ViewBag.Title = "Produtos";
 }
 @using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
 {
-    <a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
-    <button class="btn btn-primary" id="btnExcluir">Excluir</button>
-    <button class="btn btn-primary" id="btnAbrir">Abrir</button>
+	<a href="@Url.Action("Editar")" class="btn btn-primary">Novo</a>
+	<button class="btn btn-primary" id="btnExcluir">Excluir</button>
+	<button class="btn btn-primary" id="btnAbrir">Abrir</button>
 }
 <div class="wrapper wrapper-content">
-    <div class="row">
-    
-            @using (Html.BeginBox(maximizavel: true))
-            { 
-                using (Html.BeginForm("Excluir", "Produto", FormMethod.Post))
-                {
-                    <div class="row">
-                        <div class="table-responsive">
-                            <table class="grid-dataTables display table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="w10px"></th>
-                                        <th class="w50px">Código</th>
-                                        <th class="">@Html.DisplayNameFor(m => m.NomeProduto)</th>
-                                        <th class="w150px">@Html.DisplayNameFor(m => m.Seguradora.NomeSeguradora)</th>
-                                        <th class="w100px">Tipo Inspecao </th>
-                                        <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
-                                        <th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+	<div class="row">
+		@using (Html.BeginBox(maximizavel: true))
+		{ 
+			<div class="row">
+				<div class="table-responsive">
+					<table id="grade" class="grid-dataTables display table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="w10px"></th>
+								<th class="w50px">Código</th>
+								<th class="">@Html.DisplayNameFor(m => m.NomeProduto)</th>
+								<th class="w150px">@Html.DisplayNameFor(m => m.Seguradora.NomeSeguradora)</th>
+								<th class="w150px">Tipo Inspecao </th>
+								<th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataCadastro)</th>
+								<th class="w80px">@Html.DisplayShortNameFor(Model, m => m.DataModificacao)</th>
+							</tr>
+						</thead>
+						<tbody>
 
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr id="@item.Id">
-                                            <td></td>
-                                            <td class="text-right">@item.Id </td>
-                                            <td>@item.NomeProduto</td>
-                                            <td>@item.Seguradora.NomeSeguradora</td>
-                                            <td>@item.TipoInspecao.NomeTipoInspecao</td>
-                                            <td class="text-center">@item.DataCadastro</td>
-                                            <td class="text-center">@item.DataModificacao</td>
-                                        </tr>
-                                    }
+							@foreach (var item in Model)
+							{
+								<tr id="@item.Id">
+									<td></td>
+									<td class="text-right">@item.Id </td>
+									<td>@item.NomeProduto</td>
+									<td>@item.Seguradora.NomeSeguradora</td>
+									<td>@item.TipoInspecao.NomeTipoInspecao</td>
+									<td class="text-center">@item.DataCadastro</td>
+									<td class="text-center">@item.DataModificacao</td>
+								</tr>
+							}
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                } 
-            }
-         
-    </div>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		}
+
+	</div>
 </div>
-@section Styles {
-    @* @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles") *@
-}
-@section scripts{
-    @* @Scripts.Render("~/app/operacoescadastros")  *@
-    @*@Scripts.Render("~/plugins/dataTables")*@
-    <script type="text/javascript">
+ 
+@section scripts {
+ 
+	<script type="text/javascript">
 
-        gride = $('.table').dataTableFw(true, true, true, true, null, [[3, 'asc']]);
-        $("#btnAbrir").click(function () {
-            gride.abrirRegistroSelecionado("/Produto/Editar/");
-        });
+		grade = $('#grade').Gride({
+			bSelecionavel: true,
+			bfiltroColuna: true,
+			bExportacao: true,
+			ordering: true,
+			order: [[1, 'desc']],
+			columns: [
+				{ data: "0" }, //select
+				{ data: "Id", "className": "text-right" },
+				{ data: "NomeProduto", "className": "" },
+				{ data: "NomeSeguradora", "className": "" },
+				{ data: "NomeTipoInspecao", "className": "" },
+				{ data: "DataCadastro", "className": "text-center", type: 'date-euro' },
+				{ data: "DataModificacao", "className": "text-center", type: 'date-euro' },
+			],
+			mapJsonParaObjeto: function (obj) {
+				return {
+					"0": "",
+					Id: obj.Id,
+					NomeProduto: obj.NomeProduto,
+					NomeSeguradora: obj.NomeSeguradora,
+					NomeTipoInspecao: obj.NomeAssunto,
+					DataCadastro: obj.DataCadastro,
+					DataModificacao: obj.DataModificacao,
+					DT_RowId: obj.Id
+				}
+			},
 
-        $("#btnExcluir").click(function () {
-            gride.excluirRegistrosSelecionados("/Produto/Excluir/");
-        });
 
-    </script>
+		});
+
+
+
+		$("#btnAbrir").click(function () {
+			gride.abrirRegistroSelecionado("/Produto/Editar/");
+		});
+
+		$("#btnExcluir").click(function () {
+			gride.excluirRegistrosSelecionados("/Produto/Excluir/");
+		});
+
+	</script>
 }

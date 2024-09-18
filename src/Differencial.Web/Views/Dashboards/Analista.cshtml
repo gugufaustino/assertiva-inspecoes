@@ -140,7 +140,7 @@
 
         function apropriarSolicitacaoTarefa() {
             var arrAnalise = grideAnalistaTarefas.rows({ selected: true }).ids().toArray();
-            var arrMinhasNao = grideAnalistaMinhasTarefas.rows({ selected: false }).ids().toArray();
+             
             var arrMinhasSim = grideAnalistaMinhasTarefas.rows({ selected: true }).ids().toArray();
 
             if (arrMinhasSim.length > 0) {
@@ -163,7 +163,7 @@
 
 
                         grideAnalistaTarefas.atualizarDados(data.content);
-                        atualizarSolicitacaoTarefa();
+                        atualizarMinhasTarefas();
 
                     }
                     esconderCarregando();
@@ -171,7 +171,7 @@
             }
         }
 
-        function atualizarSolicitacaoTarefa() {
+        function atualizarMinhasTarefas() {
             var arrMinhas = grideAnalistaMinhasTarefas.rows({ selected: false }).ids().toArray();
             $.post("/Dashboards/AtualizarSolicitacao/", function (data) {
                 console.log(data.content);
