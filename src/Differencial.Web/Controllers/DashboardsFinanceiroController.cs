@@ -39,7 +39,7 @@ namespace WEB.Controllers
         [HttpGet("")]
         public IActionResult FinanceiroReceber()
         { 
-            var selectList = GerarCompetencias(new DateTime(2023, 1, 1), DateTime.Now); 
+            var selectList = GerarCompetencias(new DateTime(2023, 1, 1), DateTime.Now.AddMonths(1)); 
             ViewData["competenciaMes"] = selectList.ToSelectList(i => i.Key, i => i.Key, false); 
              
             return View();
