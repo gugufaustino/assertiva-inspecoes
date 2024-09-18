@@ -4,6 +4,7 @@ using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Repository.Context;
 using Differencial.Repository.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -19,8 +20,9 @@ namespace Differencial.Repository.Repositories
 
 		public override IEnumerable<Analista> Where<F>(F filter)
 		{
-			var query = from analista in _db.Analista
-						select analista;
+			var query = _dbSet
+						.Include(i => i.Operador)
+						.AsNoTracking();
 
 			this.AplicarFiltro(ref query, filter as AnalistaFilter);
 
