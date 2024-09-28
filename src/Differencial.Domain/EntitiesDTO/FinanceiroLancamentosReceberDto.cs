@@ -29,5 +29,6 @@ namespace Differencial.Domain.EntitiesDTO
         decimal? VlrRiscoSegurado,
         string IndCartaRecomendacao,
         string TxtInformacoesAdicionais
+
         );
 }

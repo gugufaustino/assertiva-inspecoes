@@ -9,6 +9,7 @@ namespace Differencial.Domain.Contracts.Repositories
     {
         IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros();
         IEnumerable<FinanceiroReceberDto> FinanceiroReceber(int ano, int mes);
-        IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes); 
-    }
+        IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes);
+		void DeleteBySolicitacao(int idSolicitacao);
+	}
 }

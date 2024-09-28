@@ -2,13 +2,12 @@ using Differencial.Domain.Contracts.Entities;
 using Differencial.Domain.Resources;
 using Differencial.Domain.Util.ExtensionMethods;
 using Differencial.Domain.Validation;
-using System.ComponentModel.DataAnnotations.Schema;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Differencial.Domain.Entities
 {
-    public partial class MovimentacaoProcesso : IWorkFlowMovimentacaoProcesso, IEntity
+	public partial class MovimentacaoProcesso : IWorkFlowMovimentacaoProcesso, IEntity
     {
         public MovimentacaoProcesso()
         {

@@ -200,7 +200,7 @@ namespace Differencial.Service.Services
 		}
 		public async Task Excluir(int id)
 		{
-			await TryCatch(async () =>
+			await TryCatchAsync(async () =>
 			{
 				var solic = await _solicitacaoRepositorio.BuscarParaExcluir(id);
 
@@ -209,12 +209,15 @@ namespace Differencial.Service.Services
 				&& solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
 					throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
 
+				  _lancamentoFinanceiroTotalService.ExcluirPorSolicitacao(solic.Id); 
+				  _agendamentoService.Excluir(solic.Agendamento);
 
-				_laudoFotoService.ExcluirFotoLaudoFoto(solic.Foto);
 				_comunicacaoService.Excluir(solic.Comunicacao);
-				_coberturaService.Excluir(solic.Cobertura.Select(i => i.Id).ToArray());
-				_movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso.Select(i => i.Id).ToArray());
-				_atividadeService.Excluir(solic.AtividadeProcesso.Select(i => i.Id).ToArray());
+				_coberturaService.Excluir(solic.Cobertura);
+				
+				_movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso);
+				_atividadeService.Excluir(solic.AtividadeProcesso);
+				_laudoFotoService.ExcluirFotoLaudoFoto(solic.Foto);
 				_solicitacaoRepositorio.Delete(solic);
 			});
 		}

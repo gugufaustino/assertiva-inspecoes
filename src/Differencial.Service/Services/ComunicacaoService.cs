@@ -46,13 +46,12 @@ namespace Differencial.Service.Services
 
 		public void Excluir(IEnumerable<Comunicacao> comunicacaos)
 		{
-			TryCatch(() =>
+
+			foreach (var item in comunicacaos)
 			{
-				foreach (var item in comunicacaos)
-				{
-					_comunicacaoRepositorio.Delete(item);
-				}
-			});
+				_comunicacaoRepositorio.Delete(item);
+			}
+
 		}
 	}
 }

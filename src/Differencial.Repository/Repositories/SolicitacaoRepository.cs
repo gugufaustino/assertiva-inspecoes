@@ -218,22 +218,12 @@ namespace Differencial.Repository.Repositories
 
 		public Task<Solicitacao> BuscarParaExcluir(int id)
 		{
-			return _dbSet
-					.Include(i => i.Vistoriador.Operador)
-					.Include(i => i.Vistoriador.EnderecoBase)
-					.Include(i => i.Analista.Operador)
-					.Include(i => i.Solicitante.Operador)
-					.Include(i => i.Produto.Seguradora)
-					.Include(i => i.Produto.Contrato.ContratoLancamento).ThenInclude(c => c.ContratoLancamentoValor)
-					.Include(i => i.Endereco)
-					.Include(i => i.Cliente.ClienteEndereco)
+			return _dbSet   
+					.Include(i => i.Endereco) 
 					.Include(i => i.Cobertura)
 					.Include(i => i.Comunicacao)
 					.Include(i => i.Agendamento)
-					.Include(i => i.LancamentoFinanceiro)
-					.Include(i => i.OperadorCadastro)
-					.Include(i => i.OperadorApropriado)
-					.Include(i => i.MovimentacaoProcesso).ThenInclude(e => e.OperadorOrigem)
+					.Include(i => i.MovimentacaoProcesso) 
 					.Include(i => i.AtividadeProcesso)
 					.Include(i => i.Foto).ThenInclude(e => e.LaudoFoto)
 					.AsNoTracking()

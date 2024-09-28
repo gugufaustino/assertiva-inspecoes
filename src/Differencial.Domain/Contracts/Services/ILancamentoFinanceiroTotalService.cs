@@ -13,7 +13,7 @@ namespace Differencial.Domain.Contracts.Services
 
         void Salvar(LancamentoFinanceiroTotal entidade);
 
-		void Excluir(int id);
+		void ExcluirPorSolicitacao(int idSolicitacao);
         IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros();
     }
 }

@@ -12,9 +12,8 @@ namespace Differencial.Domain.Contracts.Services
 		void Inserir(IWorkFlowMovimentacaoProcesso entidade);
 
         void Editar(MovimentacaoProcesso entidade);
-
-        void Excluir(int[] id);
-
+		 
         void Excluir(int id);
-    }
+		void Excluir(ICollection<MovimentacaoProcesso> movimentacaoProcesso);
+	}
 }

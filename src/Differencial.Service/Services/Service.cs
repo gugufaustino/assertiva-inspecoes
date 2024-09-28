@@ -109,7 +109,7 @@ namespace Differencial.Service.Services
 			catch (Exception ex)
 			{
 				_logger.Error(ex);
-				throw new ServiceException(MensagensErro.ErroServico + ex.Message, ex);
+				throw new ServiceException("NLOG: " + MensagensErro.ErroServico + ex.Message, ex);
 			}
 		}
 	}

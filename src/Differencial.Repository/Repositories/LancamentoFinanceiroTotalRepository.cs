@@ -76,13 +76,13 @@ namespace Differencial.Repository.Repositories
 
                         select new FinanceiroLancamentosReceberDto(
                             solicitacao.Id,
-                            "solicitacaoProposta",
+                                "solicitacaoProposta",
                             solicitacao.CodSeguradora,
-                            "centro de custo",
+                                "centro de custo",
                             solicitacao.DataCadastro,
                             "solicitacao.Agendamento.",
                             "Data Envio",
-                            "solicitante",
+							solicitacao.SolicitanteNome,
                             cliente.AtividadeNome,
                             cliente.CpfCnpj + " - " + cliente.NomeRazaoSocial,
                             endereco.Logradouro, endereco.NomeMunicipio, endereco.SiglaUf,
@@ -126,7 +126,12 @@ namespace Differencial.Repository.Repositories
             // Filtro
             base.ApplyBasicFilter(ref query, ref filter);
         }
-    }
+
+		public void DeleteBySolicitacao(int idSolicitacao)
+		{
+			base.Delete(i=> i.IdSolicitacao == idSolicitacao);
+		}
+	}
 
 
 }

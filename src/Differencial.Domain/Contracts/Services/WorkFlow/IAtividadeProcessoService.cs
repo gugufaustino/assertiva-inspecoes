@@ -13,5 +13,6 @@ namespace Differencial.Domain.Contracts.Services
         AtividadeProcesso Buscar(TipoAtividadeEnum tipoAtividade, IWorkFlowInstanciaProcesso processo);
         
         void Excluir(int[] ids);
-    }
+		void Excluir(ICollection<AtividadeProcesso> atividadeProcesso);
+	}
 }

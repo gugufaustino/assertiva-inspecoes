@@ -8,7 +8,8 @@ namespace Differencial.Domain.Contracts.Services
     {
         IEnumerable<Cobertura> Listar(CoberturaFilter filtro);
         void Salvar(IEnumerable<Cobertura> entidade, int IdSolicitacao);
-        void Excluir(int id);
+       
         void Excluir(int[] ids);
-    }
+		void Excluir(ICollection<Cobertura> cobertura);
+	}
 }

@@ -57,13 +57,19 @@ namespace Differencial.Repository.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //// modelBuilder.Conventions.Add(new FunctionConvention()); 
-            //// Adiciona todos os tipos complexos usados ​​pelas funções.
-            //modelBuilder.Conventions.Add(new CodeFirstStoreFunctions.FunctionsConvention<DifferencialContext>("dbo"));
-            //modelBuilder.ComplexType<OperadorDistancia>();
+			//// modelBuilder.Conventions.Add(new FunctionConvention()); 
+			//// Adiciona todos os tipos complexos usados ​​pelas funções.
+			//modelBuilder.Conventions.Add(new CodeFirstStoreFunctions.FunctionsConvention<DifferencialContext>("dbo"));
+			//modelBuilder.ComplexType<OperadorDistancia>();
 
-            //aplica padrão para entidades nao mapeadas
-            foreach (var property in modelBuilder.Model.GetEntityTypes()
+			//Impedindo exclusão em cascata
+			foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+			{
+				relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+			}
+
+			//aplica padrão para entidades nao mapeadas
+			foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties()))
             { 
                 if (property.ClrType == typeof(decimal) || property.ClrType == typeof(decimal?))
@@ -86,11 +92,6 @@ namespace Differencial.Repository.Context
                 }
             }
 
-            //Impedindo exclusão em cascata
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
-            }
 
             base.OnModelCreating(modelBuilder);
 

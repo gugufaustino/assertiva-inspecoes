@@ -7,17 +7,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Differencial.Domain;
+using Differencial.Repository.Repositories;
 
 namespace Differencial.Service.Services
 {
 	public class LancamentoFinanceiroTotalService : Service, ILancamentoFinanceiroTotalService
 	{
 		ILancamentoFinanceiroTotalRepository _lancamentoFinanceiroTotalRepositorio;
+		private readonly ILancamentoFinanceiroRepository _lancamentoFinanceiroRepository;
 
-		public LancamentoFinanceiroTotalService(IUnitOfWork uow, ILancamentoFinanceiroTotalRepository lancamentoFinanceiroTotalRepositorio)
+		public LancamentoFinanceiroTotalService(IUnitOfWork uow,
+					ILancamentoFinanceiroTotalRepository lancamentoFinanceiroTotalRepositorio,
+					ILancamentoFinanceiroRepository lancamentoFinanceiroRepository)
 			: base(uow)
 		{
 			_lancamentoFinanceiroTotalRepositorio = lancamentoFinanceiroTotalRepositorio;
+			_lancamentoFinanceiroRepository = lancamentoFinanceiroRepository;
 		}
 
 		public IEnumerable<LancamentoFinanceiroTotal> Listar(LancamentoFinanceiroTotalFilter filtro)
@@ -28,19 +33,19 @@ namespace Differencial.Service.Services
 			});
 		}
 
-        public List<LancamentoFinanceiroTotal> ListarPorAnoMes(int mes, int ano, int tipoMovimentoSintetico)
-        {
-            return TryCatch(() =>
-            {
-                return _lancamentoFinanceiroTotalRepositorio.Where(w => w.TipoLancamentoFinanceiro == (TipoLancamentoFinanceiroEnum)tipoMovimentoSintetico
-                                                                    && w.DthLancamentoPagamento.Month == mes
-                                                                    && w.DthLancamentoPagamento.Year == ano).ToList();
-            });
+		public List<LancamentoFinanceiroTotal> ListarPorAnoMes(int mes, int ano, int tipoMovimentoSintetico)
+		{
+			return TryCatch(() =>
+			{
+				return _lancamentoFinanceiroTotalRepositorio.Where(w => w.TipoLancamentoFinanceiro == (TipoLancamentoFinanceiroEnum)tipoMovimentoSintetico
+																	&& w.DthLancamentoPagamento.Month == mes
+																	&& w.DthLancamentoPagamento.Year == ano).ToList();
+			});
 
-        }
+		}
 
-        public void Salvar(LancamentoFinanceiroTotal entidade)
-        {
+		public void Salvar(LancamentoFinanceiroTotal entidade)
+		{
 			TryCatch(() =>
 			{
 				entidade.Validate();
@@ -52,20 +57,24 @@ namespace Differencial.Service.Services
 			});
 		}
 
-		public void Excluir(int id)
-        {
-			TryCatch(() =>
+		public void ExcluirPorSolicitacao(int idSolicitacao)
+		{
+
+			var lstlancamentos = _lancamentoFinanceiroRepository.Where(l => l.IdSolicitacao == idSolicitacao);
+			foreach (var lancamento in lstlancamentos)
 			{
-				_lancamentoFinanceiroTotalRepositorio.Delete(id);
-			});
+				_lancamentoFinanceiroRepository.Delete(lancamento);
+			}
+			_lancamentoFinanceiroTotalRepositorio.DeleteBySolicitacao(idSolicitacao);
+
 		}
 
-        public IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros()
-        {
+		public IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros()
+		{
 			return TryCatch(() =>
 			{
 				return _lancamentoFinanceiroTotalRepositorio.TodosLancamentosFinanceiros();
 			});
 		}
-    }
+	}
 }

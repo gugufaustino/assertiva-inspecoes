@@ -198,5 +198,13 @@ namespace Differencial.Service.Services
                 return _agendamentoRepositorio.ListarAgendamentosVistoriadorDiaVigentesCancelada(idVistoriador, dataAgenda, IdSolicCancelada);
             });
         }
-    }
+
+		public void Excluir(ICollection<Agendamento> agendamento)
+		{
+            foreach (var item in agendamento)
+            {
+                _agendamentoRepositorio.Delete(item);
+            }
+        }
+	}
 }

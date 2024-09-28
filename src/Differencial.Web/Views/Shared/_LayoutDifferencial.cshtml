@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>@ViewBag.Title | Assertiva - Inspeções de Risco</title>
-    <link href="~/fonts/googleapis.css?family=Open+Sans:400,300,600,700" rel='stylesheet' type='text/css'>
+    <title>@ViewBag.Title | Assertiva - Inspeções de Risco</title> 
 
     <partial name="_StylePartial" />
         
@@ -41,12 +40,13 @@
         </div>
 
     </div>
-    <partial name="Dialog/_ModalMensagem" />
     <partial name="_Carregando" />
+    <partial name="Dialog/_ModalMensagem" />
 
     <partial name="_ScriptsjQueryBootstrapPartial" />
     <partial name="_ScriptsLibsPartial" />
     <partial name="_ScriptsAppPartial" />
+
     @RenderSection("endbody", required: false)
     @RenderSection("scripts", required: false)   
 </body>
