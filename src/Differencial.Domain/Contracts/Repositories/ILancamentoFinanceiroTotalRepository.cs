@@ -2,6 +2,7 @@ using Differencial.Domain.Entities;
 using Differencial.Domain.EntitiesDTO;
 using Differencial.Domain.Filters;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Differencial.Domain.Contracts.Repositories
 {
@@ -11,5 +12,6 @@ namespace Differencial.Domain.Contracts.Repositories
         IEnumerable<FinanceiroReceberDto> FinanceiroReceber(int ano, int mes);
         IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes);
 		void DeleteBySolicitacao(int idSolicitacao);
+        Task<List<LancamentoFinanceiroTotal>> SensibilizarLancamentos(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes);
 	}
 }

@@ -288,7 +288,8 @@ namespace Differencial.Service.Services
 		{
 			var lstLancamentosValor = _contratoService.GerarLancamentosContrato(solicitacao);
 			if (lstLancamentosValor.Count > 0)
-			{
+			{ 
+				//TODO preciso tratar se já houver lançamento-manual prévio;
 				//valor total
 				var lancamentoTotal = new LancamentoFinanceiroTotal
 				{
@@ -298,6 +299,7 @@ namespace Differencial.Service.Services
 					DthLancamentoPagamento = DataSintetico(solicitacao.Seguradora, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora), // TODO: ajustar data lancamento aqui,
 					ValorLancamentoFinanceiroTotal = lstLancamentosValor.Sum(i => i.Value)
 				};
+
 				_lancamentoFinanceiroTotalService.Salvar(lancamentoTotal);
 				//lancamento unitário
 				foreach (var lancamentoValor in lstLancamentosValor)
@@ -369,13 +371,16 @@ namespace Differencial.Service.Services
 		}
 		public void RegistrarLancamentoFinanceiro(int IdSolicitacao, LancamentoFinanceiro lancamento)
 		{
-			_lancamentoFinanceiroService.Salvar(new LancamentoFinanceiro
+
+			_lancamentoFinanceiroTotalService.IncluirSomarTotal(new LancamentoFinanceiro
 			{
 				IdSolicitacao = IdSolicitacao,
 				TipoLancamentoFinanceiro = lancamento.TipoLancamentoFinanceiro,
 				ValorLancamentoFinanceiro = lancamento.ValorLancamentoFinanceiro,
 				DescricaoLancamentoFinanceiro = lancamento.DescricaoLancamentoFinanceiro
 			});
+
+			
 		}
 		#endregion Lancamentos Financeiros
 		#region WorkFlow Ações

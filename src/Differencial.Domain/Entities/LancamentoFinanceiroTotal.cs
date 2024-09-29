@@ -45,7 +45,11 @@ namespace Differencial.Domain.Entities
         [ForeignKey("IdSolicitacao")]
         public virtual Solicitacao Solicitacao { get; set; }
 
-        public virtual ICollection<LancamentoFinanceiro> LancamentoFinanceiro { get; set; }
+		public bool IndFaturado { get; set; }
+		public bool IndLiquidado { get; set; }
+ 
+
+		public virtual ICollection<LancamentoFinanceiro> LancamentoFinanceiro { get; set; }
 
         // Valida os dados da entidade
         public void Validate()

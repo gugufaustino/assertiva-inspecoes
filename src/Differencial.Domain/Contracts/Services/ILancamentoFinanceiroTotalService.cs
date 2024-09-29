@@ -1,7 +1,7 @@
 using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Differencial.Domain.Contracts.Services
 {
@@ -15,5 +15,8 @@ namespace Differencial.Domain.Contracts.Services
 
 		void ExcluirPorSolicitacao(int idSolicitacao);
         IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros();
-    }
+		Task Faturar(int[] id, int ano, int mes);
+		Task Liquidar(int[] id, int ano, int mes);
+		void IncluirSomarTotal(LancamentoFinanceiro lancamentoFinanceiro);
+	}
 }

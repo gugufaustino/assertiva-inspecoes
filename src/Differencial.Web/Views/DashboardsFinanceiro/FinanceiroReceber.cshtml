@@ -15,13 +15,12 @@
 
 
 }
-@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home"))){}
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home"))) { }
 <div class="wrapper wrapper-content">
 	<div class="row">
 		@using (Html.BeginBox(titulo: "Competência:", actionsLeft: actionLink, actionsRight: actionLinkRi))
 		{
-		@* 	@Html.Hidden("mes", 4)
-			@Html.Hidden("ano", 2022) *@
+
 			<div class="row">
 				<div class="table-responsive">
 					<table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
@@ -48,10 +47,10 @@
 								<td class="text-right">
 								</td>
 								<td class="text-center">
-									<span class="label label-success">Concluído</span>
+									<span class="label label-success"></span>
 								</td>
 								<td class="text-center">
-									<span class="label label-warning">Pendente</span>
+									<span class="label label-warning"></span>
 								</td>
 							</tr>
 						</tbody>
@@ -65,7 +64,8 @@
 @section scripts {
 	<script type="text/javascript">
 		var grideTodasSolic
-		$(document).ready(function () {
+		document.addEventListener("DOMContentLoaded", function () {
+
 			grideTodasSolic = $('#tbFinanceiroSolicVistoria').Gride({
 				bSelecionavel: true,
 				bfiltroColuna: true,
@@ -86,18 +86,14 @@
 						TpSituacao: obj.TpSituacao,
 						NomeSituacao: "Enviado Para Financeiro",
 						ValorTotal: obj.ValorLancamentoFinanceiro,
-						IndFaturado: "Pendente",
-						IndLiquidado: "Pendente",
-
+						IndFaturado: indPendenteConcluido(obj.IndFaturado),
+						IndLiquidado: indPendenteConcluido(obj.IndLiquidado),
 						DT_RowId: obj.Id
 					}
 				}
 			});
 
 
-			$("#competenciaMes").change(function () {
-				load($(this).val())
-			});
 
 
 			$("#btnVisualizar").click(function () {
@@ -113,19 +109,91 @@
 				}
 			});
 
+			$("#btnFaturar").click(function () {
+				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+
+				if (arrSel.length < 1)
+					alertaMensagem("Selecione ao menos um item da lista");
+
+				$.post("/Dashboards/FinanceiroReceber/Faturar", { Id: arrSel, mesano: $("#competenciaMes").val() }, function (data) {
+					alertaResponseResult(data);
+					if (data.success) {
+						load($("#competenciaMes").val());
+					}
+					esconderCarregando();
+				});
+
+			}); 
+
+			$("#btnLiquidar").click(function () {
+				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+
+				if (arrSel.length < 1)
+					alertaMensagem("Selecione ao menos um item da lista");
+
+				$.post("/Dashboards/FinanceiroReceber/Liquidar", { Id: arrSel, mesano: $("#competenciaMes").val() }, function (data) {
+					alertaResponseResult(data);
+					if (data.success) {
+						load($("#competenciaMes").val());
+					}
+					esconderCarregando();
+				});
+
+			}); 
+
+
+			$("#competenciaMes").change(function () {
+				load($(this).val())
+			});
 
 			function load(competenciaMes) {
-				 
+
 				$.post("/Dashboards/FinanceiroReceber/ListarDadosFinanceiroReceber", { mesano: competenciaMes }, function (data) {
 					grideTodasSolic.atualizarDados(data.content);
 				});
 			}
 
-
-
 			load($("#competenciaMes").val());
 
+
+
+
 		});
+
+		function indPendenteConcluido(indicador, dthConcluido = null) {
+			let classSpan, tpSituacao;
+
+			if (indicador) {
+				tpSituacao = "Concluído";
+				classSpan = "label-primary";
+			} else {
+				classSpan = "label-warning";
+				tpSituacao = "Pendente";
+			}
+
+			let html = `<span class="label ${classSpan}">${tpSituacao}</span><br />`;
+
+			if (dthConcluido) {
+				// Formata a data se disponível
+				let dataFormatada = formatoDataHora(dthConcluido);
+				html += `<small class="text-nowrap">${dataFormatada}</small>`;
+			}
+
+			return html;
+		}
+
+		// Função auxiliar para formatar a data e hora (equivalente ao FormatoDataHora no C#)
+		function formatoDataHora(data) {
+			let dataObj = new Date(data);
+			return dataObj.toLocaleString(); // Isso vai formatar a data no formato local do navegador
+		}
+		/* atualiza apenas a linha selecionada
+		var roww = grideTodasSolic.rows({ selected: true }).data()[0];
+		roww[3] = "the lorem"
+		var rIndex = grideTodasSolic.rows({ selected: true })[0][0]
+		grideTodasSolic.row(rIndex).data(roww).draw()
+		*/
+
 	</script>
 }
 <style>

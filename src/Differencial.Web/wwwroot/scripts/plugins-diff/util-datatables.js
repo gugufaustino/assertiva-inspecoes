@@ -314,6 +314,15 @@ $.fn.Gride = function (options) {
         table.draw();
     };
 
+
+    table.atualizarLinha = function (indexRow, dataRow) {
+
+        grideTodasSolic
+            .row(0).data(roww)
+            .draw();
+
+    };
+
     table.abrirRegistroSelecionado = function (urlLocation) {
         var arrSel = table.rows({ selected: true }).ids().toArray();
 

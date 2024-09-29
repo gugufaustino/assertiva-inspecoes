@@ -1,13 +1,13 @@
+using Differencial.Domain;
 using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Contracts.Services;
 using Differencial.Domain.Entities;
+using Differencial.Domain.Exceptions;
 using Differencial.Domain.Filters;
 using Differencial.Domain.UOW;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Differencial.Domain;
-using Differencial.Repository.Repositories;
+using System.Threading.Tasks;
 
 namespace Differencial.Service.Services
 {
@@ -75,6 +75,51 @@ namespace Differencial.Service.Services
 			{
 				return _lancamentoFinanceiroTotalRepositorio.TodosLancamentosFinanceiros();
 			});
+		}
+
+		public async Task Faturar(int[] id, int ano, int mes)
+		{
+			foreach (var isLancTotal in id)
+			{
+				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.SensibilizarLancamentos(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
+				foreach (var lancamento in valoresFaturar)
+				{
+					lancamento.IndFaturado = true;
+					_lancamentoFinanceiroTotalRepositorio.Update(lancamento);
+				}
+			}
+		}
+
+		public async Task Liquidar(int[] id, int ano, int mes)
+		{
+			foreach (var isLancTotal in id)
+			{
+				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.SensibilizarLancamentos(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
+				foreach (var lancamento in valoresFaturar)
+				{
+					lancamento.IndLiquidado = true;
+					_lancamentoFinanceiroTotalRepositorio.Update(lancamento);
+				}
+			}
+		}
+
+		public void IncluirSomarTotal(LancamentoFinanceiro lancamentoFinanceiro)
+		{
+			var valores = _lancamentoFinanceiroTotalRepositorio.Where(i => i.IdSolicitacao == lancamentoFinanceiro.IdSolicitacao
+																		&& i.TipoLancamentoFinanceiro == lancamentoFinanceiro.TipoLancamentoFinanceiro);
+
+			if (valores.Count() > 1)
+			{
+				throw new ValidationException("Contate o suporte técnico - Falha no Incluir e Somar Total");
+			}
+			//solicitacao.VlrPagamentoVistoria.Value
+			var valorTotal = valores.FirstOrDefault();
+			if (valorTotal != null)
+			{
+				valorTotal.ValorLancamentoFinanceiroTotal = valorTotal.ValorLancamentoFinanceiroTotal + lancamentoFinanceiro.ValorLancamentoFinanceiro;
+				Salvar(valorTotal);
+			}
+			_lancamentoFinanceiroRepository.Add(lancamentoFinanceiro);
 		}
 	}
 }

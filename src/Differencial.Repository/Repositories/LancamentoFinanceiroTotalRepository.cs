@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using static Azure.Core.HttpHeader;
+using System.Threading.Tasks;
 
 namespace Differencial.Repository.Repositories
 {
-    public class LancamentoFinanceiroTotalRepository : RepositoryBase<LancamentoFinanceiroTotal>, ILancamentoFinanceiroTotalRepository
+	public class LancamentoFinanceiroTotalRepository : RepositoryBase<LancamentoFinanceiroTotal>, ILancamentoFinanceiroTotalRepository
     {
         public LancamentoFinanceiroTotalRepository(IDbContextFactory dbContextFactory, IUsuarioService usuario)
             : base(dbContextFactory, usuario)
@@ -40,7 +40,9 @@ namespace Differencial.Repository.Repositories
                         group new { lancamento.TipoLancamentoFinanceiro, lancamento.ValorLancamentoFinanceiroTotal, lancamento.DthLancamentoPagamento, seguradora.NomeSeguradora, solicitacao.TpSituacao, }
                             by new { solicitacao.IdSeguradora,
                                     seguradora.NomeSeguradora,
-                                    lancamento.TipoLancamentoFinanceiro, 
+                                    lancamento.TipoLancamentoFinanceiro,
+                                    lancamento.IndFaturado,
+                                    lancamento.IndLiquidado,
                                     Mes = lancamento.DthLancamentoPagamento.Date.Month,
                                     Ano = lancamento.DthLancamentoPagamento.Date.Year,
                             } into gp                        
@@ -49,13 +51,15 @@ namespace Differencial.Repository.Repositories
                                 && gp.Key.Ano == ano
 
 						select new FinanceiroReceberDto(
-                                        gp.Key.IdSeguradora,
-                                        gp.Key.NomeSeguradora,
-                                        gp.Key.TipoLancamentoFinanceiro,
-                                        gp.Min(i => i.TpSituacao),
-                                        gp.Sum(i => i.ValorLancamentoFinanceiroTotal), 
-                                        gp.Key.Ano,
-                                        gp.Key.Mes); 
+                                                        gp.Key.IdSeguradora,
+                                                        gp.Key.NomeSeguradora,
+                                                        gp.Key.TipoLancamentoFinanceiro,
+                                                        gp.Min(i => i.TpSituacao),
+                                                        gp.Sum(i => i.ValorLancamentoFinanceiroTotal), 
+                                                        gp.Key.Ano,
+                                                        gp.Key.Mes,
+                                                        gp.Key.IndFaturado,
+                                                        gp.Key.IndLiquidado); 
            
             return query.ToList();
         }
@@ -131,6 +135,23 @@ namespace Differencial.Repository.Repositories
 		{
 			base.Delete(i=> i.IdSolicitacao == idSolicitacao);
 		}
+
+
+		public Task<List<LancamentoFinanceiroTotal>> SensibilizarLancamentos(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes)
+		{
+			// Busca os registros de LancamentoFinanceiroTotal com os critérios fornecidos
+			var lancamentos = from lancamento in _db.LancamentoFinanceiroTotal
+							  join solicitacao in _db.Solicitacao
+								  on lancamento.IdSolicitacao equals solicitacao.Id
+							  where solicitacao.IdSeguradora == idSeguradora
+									&& lancamento.TipoLancamentoFinanceiro == tipoLancamentoFinanceiro
+									&& lancamento.DthLancamentoPagamento.Year == ano
+									&& lancamento.DthLancamentoPagamento.Month == mes
+							  select lancamento;
+
+			return lancamentos.ToListAsync();
+		}
+
 	}
 
 

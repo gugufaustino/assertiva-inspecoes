@@ -104,6 +104,6 @@ table.dataTable tfoot tr th, tr.filtroColuna th
 }
 
 table.dataTable .indUrgente {
-    background-color: #c54c5c !important;
+    background-color: #c56e79e8 !important;
     color: white !important;
 }
