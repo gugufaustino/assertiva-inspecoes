@@ -116,6 +116,7 @@ namespace Differencial.Service.Services
 			var valorTotal = valores.FirstOrDefault();
 			if (valorTotal != null)
 			{
+				lancamentoFinanceiro.IdLancamentoFinanceiroTotal = valorTotal.Id;
 				valorTotal.ValorLancamentoFinanceiroTotal = valorTotal.ValorLancamentoFinanceiroTotal + lancamentoFinanceiro.ValorLancamentoFinanceiro;
 				Salvar(valorTotal);
 			}
