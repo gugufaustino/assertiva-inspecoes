@@ -826,7 +826,7 @@ namespace Differencial.Service.Services
 																						endBaseVolta.Latitude.Value, endBaseVolta.Longitude.Value, solicitacao.Id, solicitacao.IdProduto);
 				solicitacao.DeslocamentoPrevisto += Convert.ToDecimal(operadorDistanciaVolta.DistanciaRota.Value);
 				solicitacao.CustoDeslocamentoPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;
-				solicitacao.CustoTotalPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodadoMaisPagamentoVistoria;
+				solicitacao.CustoTotalPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;
 				solicitacao.IndRotaDeVolta = true;
 			}
 		}
