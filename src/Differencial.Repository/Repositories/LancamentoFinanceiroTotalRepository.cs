@@ -18,9 +18,35 @@ namespace Differencial.Repository.Repositories
         public LancamentoFinanceiroTotalRepository(IDbContextFactory dbContextFactory, IUsuarioService usuario)
             : base(dbContextFactory, usuario)
         {
-        }
+        } 
 
-        public IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros()
+		public override IEnumerable<LancamentoFinanceiroTotal> Where<F>(F filter)
+		{
+			var query = from lancamentoFinanceiroTotal in _db.LancamentoFinanceiroTotal
+						select lancamentoFinanceiroTotal;
+
+			this.AplicarFiltro(ref query, filter as LancamentoFinanceiroTotalFilter);
+
+			return query.ToList();
+		}
+
+		private void AplicarFiltro(ref IQueryable<LancamentoFinanceiroTotal> query, LancamentoFinanceiroTotalFilter filter)
+		{
+			// Ordenação
+			string order = string.Format("{0} {1}", filter.CampoOrdenacao.ToString(), filter.Order.ToString());
+			query = query.OrderBy(order);
+
+			// Filtro
+			base.ApplyBasicFilter(ref query, ref filter);
+		}
+
+		public void DeleteBySolicitacao(int idSolicitacao)
+		{
+			base.Delete(i => i.IdSolicitacao == idSolicitacao);
+		}
+
+
+		public IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros()
         {
             var query = _db.LancamentoFinanceiroTotal
                             .Include(i => i.Solicitacao)
@@ -61,38 +87,6 @@ namespace Differencial.Repository.Repositories
             return query.ToList();
         }
 
-		public IEnumerable<FinanceiroPagarDto> FinanceiroPagar(int ano, int mes)
-		{
-            var query = from solicitacao in _db.Solicitacao
-                        join lancamentoTotal in _db.LancamentoFinanceiroTotal on solicitacao.Id equals lancamentoTotal.IdSolicitacao
-                        join vistoriador in _db.Vistoriador on solicitacao.IdVistoriador equals vistoriador.Id
-                        join operador    in _db.Operador    on vistoriador.Id equals operador.Id
-                        group new { lancamentoTotal.TipoLancamentoFinanceiro, lancamentoTotal.ValorLancamentoFinanceiroTotal, lancamentoTotal.DthLancamentoPagamento, vistoriador.Id}
-                            by new
-                            {
-                                solicitacao.IdVistoriador,
-                                NomeOperador = operador.NomeOperador, 								
-                                lancamentoTotal.TipoLancamentoFinanceiro,
-								lancamentoTotal.IndLiquidado,
-								Mes = lancamentoTotal.DthLancamentoPagamento.Date.Month,
-								Ano = lancamentoTotal.DthLancamentoPagamento.Date.Year,
-							} into gp
-						where gp.Key.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador
-								&& gp.Key.Mes == mes
-								&& gp.Key.Ano == ano
-						select new FinanceiroPagarDto( 
-														gp.Key.IdVistoriador.Value,
-														gp.Key.NomeOperador,
-														gp.Key.TipoLancamentoFinanceiro,
-                                                        gp.Sum(i => i.ValorLancamentoFinanceiroTotal),
-														gp.Key.Ano,
-														gp.Key.Mes,
-														gp.Key.IndLiquidado);
-
-			return query.ToList();
-		}
-
-		 
 
 		public IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes)
         {
@@ -105,17 +99,18 @@ namespace Differencial.Repository.Repositories
 
                         join lancamento in _db.LancamentoFinanceiroTotal on solicitacao.Id equals lancamento.IdSolicitacao
                         join seguradora in _db.Seguradora on solicitacao.IdSeguradora equals seguradora.Id
+
                         where lancamento.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora
                                 && solicitacao.IdSeguradora == id
 
                         select new FinanceiroLancamentosReceberDto(
                             solicitacao.Id,
-                                "solicitacaoProposta",
+                            "**solicitacaoProposta",
                             solicitacao.CodSeguradora,
-                                "centro de custo",
+                            "**centro de custo",
                             solicitacao.DataCadastro,
                             solicitacao.DthRelacionamentoAgendaInformada, 
-                            "Data Envio",
+                            "**Data Envio",
 							solicitacao.SolicitanteNome,
                             cliente.AtividadeNome,
                             cliente.CpfCnpj + " - " + cliente.NomeRazaoSocial,
@@ -123,48 +118,56 @@ namespace Differencial.Repository.Repositories
 
                             solicitacao.VistoriadorCidadeBase,
                             vistoriadorEndereco.SiglaUf,
-                            operadorVistoriador.NomeOperador,
-
-                            "Pedágio",
+                            operadorVistoriador.NomeOperador, 
+                            "**Pedágio",
                             solicitacao.DeslocamentoRealizado,
-                            "Km base",
+                            "**Km base",
                             solicitacao.VlrQuilometroRodado,
                             solicitacao.VlrPagamentoVistoria,
                             solicitacao.CustoTotalRealizado,
                             lancamento.ValorLancamentoFinanceiroTotal,
                             solicitacao.TpSituacao,
                             solicitacao.VlrRiscoSegurado,
-                            "Carta de recomendação (S/N)",
+                            "**Carta de recomendação (S/N)",
                             solicitacao.TxtInformacoesAdicionais
                             );
 
             return query.ToList();
         }
 
-        public override IEnumerable<LancamentoFinanceiroTotal> Where<F>(F filter)
-        {
-            var query = from lancamentoFinanceiroTotal in _db.LancamentoFinanceiroTotal
-                        select lancamentoFinanceiroTotal;
 
-            this.AplicarFiltro(ref query, filter as LancamentoFinanceiroTotalFilter);
 
-            return query.ToList();
-        }
-
-        private void AplicarFiltro(ref IQueryable<LancamentoFinanceiroTotal> query, LancamentoFinanceiroTotalFilter filter)
-        {
-            // Ordenação
-            string order = string.Format("{0} {1}", filter.CampoOrdenacao.ToString(), filter.Order.ToString());
-            query = query.OrderBy(order);
-
-            // Filtro
-            base.ApplyBasicFilter(ref query, ref filter);
-        }
-
-		public void DeleteBySolicitacao(int idSolicitacao)
+		public IEnumerable<FinanceiroPagarDto> FinanceiroPagar(int ano, int mes)
 		{
-			base.Delete(i=> i.IdSolicitacao == idSolicitacao);
+			var query = from solicitacao in _db.Solicitacao
+						join lancamentoTotal in _db.LancamentoFinanceiroTotal on solicitacao.Id equals lancamentoTotal.IdSolicitacao
+						join vistoriador in _db.Vistoriador on solicitacao.IdVistoriador equals vistoriador.Id
+						join operador in _db.Operador on vistoriador.Id equals operador.Id
+						group new { lancamentoTotal.TipoLancamentoFinanceiro, lancamentoTotal.ValorLancamentoFinanceiroTotal, lancamentoTotal.DthLancamentoPagamento, vistoriador.Id }
+							by new
+							{
+								solicitacao.IdVistoriador,
+								NomeOperador = operador.NomeOperador,
+								lancamentoTotal.TipoLancamentoFinanceiro,
+								lancamentoTotal.IndLiquidado,
+								Mes = lancamentoTotal.DthLancamentoPagamento.Date.Month,
+								Ano = lancamentoTotal.DthLancamentoPagamento.Date.Year,
+							} into gp
+						where gp.Key.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador
+								&& gp.Key.Mes == mes
+								&& gp.Key.Ano == ano
+						select new FinanceiroPagarDto(
+														gp.Key.IdVistoriador.Value,
+														gp.Key.NomeOperador,
+														gp.Key.TipoLancamentoFinanceiro,
+														gp.Sum(i => i.ValorLancamentoFinanceiroTotal),
+														gp.Key.Ano,
+														gp.Key.Mes,
+														gp.Key.IndLiquidado);
+
+			return query.ToList();
 		}
+
 
 
 		public Task<List<LancamentoFinanceiroTotal>> SensibilizarLancamentos(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes)
