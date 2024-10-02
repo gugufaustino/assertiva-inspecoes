@@ -5,7 +5,7 @@ namespace Differencial.Domain.EntitiesDTO
     public record FinanceiroLancamentosReceberDto(int Id, string solicitacaoProposta,
         string CodSeguradora, string centroCusto, DateTime DataCadastro,
 
-        string DataAgendamento, string DataEnvio, string Solicitante,
+		DateTime? DataAgendamento, string DataEnvio, string Solicitante,
 
         string AtividadeNome,
         string Cliente,

@@ -25,9 +25,6 @@ namespace Differencial.Repository.Repositories
             var query = _db.LancamentoFinanceiroTotal
                             .Include(i => i.Solicitacao)
                             .AsNoTracking();
-
-
-
             return query.ToList();
         }
                 
@@ -64,7 +61,40 @@ namespace Differencial.Repository.Repositories
             return query.ToList();
         }
 
-        public IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes)
+		public IEnumerable<FinanceiroPagarDto> FinanceiroPagar(int ano, int mes)
+		{
+            var query = from solicitacao in _db.Solicitacao
+                        join lancamentoTotal in _db.LancamentoFinanceiroTotal on solicitacao.Id equals lancamentoTotal.IdSolicitacao
+                        join vistoriador in _db.Vistoriador on solicitacao.IdVistoriador equals vistoriador.Id
+                        join operador    in _db.Operador    on vistoriador.Id equals operador.Id
+                        group new { lancamentoTotal.TipoLancamentoFinanceiro, lancamentoTotal.ValorLancamentoFinanceiroTotal, lancamentoTotal.DthLancamentoPagamento, vistoriador.Id}
+                            by new
+                            {
+                                solicitacao.IdVistoriador,
+                                NomeOperador = operador.NomeOperador, 								
+                                lancamentoTotal.TipoLancamentoFinanceiro,
+								lancamentoTotal.IndLiquidado,
+								Mes = lancamentoTotal.DthLancamentoPagamento.Date.Month,
+								Ano = lancamentoTotal.DthLancamentoPagamento.Date.Year,
+							} into gp
+						where gp.Key.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador
+								&& gp.Key.Mes == mes
+								&& gp.Key.Ano == ano
+						select new FinanceiroPagarDto( 
+														gp.Key.IdVistoriador.Value,
+														gp.Key.NomeOperador,
+														gp.Key.TipoLancamentoFinanceiro,
+                                                        gp.Sum(i => i.ValorLancamentoFinanceiroTotal),
+														gp.Key.Ano,
+														gp.Key.Mes,
+														gp.Key.IndLiquidado);
+
+			return query.ToList();
+		}
+
+		 
+
+		public IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes)
         {
             var query = from solicitacao in _db.Solicitacao
                         join cliente  in _db.Cliente on solicitacao.IdCliente equals cliente.Id
@@ -84,7 +114,7 @@ namespace Differencial.Repository.Repositories
                             solicitacao.CodSeguradora,
                                 "centro de custo",
                             solicitacao.DataCadastro,
-                            "solicitacao.Agendamento.",
+                            solicitacao.DthRelacionamentoAgendaInformada, 
                             "Data Envio",
 							solicitacao.SolicitanteNome,
                             cliente.AtividadeNome,

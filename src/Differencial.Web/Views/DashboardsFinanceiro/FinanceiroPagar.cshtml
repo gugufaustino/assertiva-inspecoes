@@ -1,87 +1,46 @@
-﻿@model IEnumerable<Solicitacao>
+﻿@model IEnumerable<FinanceiroReceberDto>
 @{
-	ViewBag.Title = "Financeiro";
-	var actionLink = new HtmlString[] {HtmlAtividadeHelper.BotaoModalAtividade("Competencia Novembro", "btFiltro", true,
-												BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
-												Url.Action("Enviar", "Solicitacao", new { id = 2 })) };
+	ViewBag.Title = "Financeiro a Pagar";
+
+
+	var actionLink = new IHtmlContent[] {
+			Html.DropDownList("competenciaMes", (SelectList)(ViewData["competenciaMes"] ?? new List<SelectListItem>()), new { @class = "select-competenciaMes form-control font-bold input-sm" })
+		};
+
+	var actionLinkRi = new HtmlString[] {
+			HtmlBotaoHelper.Botao("Pagar", "btnPagar", btnClass: "btn-success btn-sm", spanClass: "fa fa-pencil"),
+			HtmlBotaoHelper.Botao("Visualizar", "btnVisualizar", btnClass: "btn-white btn-sm", spanClass: "fa fa-file-text")
+		};
 
 
 }
-@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home")))
-{
-	@HtmlAtividadeHelper.BotaoModalAtividade("Pagar", "btnFaturar", true,
-													BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao,
-													Url.Action("Faturar", "Dashboards", new { id = 5 }))
-
-	@HtmlAtividadeHelper.BotaoModalAtividade("Relatório", "btnVisualizar", true,
-													BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao,
-													Url.Action("Enviar", "Solicitacao", new { id = 2 }))
-
-}
+@using (Html.BeginPageHeading("Lista", @Html.ActionLink("Início", "Inicio", "Home"))) { }
 <div class="wrapper wrapper-content">
 	<div class="row">
-		@using (Html.BeginBox(actionsLeft: actionLink))
+		@using (Html.BeginBox(titulo: "Competência:", actionsLeft: actionLink, actionsRight: actionLinkRi))
 		{
+
 			<div class="row">
 				<div class="table-responsive">
-					<table id="tbFinanceiroSolicVistoria" class="grid-dataTables display table table-striped table-bordered table-hover">
+					<table id="tbFinanceiroPagar" class="grid-dataTables display table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th class="">&nbsp;</th>
-								<th class="">Nome Vistoriador</th>
-								<th class="w100px">Valor Total</th>
-								<th class="w100px">Pago</th>
+								<th></th>
+								<th class="">Seguradora</th>
+								<th class="w180px">Tipo Situação</th>
+								<th class="w130px">Valor Total</th>
+								<th class="w130px">Pago</th>
 							</tr>
 						</thead>
-						<tfoot>
-							<tr>
-								<th>&nbsp;</th>
-								<th>Nome Vistoriador</th>
-								<th>Valor Total</th>
-								<th>Pago</th>
-							</tr>
-						</tfoot>
+
 						<tbody>
-							@foreach (var item in Model)
-							{
-
-								<tr id="@item.Id">
-									<td></td>
-									<td>
-										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-										{
-											<span>Giovani Raubach</span>
-										}
-										else
-										{
-											<span>Mario</span>
-										}
-									</td>
-
-									<td class="text-right">
-										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-										{
-											<span>5.200,00</span>
-										}
-										else
-										{
-											<span>3.400,00</span>
-										}
-									</td>
-									<td class="text-center">
-										@if (item.Seguradora.NomeSeguradora.Trim() == "HDI")
-										{
-											<span class="label label-warning">Pendente</span>
-										}
-										else
-										{
-											<span class="label label-success">Concluído</span>
-										}
-									</td>
-
-								</tr>
-							}
-
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>								 
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -89,25 +48,118 @@
 		}
 	</div>
 </div>
+
 @section scripts {
 	<script type="text/javascript">
 		var grideTodasSolic
-		$(document).ready(function () {
-			grideTodasSolic = $('#tbFinanceiroSolicVistoria').dataTableCli();
-			$("#btnAbrir").click(function () {
-				abrilSolicitacao(grideTodasSolic.rows({ selected: true }));
+		document.addEventListener("DOMContentLoaded", function () {
+
+			grideTodasSolic = $('#tbFinanceiroPagar').Gride({
+				bSelecionavel: true,
+				bfiltroColuna: true,
+				order: [[1, 'desc']],
+				autoWidth: false,
+				columns: [
+					{ data: "0" },
+					{ data: "NomeVistoriador", "className": "" },
+					{ data: "NomeSituacao", "className": "text-center" },
+					{ data: "ValorTotal", "className": "text-right", type: 'date-euro' },
+					{ data: "IndPago", "className": "text-center" },
+				],
+				mapJsonParaObjeto: function (obj) {
+					return {
+						"0": "",
+						NomeVistoriador: obj.NomeVistoriador,
+						TpSituacao: obj.TpSituacao,
+						NomeSituacao: "Enviado Para Financeiro",
+						ValorTotal: obj.ValorLancamentoFinanceiro,
+						IndPago: indPendenteConcluido(obj.IndPago),
+						DT_RowId: obj.Id
+					}
+				}
 			});
-		});
 
-		function abrilSolicitacao(objRows) {
-			arrSel = objRows.ids().toArray()
 
-			if (arrSel.length > 0) {
-				window.location = "/Solicitacao/Editar/" + arrSel[0];
-			} else {
-				alertaMensagem("Selecione um item da lista");
+
+
+			$("#btnVisualizar").click(function () {
+
+				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+
+				if (arrSel.length == 1) {
+					loadModal("/Dashboards/FinanceiroReceber/ReceberLancamentos?id=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
+				} else if (arrSel.length == 0) {
+					alertaMensagem("Selecione um item da lista");
+				} else {
+					alertaMensagem("Selecione apenas um item da lista");
+				}
+			});
+
+			$("#btnPagar").click(function () {
+				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+
+				if (arrSel.length < 1)
+					alertaMensagem("Selecione ao menos um item da lista");
+
+				$.post("/Dashboards/FinanceiroReceber/Faturar", { Id: arrSel, mesano: $("#competenciaMes").val() }, function (data) {
+					alertaResponseResult(data);
+					if (data.success) {
+						load($("#competenciaMes").val());
+					}
+					esconderCarregando();
+				});
+
+			});
+			  
+
+
+			$("#competenciaMes").change(function () {
+				load($(this).val())
+			});
+
+			function load(competenciaMes) {
+
+				$.post("/Dashboards/FinanceiroPagar/ListarDadosFinanceiro", { mesano: competenciaMes }, function (data) {
+					grideTodasSolic.atualizarDados(data.content);
+				});
 			}
 
+			load($("#competenciaMes").val());
+
+
+
+
+		});
+
+		function indPendenteConcluido(indicador, dthConcluido = null) {
+			let classSpan, tpSituacao;
+
+			if (indicador) {
+				tpSituacao = "Concluído";
+				classSpan = "label-primary";
+			} else {
+				classSpan = "label-warning";
+				tpSituacao = "Pendente";
+			}
+
+			let html = `<span class="label ${classSpan}">${tpSituacao}</span><br />`;
+
+			if (dthConcluido) {
+				// Formata a data se disponível
+				let dataFormatada = formatoDataHora(dthConcluido);
+				html += `<small class="text-nowrap">${dataFormatada}</small>`;
+			}
+
+			return html;
 		}
+
+		// Função auxiliar para formatar a data e hora (equivalente ao FormatoDataHora no C#)
+		function formatoDataHora(data) {
+			let dataObj = new Date(data);
+			return dataObj.toLocaleString(); // Isso vai formatar a data no formato local do navegador
+		}
+		 
+
 	</script>
 }
+ 

@@ -60,7 +60,7 @@
             @* ÁREA DE TRABALHO *@
             @if (!usuario.IndUsuarioSistema)
             {
-                <li class="@Html.IsSelected(controller: "Dashboards")">
+                <li class="@Html.IsSelected(controller: "Dashboards") @Html.IsSelected(controller: "DashboardsFinanceiro") ">
 
                     @* Papel Unico && Não Acessor && Não Financeiro *@
                     @if (usuario.TipoPapel.Count == 1 && usuario.TipoPapel.First() != TipoPapelEnum.Assessor && usuario.TipoPapel.First() != TipoPapelEnum.Financeiro)
@@ -96,7 +96,7 @@
                         <a href="#">
                             <i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Área de Trabalho</span> <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
+                        <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in") @Html.IsSelected(controller: "DashboardsFinanceiro", cssClass: "in")">
                             @if (usuario.IndGerente || usuario.IndAssessor)
                             {
                                 <li class="@Html.IsSelected(action: "Gerente")"><a href="@Url.Action("Gerente", "Dashboards")">Gerente</a></li>
@@ -111,17 +111,15 @@
                             }
                             @if (usuario.IndFinanceiro)
                             {
-                               @*  <li class="@Html.IsSelected(action: "FinanceiroReceber")"><a href="@Url.Action("FinanceiroReceber", "Dashboards")">Financeiro - A Receber</a></li>
-                                <li class="@Html.IsSelected(action: "FinanceiroPagar")"><a href="@Url.Action("FinanceiroPagar", "Dashboards")">Financeiro - A Pagar</a></li> *@
-                                <li class="@Html.IsSelected(action: "FinanceiroReceber") @Html.IsSelected(action: "FinanceiroPagar")">
-                                    <a href="#">Financeiro <span class="fa arrow"></span> </a>
-                                    <ul class="nav nav-third-level">
+                                <li class="@Html.IsSelected(controller: "DashboardsFinanceiro") ">
+                                    <a href="#">Financeiro <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse @Html.IsSelected(action: "FinanceiroReceber", cssClass : "in" ) @Html.IsSelected(action: "FinanceiroPagar", cssClass: "in")">
                                         <li class="@Html.IsSelected(action: "FinanceiroReceber")">
                                             <a href="@Url.Action("FinanceiroReceber", "Dashboards")">A Receber</a>
                                         </li>
-                                       @*  <li class="@Html.IsSelected(action: "FinanceiroPagar")">
+                                        <li class="@Html.IsSelected(action: "FinanceiroPagar")">
                                             <a href="@Url.Action("FinanceiroPagar", "Dashboards")">A Pagar</a>
-                                        </li>  *@
+                                        </li> 
                                     </ul>
                                 
                                 </li>

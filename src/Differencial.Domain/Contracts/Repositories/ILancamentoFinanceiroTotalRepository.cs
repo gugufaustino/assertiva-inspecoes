@@ -13,5 +13,6 @@ namespace Differencial.Domain.Contracts.Repositories
         IEnumerable<FinanceiroLancamentosReceberDto> FinanceiroLancamentosReceber(int id, int ano, int mes);
 		void DeleteBySolicitacao(int idSolicitacao);
         Task<List<LancamentoFinanceiroTotal>> SensibilizarLancamentos(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes);
+        IEnumerable<FinanceiroPagarDto> FinanceiroPagar(int ano, int mes);
 	}
 }
