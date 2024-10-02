@@ -1,6 +1,4 @@
-﻿using Differencial;
-using Differencial.Domain;
-using Differencial.Domain.Contracts.Entities;
+﻿using Differencial.Domain;
 using Differencial.Domain.Contracts.Infra;
 using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Contracts.Services;
@@ -26,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace WEB.Controllers
 {
-    public class SolicitacaoController : BaseController
+	public class SolicitacaoController : BaseController
     {
         readonly ISolicitacaoService _solicitacaoService;
         readonly ISolicitacaoRepository _solicitacaoRepository;
@@ -46,8 +44,8 @@ namespace WEB.Controllers
         readonly IContratoService _contratoService;
         readonly ITipoAssuntoService _tipoAssuntoService;
         readonly IFilialService _filialService;
-
-        readonly IComunicacaoService _comunicacaoService;
+		private readonly IClienteRepository _clienteRepository;
+		readonly IComunicacaoService _comunicacaoService;
 
         public SolicitacaoController(ISolicitacaoService solicitacaoService,
             ISolicitacaoRepository solicitacaoRepository,
@@ -66,7 +64,8 @@ namespace WEB.Controllers
             IContratoService contratoService,
             IComunicacaoService comunicacaoService,
              ITipoAssuntoService tipoAssuntoService,
-             IFilialService filialService)
+             IFilialService filialService,
+             IClienteRepository clienteRepository)
         {
             _solicitacaoService = solicitacaoService;
             _solicitacaoRepository = solicitacaoRepository;
@@ -87,8 +86,8 @@ namespace WEB.Controllers
             _comunicacaoService = comunicacaoService;
             _tipoAssuntoService = tipoAssuntoService;
             _filialService = filialService;
-
-        }
+			_clienteRepository = clienteRepository;
+		}
 
         public ActionResult Index()
         {
@@ -623,8 +622,9 @@ namespace WEB.Controllers
                 strDadosEndereco += solVistoriaAnterior.Endereco.Numero.HasValue ? ", {0}".Formata(solVistoriaAnterior.Endereco.Numero.ToString()) : string.Empty;
                 strDadosEndereco += ", {0}".Formata(solVistoriaAnterior.Endereco.Bairro);
                 strDadosEndereco += " - {0}({1})".Formata(solVistoriaAnterior.Endereco.NomeMunicipio, solVistoriaAnterior.Endereco.SiglaUf);
-
-                ViewBag.strTipoRota = "após a <abbr title=\"{0} - {1}\">Cód {2}</abbr>.".Formata(solVistoriaAnterior.Cliente.NomeRazaoSocial, strDadosEndereco, solVistoriaAnterior.Id.ToString());
+               
+                Cliente cliVistoriaAnterior = _clienteRepository.Find(solVistoriaAnterior.IdCliente.Value);
+                ViewBag.strTipoRota = "após a <abbr title=\"{0} - {1}\">Cód {2}</abbr>.".Formata(cliVistoriaAnterior.NomeRazaoSocial, strDadosEndereco, solVistoriaAnterior.Id.ToString());
             }
             else
             {
@@ -644,9 +644,11 @@ namespace WEB.Controllers
             //TODO: Corrigir aqui quando não informado DeslocamentoRealizado
             Solicitacao model = _solicitacaoService.Buscar(Id);
 
-            DateTime? dataAgenda = rbtTipoIntinerario == TipoOpcaoInformarRota.RealizadoDeslocamentoIntinerarioDiferente ? DateTime.Parse(string.Format("{0} {1}", txtDataAgenda, txtHoraAgenda)) : default(DateTime);
+            DateTime? dataAgendaRealizada = rbtTipoIntinerario == TipoOpcaoInformarRota.RealizadoDeslocamentoIntinerarioDiferente
+                                        ? DateTime.Parse(string.Format("{0} {1}", txtDataAgenda, txtHoraAgenda)) 
+                                        : default(DateTime);
 
-            _solicitacaoService.SalvarAtividadeInformarRotaRealizada(Id, rbtTipoIntinerario, TxtJustificativaDeslocamentoRealizado, DeslocamentoRealizado, dataAgenda);
+            _solicitacaoService.SalvarAtividadeInformarRotaRealizada(Id, rbtTipoIntinerario, TxtJustificativaDeslocamentoRealizado, DeslocamentoRealizado, dataAgendaRealizada);
             AppSaveChanges();
             TempData["abaAtiva"] = "idtabRoda";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
