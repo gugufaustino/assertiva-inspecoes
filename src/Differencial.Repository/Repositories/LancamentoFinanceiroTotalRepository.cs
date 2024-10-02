@@ -44,15 +44,30 @@ namespace Differencial.Repository.Repositories
 		{
 			base.Delete(i => i.IdSolicitacao == idSolicitacao);
 		}
-
-
+		 
 		public IEnumerable<LancamentoFinanceiroTotal> TodosLancamentosFinanceiros()
-        {
-            var query = _db.LancamentoFinanceiroTotal
-                            .Include(i => i.Solicitacao)
-                            .AsNoTracking();
-            return query.ToList();
-        }
+		{
+			var query = _db.LancamentoFinanceiroTotal
+							.Include(i => i.Solicitacao)
+							.AsNoTracking();
+			return query.ToList();
+		}
+
+		public Task<List<LancamentoFinanceiroTotal>> LancamentoParaSensibilizarInd(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes)
+		{
+			// Busca os registros de LancamentoFinanceiroTotal com os critérios fornecidos
+			var lancamentos = from lancamento in _db.LancamentoFinanceiroTotal
+							  join solicitacao in _db.Solicitacao
+								  on lancamento.IdSolicitacao equals solicitacao.Id
+							  where solicitacao.IdSeguradora == idSeguradora
+									&& lancamento.TipoLancamentoFinanceiro == tipoLancamentoFinanceiro
+									&& lancamento.DthLancamentoPagamento.Year == ano
+									&& lancamento.DthLancamentoPagamento.Month == mes
+							  select lancamento;
+
+			return lancamentos.ToListAsync();
+		}
+
                 
         public IEnumerable<FinanceiroReceberDto> FinanceiroReceber( int ano, int mes)
         {
@@ -169,21 +184,55 @@ namespace Differencial.Repository.Repositories
 		}
 
 
-
-		public Task<List<LancamentoFinanceiroTotal>> SensibilizarLancamentos(int idSeguradora, Domain.TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro, int ano, int mes)
+		public IEnumerable<FinanceiroLancamentosPagarDto> FinanceiroLancamentosPagar(int idVistoriador, int ano, int mes)
 		{
-			// Busca os registros de LancamentoFinanceiroTotal com os critérios fornecidos
-			var lancamentos = from lancamento in _db.LancamentoFinanceiroTotal
-							  join solicitacao in _db.Solicitacao
-								  on lancamento.IdSolicitacao equals solicitacao.Id
-							  where solicitacao.IdSeguradora == idSeguradora
-									&& lancamento.TipoLancamentoFinanceiro == tipoLancamentoFinanceiro
-									&& lancamento.DthLancamentoPagamento.Year == ano
-									&& lancamento.DthLancamentoPagamento.Month == mes
-							  select lancamento;
+			var query = from solicitacao in _db.Solicitacao
+						join cliente in _db.Cliente on solicitacao.IdCliente equals cliente.Id
+						join endereco in _db.Endereco on solicitacao.IdEnderecoCliente equals endereco.Id
+						join vistoriador in _db.Vistoriador on solicitacao.IdVistoriador equals vistoriador.Id
+						join operadorVistoriador in _db.Operador on vistoriador.Id equals operadorVistoriador.Id
+						join vistoriadorEndereco in _db.Endereco on vistoriador.IdEnderecoBase equals vistoriadorEndereco.Id
 
-			return lancamentos.ToListAsync();
+						join lancamento in _db.LancamentoFinanceiroTotal on solicitacao.Id equals lancamento.IdSolicitacao
+						join seguradora in _db.Seguradora on solicitacao.IdSeguradora equals seguradora.Id
+
+						where lancamento.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador
+									 && solicitacao.IdVistoriador == idVistoriador
+
+						select new FinanceiroLancamentosPagarDto(
+							solicitacao.Id,
+							"**solicitacaoProposta",
+							solicitacao.CodSeguradora,
+							"**centro de custo",
+							solicitacao.DataCadastro,
+							solicitacao.DthRelacionamentoAgendaInformada,
+							"**Data Envio",
+							solicitacao.SolicitanteNome,
+							cliente.AtividadeNome,
+							cliente.CpfCnpj + " - " + cliente.NomeRazaoSocial,
+							endereco.Logradouro, endereco.NomeMunicipio, endereco.SiglaUf,
+
+							solicitacao.VistoriadorCidadeBase,
+							vistoriadorEndereco.SiglaUf,
+							operadorVistoriador.NomeOperador,
+							"**Pedágio",
+							solicitacao.DeslocamentoRealizado,
+							"**Km base",
+							solicitacao.VlrQuilometroRodado,
+							solicitacao.VlrPagamentoVistoria,
+							solicitacao.CustoTotalRealizado,
+							lancamento.ValorLancamentoFinanceiroTotal,
+							solicitacao.TpSituacao,
+							solicitacao.VlrRiscoSegurado,
+							"**Carta de recomendação (S/N)",
+							solicitacao.TxtInformacoesAdicionais
+							);
+
+			return query.ToList();
 		}
+
+
+	
 
 	}
 

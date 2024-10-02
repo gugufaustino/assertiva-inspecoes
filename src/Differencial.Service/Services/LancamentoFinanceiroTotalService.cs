@@ -81,7 +81,7 @@ namespace Differencial.Service.Services
 		{
 			foreach (var isLancTotal in id)
 			{
-				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.SensibilizarLancamentos(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
+				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.LancamentoParaSensibilizarInd(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
 				foreach (var lancamento in valoresFaturar)
 				{
 					lancamento.IndFaturado = true;
@@ -94,7 +94,7 @@ namespace Differencial.Service.Services
 		{
 			foreach (var isLancTotal in id)
 			{
-				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.SensibilizarLancamentos(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
+				var valoresFaturar = await _lancamentoFinanceiroTotalRepositorio.LancamentoParaSensibilizarInd(isLancTotal, TipoLancamentoFinanceiroEnum.ReceitaProdutoReceberSeguradora, ano, mes);
 				foreach (var lancamento in valoresFaturar)
 				{
 					lancamento.IndLiquidado = true;

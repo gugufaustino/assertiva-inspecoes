@@ -87,7 +87,7 @@
 				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length == 1) {
-					loadModal("/Dashboards/FinanceiroReceber/ReceberLancamentos?id=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
+					loadModal("/Dashboards/FinanceiroReceber/PagarLancamentos?idVistoriador=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
 				} else if (arrSel.length == 0) {
 					alertaMensagem("Selecione um item da lista");
 				} else {

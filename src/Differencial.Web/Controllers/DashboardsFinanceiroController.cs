@@ -17,19 +17,20 @@ namespace WEB.Controllers
 	{ 
 		private readonly ISeguradoraService _seguradoraService; 
 		private readonly ILancamentoFinanceiroTotalRepository _lancamentoFinanceiroTotalRepository;
-		private readonly ILancamentoFinanceiroTotalService _lancamentoFinanceiroTotalService; 
+		private readonly ILancamentoFinanceiroTotalService _lancamentoFinanceiroTotalService;
+		private readonly IOperadorService _operadorService;
 
 		public DashboardsFinanceiroController( 
 			ISeguradoraService seguradoraService, 
 			ILancamentoFinanceiroTotalRepository lancamentoFinanceiroTotalRepository, 
-			ILancamentoFinanceiroTotalService lancamentoFinanceiroTotalService)
+			ILancamentoFinanceiroTotalService lancamentoFinanceiroTotalService,
+			IOperadorService operadorService)
 		{
 			 
 			_seguradoraService = seguradoraService; 
 			_lancamentoFinanceiroTotalRepository = lancamentoFinanceiroTotalRepository;
 			_lancamentoFinanceiroTotalService = lancamentoFinanceiroTotalService;
-
-
+			_operadorService = operadorService;
 		}
 
         #region FinanceiroReceber
@@ -113,6 +114,19 @@ namespace WEB.Controllers
 
 			var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroPagar(ano, mes);
 			return ResponseResult(true, content: lstSolicitacao);
+		}
+
+		[HttpGet("FinanceiroReceber/PagarLancamentos")]
+		public ActionResult PagarLancamentos(int idVistoriador, string mesano)
+		{
+			var mes = int.Parse(mesano.Split('/')[0]);
+			var ano = int.Parse(mesano.Split('/')[1]);
+
+			var lstSolicitacao = _lancamentoFinanceiroTotalRepository.FinanceiroLancamentosPagar(idVistoriador, ano, mes);
+			ViewData["NomeVistoriador"] = _operadorService.Buscar(idVistoriador)?.NomeOperador;
+			ViewData["Mes"] = mes;
+			ViewData["Ano"] = ano;
+			return View("PagarLancamentos", lstSolicitacao);
 		}
 
 		#endregion

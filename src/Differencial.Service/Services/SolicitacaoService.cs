@@ -862,7 +862,10 @@ namespace Differencial.Service.Services
 		}
 		public Solicitacao RotaAnteriorSolicitacao(Solicitacao solicitacao)
 		{
-			var vistoriador = solicitacao.Vistoriador;
+
+			if(!solicitacao.IdVistoriador.HasValue)
+				throw new ValidationException("Falha no processamento: Vistoriador(id) necessário nessa etapa.");
+
 			var agendamentoRealizado = AgendamentoVigenteSolicitacao(solicitacao);
 			if (agendamentoRealizado == null)
 			{
@@ -871,7 +874,7 @@ namespace Differencial.Service.Services
 			else
 			{
 				var dateAgendamentoRealizado = agendamentoRealizado.DthAgendamento.Value;
-				var lstAgendamentosVistoriadorDia = _agendamentoService.ListarAgendamentosVistoriadorDiaVigentes(vistoriador.Id, dateAgendamentoRealizado).ToList();
+				var lstAgendamentosVistoriadorDia = _agendamentoService.ListarAgendamentosVistoriadorDiaVigentes(solicitacao.IdVistoriador.Value, dateAgendamentoRealizado).ToList();
 				int indexAgenda = lstAgendamentosVistoriadorDia.FindIndex(a => a.IdSolicitacao == solicitacao.Id);
 				var solicitacaoAnterior = lstAgendamentosVistoriadorDia.ElementAt(indexAgenda - 1).Solicitacao;
 				return solicitacaoAnterior;
@@ -957,7 +960,8 @@ namespace Differencial.Service.Services
 
 		public Agendamento AgendamentoVigenteSolicitacao(Solicitacao solicitacao)
 		{
-			return solicitacao.Agendamento.LastOrDefault(w => w.IndCancelado == false && w.TipoAgendamento != TipoAgendamentoEnum.Comunicar);
+			return _agendamentoService.AgendamentoVigenteSolicitacao(solicitacao.Id);
+			
 		}
 
 

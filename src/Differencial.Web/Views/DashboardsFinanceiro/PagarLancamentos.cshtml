@@ -1,0 +1,128 @@
+﻿@model IEnumerable<FinanceiroLancamentosPagarDto>
+@{
+	Layout = null;
+}
+<div class="modal-header" style="padding-bottom: 5px;">
+	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	<h3>Lançamentos de @ViewData["NomeVistoriador"] - Competência: @ViewData["Mes"]/@ViewData["Ano"]</h3>
+</div>
+
+<div class="modal-body m-t-none" style="padding-top:0">
+	<div class="row" style="margin-right: -25px; margin-left: -25px;">
+		<div class="table-responsive">
+			<table id="tbPagarLancamentos" class="grid-dataTables display table table-striped table-bordered table-hover">
+				<thead>
+					<tr class="text-nowrap">
+						<th class="">Nº inspeção</th>
+						<th class="">Nº proposta</th>
+						<th class="">Nº Cia</th>
+						<th class="">Centro de custo</th>
+						<th class="">Data de solicitação</th>
+						<th class="">Data de agendamento</th>
+						<th class=""> Data de envio </th>
+						<th>Solicitante</th>
+						<th>Ramo</th>
+						<th>Modalidade</th>
+						<th>Regional</th>
+						<th style="width:180px">Cliente</th>
+						<th style="width:180px">Endereço</th>
+
+						<th>Cidade base</th>
+						<th>UF</th>
+						<th>Inspetor</th>
+						<th>Pedagio</th>
+
+						<th>KM</th>
+						<th>KM Base</th>
+						<th>Valor km</th>
+						<th>Honorários</th>
+						<th class="">Valor total</th>
+						<th class="">Valor do risco</th>
+						<th class="">
+							Situação
+							<span class="small font-noraml">(Frustrada, liquidada ou em andamento)</span>
+						</th>
+
+						<th class="">Carta de recomendação (S/N)</th>
+						<th class="">Observações</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr id="@item.Id">
+							<td class="text-right">
+								@item.Id
+							</td>
+							<td class="">-</td>
+							<td class="text-center">
+								@item.CodSeguradora
+							</td>
+							<td class="">-</td>
+							<td class="text-center">
+								@item.DataCadastro
+							</td>
+							<td class="">
+								@item.DataAgendamento
+							</td>
+							<td class="">
+								@item.DataEnvio
+							</td>
+							<td class="">
+								@item.Solicitante
+							</td>
+							<td class="">
+								@item.AtividadeNome
+							</td>
+							<td class=""></td>
+							<td class=""></td>
+							<td class="" style="width:180px">@item.Cliente</td>
+							<td class=" " style="width:180px">@item.Logradouro, @item.NomeMunicipio - @item.SiglaUf</td>
+
+							<td class="text-nowrap">@item.VistoriadorCidadeBase</td>
+							<td class="">@item.VistoriadorSiglaUf</td>
+							<td class="text-nowrap">@item.VistoriadorNome</td>
+							<td class=""></td> @* Pedagio *@
+
+							<td class="text-right">@item.DeslocamentoRealizado</td>
+							<td class=""></td> @* KM Base *@
+							<td class="text-right">@item.VlrQuilometroRodado</td>
+							<td class="text-right">@item.VlrPagamentoVistoria</td>
+							<td class="text-right">@item.ValorLancamentoFinanceiroTotal.FormataMoeda()</td>
+
+							<td class="text-right">@item.VlrRiscoSegurado</td>
+							<td class="text-center">@HtmlGridHelper.SituacaoProcesso(item.TipoSituacaoProcesso).ToString() </td>
+							<td class="text-center"> - </td>
+							<td class="">@item.TxtInformacoesAdicionais</td>
+						</tr>
+					}
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<style>
+	#tbPagarLancamentos_wrapper.dataTables_wrapper {
+		width: 2800px;
+		margin: 0 auto;
+	}
+</style>
+<script>
+	$(document).ready(function () {
+		gridePagarLancamentos = $('#tbPagarLancamentos').Gride({
+			order: [[1, 'desc']],
+			autoWidth: true,
+			bExportacao: true,
+			//columns: [
+			//    { data: "0" },
+			//    { data: "NomeSeguradora", "className": "" },
+			//    { data: "TpSituacao", "className": "" },
+			//    { data: "ValorTotal", "className": "text-right", type: 'date-euro' },
+			//    { data: "IndFaturado", "className": "text-center" },
+			//    { data: "IndLiquidado", "className": "text-center" },
+			//]
+		});
+	});
+</script>

@@ -206,5 +206,11 @@ namespace Differencial.Service.Services
                 _agendamentoRepositorio.Delete(item);
             }
         }
+
+		public Agendamento AgendamentoVigenteSolicitacao(int idSolicitacao)
+		{
+			return _agendamentoRepositorio.Where(i=> i.IdSolicitacao == idSolicitacao).
+                                            LastOrDefault(w => w.IndCancelado == false && w.TipoAgendamento != TipoAgendamentoEnum.Comunicar);
+		}
 	}
 }

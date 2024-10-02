@@ -12,7 +12,7 @@
 			bool IndLiquidado);
 
 	public record FinanceiroPagarDto(
-			int Id,
+			int IdVistoriador,
 			string NomeVistoriador,
 			TipoLancamentoFinanceiroEnum tipoLancamentoFinanceiro,
 			decimal ValorLancamentoFinanceiro,

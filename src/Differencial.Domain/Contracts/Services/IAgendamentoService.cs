@@ -15,5 +15,6 @@ namespace Differencial.Domain.Contracts.Services
         IEnumerable<Agendamento> ListarAgendamentosVistoriadorDiaVigentes(int idVistoriador, DateTime dataAgenda);
         IEnumerable<Agendamento> ListarAgendamentosVistoriadorDiaVigentesCancelada(int idVistoriador, DateTime dataAgenda, int IdSolicCancelada);
 		void Excluir(ICollection<Agendamento> agendamento);
+		Agendamento AgendamentoVigenteSolicitacao(int idSolicitacao);
 	}
 }
