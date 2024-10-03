@@ -17,13 +17,12 @@
 						<th class="">Nº proposta</th>
 						<th class="">Nº Cia</th>
 						<th class="">Centro de custo</th>
-						<th class="">Data de solicitação</th>
-						<th class="">Data de agendamento</th>
-						<th class=""> Data de envio </th>
+						<th class="w150px">Data de solicitação</th>
+						<th class="w150px">Data de agendamento</th>
+						<th class="w150px">Data de envio</th>
 						<th>Solicitante</th>
-						<th>Ramo</th>
-						<th>Modalidade</th>
-						<th>Regional</th>
+						<th>Atividade</th>
+						 
 						<th style="width:180px">Cliente</th>
 						<th style="width:180px">Endereço</th>
 
@@ -63,10 +62,10 @@
 							<td class="text-center">
 								@item.DataCadastro
 							</td>
-							<td class="">
+							<td class="text-center">
 								@item.DataAgendamento
 							</td>
-							<td class="">
+							<td class="text-center">
 								@item.DataEnvio
 							</td>
 							<td class="">
@@ -75,8 +74,7 @@
 							<td class="">
 								@item.AtividadeNome
 							</td>
-							<td class=""></td>
-							<td class=""></td>
+							 
 							<td class="" style="width:180px">@item.Cliente</td>
 							<td class=" " style="width:180px">@item.Logradouro, @item.NomeMunicipio - @item.SiglaUf</td>
 

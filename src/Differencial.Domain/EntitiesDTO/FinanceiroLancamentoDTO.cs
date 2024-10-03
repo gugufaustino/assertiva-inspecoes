@@ -3,9 +3,13 @@
 namespace Differencial.Domain.EntitiesDTO
 {
 	public record FinanceiroLancamentosReceberDto(int Id, string solicitacaoProposta,
-		string CodSeguradora, string centroCusto, DateTime DataCadastro,
+		string CodSeguradora,
+		string centroCusto,
+		DateTime DataCadastro,
 
-		DateTime? DataAgendamento, string DataEnvio, string Solicitante,
+		DateTime? DataAgendamento,
+		DateTime? DataEnvio,
+		string Solicitante,
 
 		string AtividadeNome,
 		string Cliente,
@@ -37,7 +41,7 @@ namespace Differencial.Domain.EntitiesDTO
 	   string centroCusto, 
 	   DateTime DataCadastro,
 	   DateTime? DataAgendamento,
-	   string DataEnvio,
+	   DateTime? DataEnvio,
 	   string Solicitante,
 	   string AtividadeNome,
 	   string Cliente,
