@@ -543,20 +543,26 @@ namespace Differencial.Service.Services
 				}
 				// Atualiza no entity a nova agenda
 				SaveChange(_usuarioService.Id);
+
 				// Consulta Agendamentos vigentes para realziar todos os calculos com os regisros já nas posições definidas
 				lstAgendamentosVigentes = _agendamentoService.ListarAgendamentosVistoriadorDiaVigentes(solicitacao.Vistoriador.Id, dataRotaAgendamento).ToList();
+				
 				// RECALCULA A Solicitação Atual, pois ela já está em novo posicionamento
 				solAtual = lstAgendamentosVigentes.FirstOrDefault(w => w.Solicitacao.Id == solicitacao.Id);
 				RecalcularRota(ref lstAgendamentosVigentes, solAtual.Solicitacao);
+				
 				// RECALCULA outra Solicitação(Pré atualização)
 				if (solicitacaoPosterior != null)
 					RecalcularRota(ref lstAgendamentosVigentes, solicitacaoPosterior.Solicitacao);
+
 				// RECALCULA A Solicitação(Pós Atualizacao)
 				solIndex = lstAgendamentosVigentes.FindIndex(a => a.Id == solAtual.Id);
 				if (solIndex < lstAgendamentosVigentes.Count - 1)
 					solicitacaoPosteriorPosAtualizacao = lstAgendamentosVigentes.ElementAtOrDefault(solIndex + 1);
 				if (solicitacaoPosteriorPosAtualizacao != null)
 					RecalcularRota(ref lstAgendamentosVigentes, solicitacaoPosteriorPosAtualizacao.Solicitacao);
+				
+				
 				//Se agenda atual é a RotaDeVolta e não é a unica do dia, então a solicitação anterior deve ser recalculada e "remover os valores de Rota de Volta"
 				if (solAtual.Solicitacao.IndRotaDeVolta && lstAgendamentosVigentes.Count > 1)
 				{
@@ -814,6 +820,7 @@ namespace Differencial.Service.Services
 			}
 			operadorDistancia = _operadorService.MontarOperadorDistanciaRota(vistoriador, enderecoRotaAnterior, solicitacao.Endereco.SiglaUf, solicitacao.Endereco.NomeMunicipio,
 																				solicitacao.Endereco.Latitude.Value, solicitacao.Endereco.Longitude.Value, solicitacao.Id, solicitacao.IdProduto);
+			
 			solicitacao.DeslocamentoPrevisto = Convert.ToDecimal(operadorDistancia.DistanciaRota.Value);
 			solicitacao.CustoDeslocamentoPrevisto = operadorDistancia.VlrTotalQuilometroRodado;
 			solicitacao.CustoTotalPrevisto = operadorDistancia.VlrTotalQuilometroRodadoMaisPagamentoVistoria;
@@ -824,6 +831,7 @@ namespace Differencial.Service.Services
 				Endereco endBaseVolta = vistoriador.EnderecoBase;
 				var operadorDistanciaVolta = _operadorService.MontarOperadorDistanciaRota(vistoriador, solicitacao.Endereco, endBaseVolta.SiglaUf, endBaseVolta.NomeMunicipio,
 																						endBaseVolta.Latitude.Value, endBaseVolta.Longitude.Value, solicitacao.Id, solicitacao.IdProduto);
+				
 				solicitacao.DeslocamentoPrevisto += Convert.ToDecimal(operadorDistanciaVolta.DistanciaRota.Value);
 				solicitacao.CustoDeslocamentoPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;
 				solicitacao.CustoTotalPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;

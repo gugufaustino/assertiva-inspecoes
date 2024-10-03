@@ -62,9 +62,7 @@ namespace Differencial.Service.Services
 
 		public void Agendar(DateTime dthAgendamento, Solicitacao solicitacao)
 		{
-			TryCatch(() =>
-			{
-				Operador operadorLogado = _operadorService.Buscar(_usuarioService.Id);
+			 	Operador operadorLogado = _operadorService.Buscar(_usuarioService.Id);
 
 				RN_VistoriadorSemPermissao(operadorLogado, solicitacao);
 				RN_AgendaConflitante(dthAgendamento, solicitacao.IdVistoriador.Value, solicitacao.Id);
@@ -90,7 +88,7 @@ namespace Differencial.Service.Services
 
 				Salvar(agenda);
 
-			});
+			 
 		}
 
 		private void SalvarCancelamento(List<Agendamento> agendasAnteriores)

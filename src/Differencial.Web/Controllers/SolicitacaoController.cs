@@ -584,9 +584,6 @@ namespace WEB.Controllers
             AppSaveChanges();
             TempData["abaAtiva"] = "idtabAgenda";
             return base.RetornoSalvar(RetornoSalvarEnum.Editar, Id);
-
-
-
         }
 
         [HttpGet]

@@ -54,12 +54,12 @@ namespace WEB.Controllers
 
         }
         public async Task<IActionResult> Gerente()
-        { 
-            var lstSeguradoras = _seguradoraService.Listar(new SeguradoraFilter { IndAtivo = true, CampoOrdenacao = CampoOrdenacaoSeguradora.NomeSeguradora }).ToList(); 
+        {
+            var lstSeguradoras = _seguradoraService.Listar(new SeguradoraFilter { IndAtivo = true, CampoOrdenacao = CampoOrdenacaoSeguradora.NomeSeguradora }).ToList();
 
-            var segIndSolicEmail = lstSeguradoras.FirstOrDefault(i=>i.IndIntegracaoSolicitacaoPorEmail ==  true );
+            var segIndSolicEmail = lstSeguradoras.FirstOrDefault(i => i.IndIntegracaoSolicitacaoPorEmail == true);
 
-            ViewBag.lstSeguradoras = lstSeguradoras; 
+            ViewBag.lstSeguradoras = lstSeguradoras;
             ViewBag.gmailSeguradoraEmailRemetente = segIndSolicEmail != null ? segIndSolicEmail.EmailRemetenteSolicitacao : string.Empty;
             ViewBag.gmailCredencialAplicativo = "28124896797-7h0hvq5m3mm35dnn5qsps8ibg8brs05q.apps.googleusercontent.com";
             ViewBag.gmailIndIntegracaoEmailAbilitada = true;
@@ -91,17 +91,17 @@ namespace WEB.Controllers
 
             return View(lstSolicitacao);
         }
- 
- 
+
+
 
         [HttpPost]
         [ServiceFilter(typeof(TransactionFilter))]
         public async Task<JsonResult> Excluir(int[] Id)
         {
 
-             await _solicitacaoService.Excluir( Id);
+            await _solicitacaoService.Excluir(Id);
             AppSaveChanges();
-            var lstSolicitacao =  await _dashboardsService.ListarSolicitacoesGerencia();
+            var lstSolicitacao = await _dashboardsService.ListarSolicitacoesGerencia();
             var result = MontarListaSolicitacaoGerente(lstSolicitacao);
             return ResponseResult(true, content: result, message: MensagensSucesso.SucessoExcluir);
 
@@ -157,16 +157,18 @@ namespace WEB.Controllers
                         item.Id,
                         item.CodSeguradora,
                         SeguradoraProduto = HtmlGridHelper.TextoSubTexto(item.Produto.Seguradora.NomeSeguradora, item.Produto.NomeProduto).ToString(),
-                        ClienteRazaoSocial = HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco + "- " + item.Endereco.SiglaUf).ToString(),
+                        ClienteRazaoSocial = HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco.NomeMunicipio + " - " + item.Endereco.SiglaUf).ToString(),
+
                         SituacaoProcesso = HtmlGridHelper.SituacaoProcesso(item.TpSituacao).ToString(),
-                        OperadorApropriado = item.OperadorApropriado.NomeOperador.ToString(),
-                        DataApropriado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise).DthMovimentacao.ToString(),
-                        DataEnviado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise).DthMovimentacao.ToString(),
+                        OperadorApropriado = item?.OperadorApropriado?.NomeOperador,
+                        DataApropriado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise)?.DthMovimentacao.ToString(),
+                        DataEnviado = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaAnalise)?.DthMovimentacao.ToString(),
                         ElaborarCroquiAnalise = HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise).ToString(),
                         ElaborarQuadro = HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise).ToString(),
                         ElaborarEnviarLaudo = HtmlGridHelper.SituacaoAtividade(item.AtividadeProcesso, TipoAtividadeEnum.ElaborarCroquiAnalise).ToString(),
                         NomeMunicipio = HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, item.Endereco.NomeMunicipio + " - " + item.Endereco.SiglaUf).ToString(),
-                        TempoDecorrido = @HtmlGridHelper.TempoDecorrido(item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.ApropriadoPelaAnalise).DthMovimentacao).ToString(),
+                        TempoDecorrido = item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaAnalise) is null
+                                    ? null : HtmlGridHelper.TempoDecorrido(item.MovimentacaoProcesso.LastOrDefault(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaAnalise).DthMovimentacao).ToString(),
                         IndUrgente = item.IndUrgente,
                         IndCidadeBaseVistoriador = item.IndCidadeBaseVistoriador.ToString(),
                         NomeMunicipioSiglaUf = item.NomeMunicipioSiglaUf.ToString()

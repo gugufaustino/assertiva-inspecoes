@@ -1,10 +1,10 @@
 ﻿@model Solicitacao
 @{
-    var bFormEditar = ViewBag.OrigemForm != null && ViewBag.OrigemForm == "Editar" ? true : false;
+	var bFormEditar = ViewBag.OrigemForm != null && ViewBag.OrigemForm == "Editar" ? true : false;
 
-    List<WFTipoAcao> lstAcoesDisponivel = ViewBag.lstAcoesDisponiveis;
+	List<WFTipoAcao> lstAcoesDisponivel = ViewBag.lstAcoesDisponiveis;
 
-    ViewData["btnEditarLatitudeLongitude"] = lstAcoesDisponivel.Contains(WFTipoAcao.Gravar);
+	ViewData["btnEditarLatitudeLongitude"] = lstAcoesDisponivel.Contains(WFTipoAcao.Gravar);
 
 }
 @Html.AntiForgeryToken()
@@ -13,226 +13,226 @@
 
 <div class="row">
 
-    <div class="form-group col-md-4">
-        @Html.FwLabelFor(m => m.Produto.IdSeguradora)
-        @if (bFormEditar)
-        {
-            @Html.FwTextBoxFor(m => m.Produto.Seguradora.NomeSeguradora, true)
-        }
-        else
-        {
-            SelectList selectlistSeguradora = ViewBag.lstSeguradora ?? new List<SelectListItem>();
-            @Html.DropDownListFor(m => m.IdSeguradora, selectlistSeguradora, new { @class = "form-control", @required = "required" })
-        }
-    </div>
-    <div class="form-group col-md-3">
-        @Html.FwLabelFor(m => m.IdProduto)
-        @if (bFormEditar)
-        {
-            @Html.FwTextBoxFor(m => m.Produto.NomeProduto, true)
-            @Html.HiddenFor(m => m.IdProduto)
-        }
-        else
-        {
-            SelectList selectlistProduto = ViewBag.lstProduto ?? new List<SelectListItem>();
-            @Html.DropDownListFor(m => m.IdProduto, selectlistProduto, new { @class = "form-control", @required = "required" })
-        }
-    </div>
-    <div class="form-group col-md-2">
-        @Html.FwShortLabelFor(m => m.IndUrgente)
-        @Html.FwCheckBoxFor(m => m.IndUrgente)
-    </div>
-    <div class="form-group col-md-3">
-        @Html.FwLabelFor(m => m.TpSituacao)
-        @Html.FwStatusFor(m => m.TpSituacao)
-    </div>
+	<div class="form-group col-md-4">
+		@Html.FwLabelFor(m => m.Produto.IdSeguradora)
+		@if (bFormEditar)
+		{
+			@Html.FwTextBoxFor(m => m.Produto.Seguradora.NomeSeguradora, true)
+		}
+		else
+		{
+			SelectList selectlistSeguradora = ViewBag.lstSeguradora ?? new List<SelectListItem>();
+			@Html.DropDownListFor(m => m.IdSeguradora, selectlistSeguradora, new { @class = "form-control", @required = "required" })
+		}
+	</div>
+	<div class="form-group col-md-3">
+		@Html.FwLabelFor(m => m.IdProduto)
+		@if (bFormEditar)
+		{
+			@Html.FwTextBoxFor(m => m.Produto.NomeProduto, true)
+			@Html.HiddenFor(m => m.IdProduto)
+		}
+		else
+		{
+			SelectList selectlistProduto = ViewBag.lstProduto ?? new List<SelectListItem>();
+			@Html.DropDownListFor(m => m.IdProduto, selectlistProduto, new { @class = "form-control", @required = "required" })
+		}
+	</div>
+	<div class="form-group col-md-2">
+		@Html.FwShortLabelFor(m => m.IndUrgente)
+		@Html.FwCheckBoxFor(m => m.IndUrgente)
+	</div>
+	<div class="form-group col-md-3">
+		@Html.FwLabelFor(m => m.TpSituacao)
+		@Html.FwStatusFor(m => m.TpSituacao)
+	</div>
 
-    <div class="form-group col-md-2">
-        @Html.FwShortLabelFor(m => m.CodSistemaLegado)
-        @Html.FwNumberFor(m => m.CodSistemaLegado)
-    </div>
-    <div class="form-group col-md-2">
-        @Html.FwLabelFor(m => m.CodSeguradora)
-        @Html.FwTextBoxFor(m => m.CodSeguradora, htmlAttributes: new { @class = " text-right" })
-    </div>
+	<div class="form-group col-md-2">
+		@Html.FwShortLabelFor(m => m.CodSistemaLegado)
+		@Html.FwNumberFor(m => m.CodSistemaLegado)
+	</div>
+	<div class="form-group col-md-2">
+		@Html.FwLabelFor(m => m.CodSeguradora)
+		@Html.FwTextBoxFor(m => m.CodSeguradora, htmlAttributes: new { @class = " text-right" })
+	</div>
 </div>
 
 @{
-    var abaAtiva = (string)TempData["abaAtiva"] ?? "idtabDetalhe";
-    var indVistoriador = UtilWeb.UsuarioLogado.IndVistoriador && !UtilWeb.UsuarioLogado.IndGerente;
+	var abaAtiva = (string)TempData["abaAtiva"] ?? "idtabDetalhe";
+	var indVistoriador = UtilWeb.UsuarioLogado.IndVistoriador && !UtilWeb.UsuarioLogado.IndGerente;
 
 
-    var lstTab = new Tab[] {
-        new Tab("idtabDetalhe",   "Detalhe" , abaAtiva == "idtabDetalhe"),
+	var lstTab = new Tab[] {
+		new Tab("idtabDetalhe",   "Detalhe" , abaAtiva == "idtabDetalhe"),
 
-        new Tab("idtabGestao", "Gestão", (abaAtiva == "idtabGestao" || abaAtiva == "idtabVistoriador" || abaAtiva == "idtabAnalista" || abaAtiva == "idtabRelacionamento" ), bFormEditar && !indVistoriador),
-       new Tab("idtabInspecao",   "Inspeção" ,   (abaAtiva == "idtabInspecao"|| abaAtiva == "idtabAgenda" || abaAtiva == "idtabCheckList" || abaAtiva == "idtabFotos"|| abaAtiva == "idtabCroqui" ||  abaAtiva == "idtabRoda" ), bFormEditar ),
-        new Tab("idtabAnexos",   "Anexos", indRendereizar: false ),
-        new Tab("idtabAnalise",   "Análise",  (abaAtiva == "idtabAnalise" || abaAtiva == "idtabQuadroFotos" || abaAtiva == "idtabCroquiAnalista" ) , bFormEditar && !indVistoriador),
-        new Tab("idtabLancamentosFinanceiros",   "Lançamentos Financeiros", abaAtiva == "idtabLancamentosFinanceiros", bFormEditar && !indVistoriador),
-        new Tab("idtabMovimentacaoProcesso",   "Movimentação" , abaAtiva == "idtabMovimentacaoProcesso", bFormEditar ),
-        new Tab("idtabLogAuditoria", "Histórico", abaAtiva == "idtabLogAuditoria", bFormEditar && !indVistoriador )
-    /* */
-    };
+		new Tab("idtabGestao", "Gestão", (abaAtiva == "idtabGestao" || abaAtiva == "idtabVistoriador" || abaAtiva == "idtabAnalista" || abaAtiva == "idtabRelacionamento" ), bFormEditar && !indVistoriador),
+	    new Tab("idtabInspecao",   "Inspeção" ,   (abaAtiva == "idtabInspecao"|| abaAtiva == "idtabAgenda" || abaAtiva == "idtabCheckList" || abaAtiva == "idtabFotos"|| abaAtiva == "idtabCroqui" ||  abaAtiva == "idtabRoda" ), bFormEditar ),
+		new Tab("idtabAnexos",   "Anexos", indRendereizar: false ),
+		new Tab("idtabAnalise",   "Análise",  (abaAtiva == "idtabAnalise" || abaAtiva == "idtabQuadroFotos" || abaAtiva == "idtabCroquiAnalista" ) , bFormEditar && !indVistoriador),
+		new Tab("idtabLancamentosFinanceiros",   "Lançamentos Financeiros", abaAtiva == "idtabLancamentosFinanceiros", bFormEditar && !indVistoriador),
+		new Tab("idtabMovimentacaoProcesso",   "Movimentação" , abaAtiva == "idtabMovimentacaoProcesso", bFormEditar ),
+		new Tab("idtabLogAuditoria", "Histórico", abaAtiva == "idtabLogAuditoria", bFormEditar && !indVistoriador )
 
-    using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
-    {
-        using (Html.TabPane(lstTab[0]))
-        {
-            <div class="row">
-                @if (ViewBag.InclusaoSolicitante != null && ViewBag.InclusaoSolicitante == true)
-                {
-                    <div class="form-group col-md-4">
-                        @Html.FwLabelFor(m => m.SolicitanteNome)
-                        @Html.TextBox("SolicitanteNome", (object)ViewBag.SolicitanteNome, new { @class = "form-control", disabled = "disabled" })
-                    </div>
-                    <div class="form-group col-md-2">
-                        @Html.FwLabelFor(m => m.SolicitanteTelefone)
-                        @Html.TextBox("SolicitanteTelefone", (object)ViewBag.SolicitanteTelefone, new { @class = "form-control", disabled = "disabled" })
-                    </div>
-                    <div class="form-group col-md-2">
-                        @Html.FwLabelFor(m => m.SolicitanteEmail)
-                        @Html.TextBox("SolicitanteEmail", (object)ViewBag.SolicitanteEmail, new { @class = "form-control", disabled = "disabled" })
-                    </div>
-                }
-                else
-                {
-                    <div class="form-group col-md-3">
-                        @Html.FwLabelFor(m => m.IdFilial)
-                        @{
-                            //var selectFilial = new List<SelectListItem>();
-                        }
-                        @Html.DropDownListFor(m => m.IdFilial, (SelectList)(ViewBag.lstFilial ?? new List<SelectListItem>()), new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        @Html.FwLabelFor(m => m.SolicitanteNome)
-                        @Html.HiddenFor(m => m.SolicitanteNome)
+	};
 
-                        @Html.DropDownListFor(m => m.IdSolicitante, (SelectList)(ViewBag.lstSolicitante ?? new List<SelectListItem>()), new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        @Html.FwLabelFor(m => m.SolicitanteTelefone)
-                        @Html.FwTextBox("SolicitanteTelefone", (string)ViewBag.SolicitanteTelefone, true, new { @data_mask = "(99)99999999?9" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        @Html.FwLabelFor(m => m.SolicitanteEmail)
-                        @Html.FwTextBox("SolicitanteEmail", (string)ViewBag.SolicitanteEmail, true)
-                    </div>
-                }
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.CorretorNome)
-                    @Html.FwTextBoxFor(m => m.CorretorNome)
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.CorretorTelefone)
-                    @Html.FwPhoneBoxFor(m => m.CorretorTelefone)
-                </div>
-            </div>
-            <div class="hr-line-dashed col-md-12"></div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.CpfCnpj)
-                    @Html.FwTextBoxFor(m => m.Cliente.CpfCnpj)
-                </div>
-                <div class="form-group col-md-6">
-                    @Html.FwLabelFor(m => m.Cliente.NomeRazaoSocial)
-                    @Html.FwTextBoxFor(m => m.Cliente.NomeRazaoSocial)
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.AtividadeNome)
-                    @Html.FwTextBoxFor(m => m.Cliente.AtividadeNome)
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.ContatoNome)
-                    @Html.FwTextBoxFor(m => m.Cliente.ContatoNome)
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.ContatoTelefone)
-                    @Html.FwPhoneBoxFor(m => m.Cliente.ContatoTelefone)
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.ContatoOutro)
-                    @Html.FwTextBoxFor(m => m.Cliente.ContatoOutro)
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.FwLabelFor(m => m.Cliente.ContatoAgendamento)
-                    @Html.FwTextBoxFor(m => m.Cliente.ContatoAgendamento, true)
+	using (Html.TabContainer(TabsOrientacaoEnum.Top, lstTab))
+	{
+		using (Html.TabPane(lstTab[0]))
+		{
+			<div class="row">
+				@if (ViewBag.InclusaoSolicitante != null && ViewBag.InclusaoSolicitante == true)
+				{
+					<div class="form-group col-md-4">
+						@Html.FwLabelFor(m => m.SolicitanteNome)
+						@Html.TextBox("SolicitanteNome", (object)ViewBag.SolicitanteNome, new { @class = "form-control", disabled = "disabled" })
+					</div>
+					<div class="form-group col-md-2">
+						@Html.FwLabelFor(m => m.SolicitanteTelefone)
+						@Html.TextBox("SolicitanteTelefone", (object)ViewBag.SolicitanteTelefone, new { @class = "form-control", disabled = "disabled" })
+					</div>
+					<div class="form-group col-md-2">
+						@Html.FwLabelFor(m => m.SolicitanteEmail)
+						@Html.TextBox("SolicitanteEmail", (object)ViewBag.SolicitanteEmail, new { @class = "form-control", disabled = "disabled" })
+					</div>
+				}
+				else
+				{
+					<div class="form-group col-md-3">
+						@Html.FwLabelFor(m => m.IdFilial)
+						@{
+							//var selectFilial = new List<SelectListItem>();
+						}
+						@Html.DropDownListFor(m => m.IdFilial, (SelectList)(ViewBag.lstFilial ?? new List<SelectListItem>()), new { @class = "form-control" })
+					</div>
+					<div class="form-group col-md-3">
+						@Html.FwLabelFor(m => m.SolicitanteNome)
+						@Html.HiddenFor(m => m.SolicitanteNome)
 
-                </div>
-            </div>
+						@Html.DropDownListFor(m => m.IdSolicitante, (SelectList)(ViewBag.lstSolicitante ?? new List<SelectListItem>()), new { @class = "form-control" })
+					</div>
+					<div class="form-group col-md-3">
+						@Html.FwLabelFor(m => m.SolicitanteTelefone)
+						@Html.FwTextBox("SolicitanteTelefone", (string)ViewBag.SolicitanteTelefone, true, new { @data_mask = "(99)99999999?9" })
+					</div>
+					<div class="form-group col-md-3">
+						@Html.FwLabelFor(m => m.SolicitanteEmail)
+						@Html.FwTextBox("SolicitanteEmail", (string)ViewBag.SolicitanteEmail, true)
+					</div>
+				}
+			</div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.CorretorNome)
+					@Html.FwTextBoxFor(m => m.CorretorNome)
+				</div>
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.CorretorTelefone)
+					@Html.FwPhoneBoxFor(m => m.CorretorTelefone)
+				</div>
+			</div>
+			<div class="hr-line-dashed col-md-12"></div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.CpfCnpj)
+					@Html.FwTextBoxFor(m => m.Cliente.CpfCnpj)
+				</div>
+				<div class="form-group col-md-6">
+					@Html.FwLabelFor(m => m.Cliente.NomeRazaoSocial)
+					@Html.FwTextBoxFor(m => m.Cliente.NomeRazaoSocial)
+				</div>
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.AtividadeNome)
+					@Html.FwTextBoxFor(m => m.Cliente.AtividadeNome)
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.ContatoNome)
+					@Html.FwTextBoxFor(m => m.Cliente.ContatoNome)
+				</div>
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.ContatoTelefone)
+					@Html.FwPhoneBoxFor(m => m.Cliente.ContatoTelefone)
+				</div>
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.ContatoOutro)
+					@Html.FwTextBoxFor(m => m.Cliente.ContatoOutro)
+				</div>
+				<div class="form-group col-md-3">
+					@Html.FwLabelFor(m => m.Cliente.ContatoAgendamento)
+					@Html.FwTextBoxFor(m => m.Cliente.ContatoAgendamento, true)
 
-            <div class="row classContainerEndereco">
-                <div class="col-md-9 b-r">
-                    @await Html.PartialAsync("Endereco/_Endereco")
-                </div>
-                <div class="col-md-3">
-                    @await Html.PartialAsync("Endereco/_EnderecoMap")
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    @Html.FwLabelFor(m => m.TxtInformacoesAdicionais)
-                    @Html.FwTextAreaFor(m => m.TxtInformacoesAdicionais)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-7">
-                    @*@Html.Partial("Detalhe/_TabelaEditavel")*@
-                </div>
-                <div class="col-md-5">
-                    <fieldset class="form-group">
-                        <legend class="col-form-legend col-md-12 ">
-                            <label>Risco Nomeado</label>
-                        </legend>
-                        <div class="form-group col-md-6">
-                            @Html.FwLabelFor(m => m.VlrRiscoSegurado)
-                            @Html.FwCurrencyFor(m => m.VlrRiscoSegurado)
-                        </div>
-                        <div class="form-group col-md-6">
-                            @Html.FwLabelFor(m => m.VlrHonorarioPreAcordo)
-                            @Html.FwCurrencyFor(m => m.VlrHonorarioPreAcordo)
-                        </div>
+				</div>
+			</div>
 
-                    </fieldset>
-                </div>
-            </div>
-        };
+			<div class="row classContainerEndereco">
+				<div class="col-md-9 b-r">
+					@await Html.PartialAsync("Endereco/_Endereco")
+				</div>
+				<div class="col-md-3">
+					@await Html.PartialAsync("Endereco/_EnderecoMap")
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					@Html.FwLabelFor(m => m.TxtInformacoesAdicionais)
+					@Html.FwTextAreaFor(m => m.TxtInformacoesAdicionais)
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-7">
+					@*@Html.Partial("Detalhe/_TabelaEditavel")*@
+				</div>
+				<div class="col-md-5">
+					<fieldset class="form-group">
+						<legend class="col-form-legend col-md-12 ">
+							<label>Risco Nomeado</label>
+						</legend>
+						<div class="form-group col-md-6">
+							@Html.FwLabelFor(m => m.VlrRiscoSegurado)
+							@Html.FwCurrencyFor(m => m.VlrRiscoSegurado)
+						</div>
+						<div class="form-group col-md-6">
+							@Html.FwLabelFor(m => m.VlrHonorarioPreAcordo)
+							@Html.FwCurrencyFor(m => m.VlrHonorarioPreAcordo)
+						</div>
 
-        using (Html.TabPane(lstTab[1]))
-        {
-            @await Html.PartialAsync("AbaGestao/_AbaGestao")
-        };
-        using (Html.TabPane(lstTab[2]))
-        {
-            @Html.Partial("AbaInspecao/_AbaInspecao")
-        };
+					</fieldset>
+				</div>
+			</div>
+		};
 
-        using (Html.TabPane(lstTab[3]))
-        {
-            <div>  aba anexos   </div>
-        };
-        using (Html.TabPane(lstTab[4]))
-        {
-            @Html.Partial("AbaAnalise/_AbaAnalise")
-        };
-        using (Html.TabPane(lstTab[5]))
-        {
-            @Html.Partial("AbaLancamentoFinanceiro/_AbaLancamentoFinanceiro")
-        };
-        using (Html.TabPane(lstTab[6]))
-        {
-            @Html.Partial("AbaMovimentacao/_AbaMovimentacao")
-        };
-        using (Html.TabPane(lstTab[7]))
-        {
-            List<LogAuditoria> lstLog = (Model != null) ? ViewBag.lstLog : null;
-            @Html.Partial("LogAuditoria/_GridLogAuditoria", lstLog)
-        };
-        @**@
-    }
+		using (Html.TabPane(lstTab[1]))
+		{
+			@await Html.PartialAsync("AbaGestao/_AbaGestao")
+		};
+		using (Html.TabPane(lstTab[2]))
+		{
+			@await Html.PartialAsync("AbaInspecao/_AbaInspecao")
+		};
+
+		using (Html.TabPane(lstTab[3]))
+		{
+			<div>  aba anexos   </div>
+		};
+		using (Html.TabPane(lstTab[4]))
+		{
+			@await Html.PartialAsync("AbaAnalise/_AbaAnalise")
+		};
+		using (Html.TabPane(lstTab[5]))
+		{
+			@await Html.PartialAsync("AbaLancamentoFinanceiro/_AbaLancamentoFinanceiro")
+		};
+		using (Html.TabPane(lstTab[6]))
+		{
+			@await Html.PartialAsync("AbaMovimentacao/_AbaMovimentacao")
+		};
+		using (Html.TabPane(lstTab[7]))
+		{
+			List<LogAuditoria> lstLog = (Model != null) ? ViewBag.lstLog : null;
+			@await Html.PartialAsync("LogAuditoria/_GridLogAuditoria", lstLog)
+		};
+		@**@
+	}
 
 }

@@ -1,156 +1,154 @@
 ﻿@model Solicitacao
 @using (Html.BarraAtividade())
 {
-    var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
-    if (lstAtivDisponiveis.Contains(TipoAtividadeEnum.Agendamento))
-    {
+	var lstAtivDisponiveis = (List<TipoAtividadeEnum>)ViewBag.lstAtivDisponiveis;
+	if (lstAtivDisponiveis.Contains(TipoAtividadeEnum.Agendamento) && Model != null)
+	{ 
+		if (Model.Agendamento == null || !Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar))
+		{
 
-        if (Model != null)
-        {
-            if (Model.Agendamento == null || !Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar))
-            {
+			@HtmlAtividadeHelper.BotaoModalAtividade("Agendar", "btnAgendar", true, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
+					, Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "agendar" }))
+		}
+		else if (Model.Agendamento != null && Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar))
+		{
+			@HtmlAtividadeHelper.BotaoModalAtividade("Reagendar", "btnReAgendar", true, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
+					, Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "reagendar" }))
 
-                @HtmlAtividadeHelper.BotaoModalAtividade("Agendar", "btnAgendar", true, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
-            , Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "agendar" }))
-            }
-            else if (Model.Agendamento != null && Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar))
-            {
-                @HtmlAtividadeHelper.BotaoModalAtividade("Reagendar", "btnReAgendar", true, BtnCorEnum.success, IconeEnum.pencil, TamanhoEnum.ModalPadrao
-            , Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "reagendar" }))
+		}
 
-            }
+		var indComunicar = Model.Agendamento != null && !(Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar || i.TipoAgendamento == TipoAgendamentoEnum.Reagendar));
 
-            var indComunicar = Model.Agendamento != null && !(Model.Agendamento.Any(i => i.TipoAgendamento == TipoAgendamentoEnum.Agendar || i.TipoAgendamento == TipoAgendamentoEnum.Reagendar));
+		@HtmlAtividadeHelper.BotaoModalAtividade("Não Agendamento", "btnComunicar", indComunicar, BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao
+						, Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "comunicar" }))
 
-            @HtmlAtividadeHelper.BotaoModalAtividade("Não Agendamento", "btnComunicar", indComunicar, BtnCorEnum.white, IconeEnum.SemIcone, TamanhoEnum.ModalPadrao
-                , Url.Action("Agendar", new { id = Html.ValueFor(m => m.Id).ToString(), acaoagenda = "comunicar" }))
 
-        }
+	}
 
-    }
+
 }
 
 @{
-    Agendamento agendaRealizada = Model == null || Model.Agendamento == null ? null : Model.Agendamento.LastOrDefault(w => w.IndCancelado == false && w.TipoAgendamento != TipoAgendamentoEnum.Comunicar);
+	Agendamento agendaRealizada = Model == null || Model.Agendamento == null ? null : Model.Agendamento.LastOrDefault(w => w.IndCancelado == false && w.TipoAgendamento != TipoAgendamentoEnum.Comunicar);
 
-    var valorData = string.Empty;
-    var valorHora = string.Empty;
+	var valorData = string.Empty;
+	var valorHora = string.Empty;
 
-    if (agendaRealizada != null && (agendaRealizada.TipoAgendamento == TipoAgendamentoEnum.Agendar || agendaRealizada.TipoAgendamento == TipoAgendamentoEnum.Reagendar))
-    {
-        valorData = agendaRealizada.DthAgendamento.Value.FormatoData();
-        valorHora = agendaRealizada.DthAgendamento.Value.FormatoHora();
-    }
+	if (agendaRealizada != null && (agendaRealizada.TipoAgendamento == TipoAgendamentoEnum.Agendar || agendaRealizada.TipoAgendamento == TipoAgendamentoEnum.Reagendar))
+	{
+		valorData = agendaRealizada.DthAgendamento.Value.FormatoData();
+		valorHora = agendaRealizada.DthAgendamento.Value.FormatoHora();
+	}
 }
 
 <div class="row">
-    <div class="col-md-12">
-        <h4>Agendamento Realizado</h4>
+	<div class="col-md-12">
+		<h4>Agendamento Realizado</h4>
 
-        <div class="form-group col-md-4">
-            @Html.Label("Data do Agendado")
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		<div class="form-group col-md-4">
+			@Html.Label("Data do Agendado")
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
-                @Html.TextBox("txtDataAgenda", valorData, new { @class = "form-control text-center", @data_mask = "99/99/9999", @disabled = "disabled" })
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            @Html.Label("Horário do Agendado")
-            <div class="input-group" data-autoclose="true">
-                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                @Html.TextBox("txtHoraAgenda", valorHora, new { @class = "form-control text-center", @data_mask = "99:99", @disabled = "disabled" })
-            </div>
-        </div>
-        <div class="form-group col-md-4 ">
-            @Html.FwLabelFor(m => m.TipoRotaVistoriaPrevista)
-            <div class="no-padding radioDuploVertical">
-                <div class="radio">
-                    <label>
-                        @Html.RadioButton("rbtTipoRotaVistoriaPrevista_agenda", TipoRotaVistoriaEnum.CidadeBase, Model == null ? false : Model.TipoRotaVistoriaPrevista == TipoRotaVistoriaEnum.CidadeBase, new { @disabled = "disabled" })
-                        @TipoRotaVistoriaEnum.CidadeBase.FwDisplayEnum()
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        @Html.RadioButton("rbtTipoRotaVistoriaPrevista_agenda", TipoRotaVistoriaEnum.EntreVistoria, Model == null ? false : Model.TipoRotaVistoriaPrevista == TipoRotaVistoriaEnum.EntreVistoria, new { @disabled = "disabled" })
-                        @TipoRotaVistoriaEnum.EntreVistoria.FwDisplayEnum()
-                    </label>
-                </div>
-            </div>
-        </div>
+				@Html.TextBox("txtDataAgenda", valorData, new { @class = "form-control text-center", @data_mask = "99/99/9999", @disabled = "disabled" })
+			</div>
+		</div>
+		<div class="form-group col-md-4">
+			@Html.Label("Horário do Agendado")
+			<div class="input-group" data-autoclose="true">
+				<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+				@Html.TextBox("txtHoraAgenda", valorHora, new { @class = "form-control text-center", @data_mask = "99:99", @disabled = "disabled" })
+			</div>
+		</div>
+		<div class="form-group col-md-4 ">
+			@Html.FwLabelFor(m => m.TipoRotaVistoriaPrevista)
+			<div class="no-padding radioDuploVertical">
+				<div class="radio">
+					<label>
+						@Html.RadioButton("rbtTipoRotaVistoriaPrevista_agenda", TipoRotaVistoriaEnum.CidadeBase, Model == null ? false : Model.TipoRotaVistoriaPrevista == TipoRotaVistoriaEnum.CidadeBase, new { @disabled = "disabled" })
+						@TipoRotaVistoriaEnum.CidadeBase.FwDisplayEnum()
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						@Html.RadioButton("rbtTipoRotaVistoriaPrevista_agenda", TipoRotaVistoriaEnum.EntreVistoria, Model == null ? false : Model.TipoRotaVistoriaPrevista == TipoRotaVistoriaEnum.EntreVistoria, new { @disabled = "disabled" })
+						@TipoRotaVistoriaEnum.EntreVistoria.FwDisplayEnum()
+					</label>
+				</div>
+			</div>
+		</div>
 
-    </div>
+	</div>
 
-    @*<div class="col-md-12">
-            <div class="form-group col-md-8">
-                @Html.Label("Motivo Reagenda ou Cancelamento")
-                @Html.FwTextAreaFor(m => m.Agendamento.LastOrDefault(i => i.IndCancelado == true).MotivoCancelamentoReagendamento, true)
-            </div>
+	@*<div class="col-md-12">
+	<div class="form-group col-md-8">
+	@Html.Label("Motivo Reagenda ou Cancelamento")
+	@Html.FwTextAreaFor(m => m.Agendamento.LastOrDefault(i => i.IndCancelado == true).MotivoCancelamentoReagendamento, true)
+	</div>
 
-        </div>*@
-    <br />
-    <div class="col-md-12">
-        <h4>Movimentações Agendas</h4>
+	</div>*@
+	<br />
+	<div class="col-md-12">
+		<h4>Movimentações Agendas</h4>
 
-        <div class="col-md-12">
+		<div class="col-md-12">
 
-            <table class="table table-striped no-margins">
-                <thead>
-                    <tr>
-                        <th class="w20Perc">Data e Hora</th>
-                        @*<th>Operador</th>*@
-                        <th>Motivo</th>
-                    </tr>
-                </thead>
-                <tbody>
+			<table class="table table-striped no-margins">
+				<thead>
+					<tr>
+						<th class="w20Perc">Data e Hora</th>
+						@*<th>Operador</th>*@
+						<th>Motivo</th>
+					</tr>
+				</thead>
+				<tbody>
 
-                    @if (Model != null && Model.Agendamento != null && Model.Agendamento.Any())
-                    {
-                        foreach (var agenda in Model.Agendamento.OrderByDescending(o => o.DataCadastro))
-                        {
+					@if (Model != null && Model.Agendamento != null && Model.Agendamento.Any())
+					{
+						foreach (var agenda in Model.Agendamento.OrderByDescending(o => o.DataCadastro))
+						{
 
-                            var strLabel = "";
-                            var strSpan = "";
+							var strLabel = "";
+							var strSpan = "";
 
-                            switch (agenda.TipoAgendamento)
-                            {
-                                case TipoAgendamentoEnum.Agendar:
-                                    strLabel = "Agendado";
-                                    strSpan = "label-primary";
-                                    break;
-                                case TipoAgendamentoEnum.Reagendar:
-                                    strLabel = "Re-Agendado";
-                                    strSpan = "label-primary";
-                                    break;
-                                case TipoAgendamentoEnum.Cancelar:
-                                    strLabel = "Cancelamento";
-                                    strSpan = "label-danger";
-                                    break;
-                                case TipoAgendamentoEnum.Comunicar:
-                                    strLabel = "Não Agendado";
-                                    strSpan = "label-warning";
-                                    break;
-                                default:
-                                    break;
-                            }
-                    <tr>
-                        <td class="text-center">
-                            <span class="label @strSpan">@strLabel</span>
-                            <br />
-                            <small class="text-nowrap">@agenda.DthAgendamento.FormatoDataHora()</small>
-                        </td>
-                        @*<td>
-                                @agenda.IdOperadorCadastro
-                            </td>*@
-                        <td title="@agenda.MotivoCancelamentoReagendamento">@agenda.MotivoCancelamentoReagendamento</td>
-                    </tr>
-                        }
-                    }
+							switch (agenda.TipoAgendamento)
+							{
+								case TipoAgendamentoEnum.Agendar:
+									strLabel = "Agendado";
+									strSpan = "label-primary";
+									break;
+								case TipoAgendamentoEnum.Reagendar:
+									strLabel = "Re-Agendado";
+									strSpan = "label-primary";
+									break;
+								case TipoAgendamentoEnum.Cancelar:
+									strLabel = "Cancelamento";
+									strSpan = "label-danger";
+									break;
+								case TipoAgendamentoEnum.Comunicar:
+									strLabel = "Não Agendado";
+									strSpan = "label-warning";
+									break;
+								default:
+									break;
+							}
+							<tr>
+								<td class="text-center">
+									<span class="label @strSpan">@strLabel</span>
+									<br />
+									<small class="text-nowrap">@agenda.DthAgendamento.FormatoDataHora()</small>
+								</td>
+								@*<td>
+						@agenda.IdOperadorCadastro
+						</td>*@
+								<td title="@agenda.MotivoCancelamentoReagendamento">@agenda.MotivoCancelamentoReagendamento</td>
+							</tr>
+						}
+					}
 
-                </tbody>
-            </table>
-        </div>
+				</tbody>
+			</table>
+		</div>
 
-    </div>
+	</div>
 </div>
