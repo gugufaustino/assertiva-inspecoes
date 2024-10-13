@@ -51,10 +51,10 @@
 
 @section scripts {
 	<script type="text/javascript">
-		var grideTodasSolic
+		var grideFinanceiroPagar
 		document.addEventListener("DOMContentLoaded", function () {
 
-			grideTodasSolic = $('#tbFinanceiroPagar').Gride({
+			grideFinanceiroPagar = $('#tbFinanceiroPagar').Gride({
 				bSelecionavel: true,
 				bfiltroColuna: true,
 				order: [[1, 'desc']],
@@ -67,6 +67,7 @@
 					{ data: "IndPago", "className": "text-center" },
 				],
 				mapJsonParaObjeto: function (obj) {
+					console.log(obj);
 					return {
 						"0": "",
 						NomeVistoriador: obj.NomeVistoriador,
@@ -74,7 +75,7 @@
 						NomeSituacao: "Enviado Para Financeiro",
 						ValorTotal: obj.ValorLancamentoFinanceiro,
 						IndPago: indPendenteConcluido(obj.IndPago),
-						DT_RowId: obj.Id
+						DT_RowId: obj.IdVistoriador
 					}
 				}
 			});
@@ -84,7 +85,7 @@
 
 			$("#btnVisualizar").click(function () {
 
-				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+				var arrSel = grideFinanceiroPagar.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length == 1) {
 					loadModal("/Dashboards/FinanceiroReceber/PagarLancamentos?idVistoriador=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
@@ -96,7 +97,7 @@
 			});
 
 			$("#btnPagar").click(function () {
-				var arrSel = grideTodasSolic.rows({ selected: true }).ids().toArray();
+				var arrSel = grideFinanceiroPagar.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length < 1)
 					alertaMensagem("Selecione ao menos um item da lista");
@@ -120,7 +121,7 @@
 			function load(competenciaMes) {
 
 				$.post("/Dashboards/FinanceiroPagar/ListarDadosFinanceiro", { mesano: competenciaMes }, function (data) {
-					grideTodasSolic.atualizarDados(data.content);
+					grideFinanceiroPagar.atualizarDados(data.content);
 				});
 			}
 

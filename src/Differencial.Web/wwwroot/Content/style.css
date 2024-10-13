@@ -9750,8 +9750,11 @@ body.md-skin {
     width: auto !important;
 }
 
+table .w250px {
+    min-width: 250px !important;
+}
 table .w180px {
-    width: 180px !important;
+    min-width: 180px !important;
 }
 table .w150px {
     width: 150px !important;

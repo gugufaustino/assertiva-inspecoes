@@ -13,19 +13,17 @@
 			<table id="tbPagarLancamentos" class="grid-dataTables display table table-striped table-bordered table-hover">
 				<thead>
 					<tr class="text-nowrap">
-						<th class="">Nº inspeção</th>
-						<th class="">Nº proposta</th>
-						<th class="">Nº Cia</th>
-						<th class="">Centro de custo</th>
-						<th class="">Data de solicitação</th>
-						<th class="">Data de agendamento</th>
-						<th class=""> Data de envio </th>
+						<th>Nº inspeção</th>
+						<th>Nº proposta</th>
+						<th>Nº Cia</th>
+						<th>Centro de custo</th>
+						<th>Data de solicitação</th>
+						<th>Data de agendamento</th>
+						<th>Data de envio</th>
 						<th>Solicitante</th>
-						<th>Ramo</th>
-						<th>Modalidade</th>
-						<th>Regional</th>
-						<th style="width:180px">Cliente</th>
-						<th style="width:180px">Endereço</th>
+						<th>Ramo</th> 
+						<th >Cliente</th>
+						<th >Endereço</th>
 
 						<th>Cidade base</th>
 						<th>UF</th>
@@ -60,13 +58,13 @@
 								@item.CodSeguradora
 							</td>
 							<td class="">-</td>
-							<td class="text-center">
+							<td class="text-center w150px">
 								@item.DataCadastro
 							</td>
-							<td class="">
+							<td class="text-center w150px">
 								@item.DataAgendamento
 							</td>
-							<td class="">
+							<td class="text-center w150px">
 								@item.DataEnvio
 							</td>
 							<td class="">
@@ -75,10 +73,9 @@
 							<td class="">
 								@item.AtividadeNome
 							</td>
-							<td class=""></td>
-							<td class=""></td>
-							<td class="" style="width:180px">@item.Cliente</td>
-							<td class=" " style="width:180px">@item.Logradouro, @item.NomeMunicipio - @item.SiglaUf</td>
+
+							<td class="w250px">@item.Cliente</td>
+							<td class="w250px ">@item.Logradouro, @item.NomeMunicipio - @item.SiglaUf</td>
 
 							<td class="text-nowrap">@item.VistoriadorCidadeBase</td>
 							<td class="">@item.VistoriadorSiglaUf</td>
@@ -105,7 +102,7 @@
 </div>
 <style>
 	#tbPagarLancamentos_wrapper.dataTables_wrapper {
-		width: 2800px;
+		width: 3200px;
 		margin: 0 auto;
 	}
 </style>
