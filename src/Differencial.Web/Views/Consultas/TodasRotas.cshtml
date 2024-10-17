@@ -141,7 +141,7 @@
 								<th class="w50px">Código</th>
 								<th class="w50px">@Html.DisplayNameFor(m => m.CodSeguradora)</th>
 								<th class="">@Html.DisplayNameFor(m => m.Cliente.NomeRazaoSocial)</th>
-								<th class="w100px">@Html.DisplayNameFor(m => m.TpSituacao)</th>
+								<th class="w80px">@Html.DisplayNameFor(m => m.TpSituacao)</th>
 								<th class="w120px">Vistoriador</th>
 								<th class="w100px">Km Previsto</th>
 								<th class="w100px">Km Realizado</th>
@@ -169,7 +169,11 @@
 									<td></td>
 									<td class="text-right">@item.Id </td>
 									<td class="text-right">@item.CodSeguradora</td>
-									<td class="">@HtmlGridHelper.TextoSubTexto(item.Cliente.NomeRazaoSocial, "{0} - {1}".Formata(item.Endereco.NomeMunicipio, item.Endereco.SiglaUf))</td>
+									<td class="">
+										@item.Cliente.NomeRazaoSocial<br />
+										@HtmlGridHelper.Endereco(item.Endereco, true) 
+									</td>
+									
 									<td class="text-center small">@HtmlGridHelper.SituacaoProcesso(item.TpSituacao)  </td>
 									<td>
 										@(item.IdVistoriador.HasValue ? item.Vistoriador.Operador.NomeOperador : string.Empty)
