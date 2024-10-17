@@ -1,16 +1,15 @@
+using Differencial.Domain;
 using Differencial.Domain.Contracts.Infra;
 using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Entities;
 using Differencial.Domain.Filters;
 using Differencial.Repository.Context;
+using Differencial.Repository.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using Differencial.Domain;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Differencial.Repository.Repositories.Base;
 
 namespace Differencial.Repository.Repositories
 {
@@ -33,7 +32,7 @@ namespace Differencial.Repository.Repositories
 					.Include(i => i.Endereco)
 					.Include(i => i.Cliente.ClienteEndereco)
 					.Include(i => i.Cobertura)
-					.Include(i => i.Comunicacao).ThenInclude(e=> e.Operador)
+					.Include(i => i.Comunicacao).ThenInclude(e => e.Operador)
 					.Include(i => i.Agendamento)
 					.Include(i => i.LancamentoFinanceiro)
 					.Include(i => i.OperadorCadastro)
@@ -208,26 +207,44 @@ namespace Differencial.Repository.Repositories
 		public Task<Solicitacao> BuscarComContrato(int id)
 		{
 			return _dbSet
-						.Include(i => i.Produto.Seguradora)	
+						.Include(i => i.Produto.Seguradora)
 						.Include(i => i.Produto)
 								.ThenInclude(t => t.Contrato)
 								.ThenInclude(e => e.ContratoLancamento)
-								.ThenInclude(e => e.ContratoLancamentoValor) 
+								.ThenInclude(e => e.ContratoLancamentoValor)
 								.FirstAsync(i => i.Id == id);
 		}
 
 		public Task<Solicitacao> BuscarParaExcluir(int id)
 		{
-			return _dbSet   
-					.Include(i => i.Endereco) 
+			return _dbSet
+					.Include(i => i.Endereco)
 					.Include(i => i.Cobertura)
 					.Include(i => i.Comunicacao)
 					.Include(i => i.Agendamento)
-					.Include(i => i.MovimentacaoProcesso) 
+					.Include(i => i.MovimentacaoProcesso)
 					.Include(i => i.AtividadeProcesso)
 					.Include(i => i.Foto).ThenInclude(e => e.LaudoFoto)
 					.AsNoTracking()
 					.FirstAsync(w => w.Id == id);
+		}
+
+		public Task<List<Solicitacao>> ListarTodasRotas(SolicitacaoFilter filtro)
+		{
+			var query = _dbSet
+					.Include(i => i.Endereco)
+					.Include(i => i.Cliente)
+					.Include(i => i.Vistoriador.Operador)
+					.Include(i => i.Agendamento)
+					.Include(i => i.MovimentacaoProcesso)
+					.Include(i => i.AtividadeProcesso)
+					.AsNoTracking()
+					.Where(w => w.IdVistoriador != null && w.AtividadeProcesso.Any(a => a.TipoAtividade == TipoAtividadeEnum.Agendamento));
+
+			this.AplicarFiltro(ref query, filtro);
+
+			return query.ToListAsync();
+
 		}
 	}
 }

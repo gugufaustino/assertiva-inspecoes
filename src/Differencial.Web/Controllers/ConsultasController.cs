@@ -1,11 +1,13 @@
 ﻿using Differencial.Domain;
 using Differencial.Domain.Contracts.Infra;
+using Differencial.Domain.Contracts.Repositories;
 using Differencial.Domain.Contracts.Services;
 using Differencial.Domain.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Differencial.Web.Controllers
 {
@@ -13,13 +15,18 @@ namespace Differencial.Web.Controllers
     {
         IConsultasService _consultasService;
         ILancamentoFinanceiroTotalService _lancamentoFinanceiroTotalService;
-        public ConsultasController(IConsultasService solicitacaoService,
+		ISolicitacaoRepository _solicitacaoRepositorio;
+		public ConsultasController(IConsultasService solicitacaoService,
             ILancamentoFinanceiroService lancamentosFinanceitoService,
-            ILancamentoFinanceiroTotalService  lancamentoFinanceiroTotalService)
+            ILancamentoFinanceiroTotalService  lancamentoFinanceiroTotalService,
+			ISolicitacaoRepository solicitacaoRepositorio)
         {
             _consultasService = solicitacaoService;            
             _lancamentoFinanceiroTotalService = lancamentoFinanceiroTotalService;
-        }
+
+			_solicitacaoRepositorio = solicitacaoRepositorio;
+
+		}
         public ActionResult TodasSolicitacoes()
         {
             var lstSolic = _consultasService.ListarTodasSolicitacoes();
@@ -42,12 +49,9 @@ namespace Differencial.Web.Controllers
             var lstSolic = _consultasService.ListarTodasAgendas();
             return View(lstSolic);
         }
-        public ActionResult TodasRotas()
+        public async Task<ActionResult> TodasRotas()
         {
-            var lstSolic = _consultasService.ListarTodasRotas(new SolicitacaoFilter());
-
-         lstSolic  = lstSolic.Where(w=> w.IdVistoriador != null && w.AtividadeProcesso.Any(a=>a.TipoAtividade == TipoAtividadeEnum.PrestacaoContaKm))
-                                    .OrderBy(o => o.Vistoriador.Operador.NomeOperador);
+            var lstSolic = await _solicitacaoRepositorio.ListarTodasRotas(new SolicitacaoFilter()); 
 
             return View(lstSolic);
         }

@@ -41,9 +41,7 @@ namespace Differencial.Domain.Contracts.Services
         Solicitacao BuscarComMovimento(int id);
 
         Task SalvarSolicitacao(Solicitacao entidade);
-		Solicitacao Buscar(int id);
-
-		IEnumerable<Solicitacao> ListarTodasRotas(SolicitacaoFilter filtro);
+		Solicitacao Buscar(int id); 
 
 		Task Excluir(int id);
 

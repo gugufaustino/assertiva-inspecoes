@@ -1,263 +1,262 @@
 ﻿@model Solicitacao
 @inject Differencial.Domain.Contracts.Util.IConfiguracaoAplicativo ConfiguracaoAplicativo
- 
+
 <div class="row">
-    <div class="col-lg-6">
-        <dl class="dl-horizontal">
-            <dt>Criado por:</dt>
-            <dd>@Html.DisplayTextFor(m => m.OperadorCadastro.NomeOperador)</dd>
+	<div class="col-lg-6">
+		<dl class="dl-horizontal">
+			<dt>Criado por:</dt>
+			<dd>@Html.DisplayTextFor(m => m.OperadorCadastro.NomeOperador)</dd>
 
-            <dt>Apropriado por:</dt>
-            <dd>
-                @Html.DisplayTextFor(m => m.OperadorApropriado.NomeOperador)
-            </dd>
+			<dt>Apropriado por:</dt>
+			<dd>
+				@Html.DisplayTextFor(m => m.OperadorApropriado.NomeOperador)
+			</dd>
 
-            <dt>Participantes:</dt>
-            <dd class="project-people">
-                @if (Model != null)
-                {
-                foreach (var usuario in Model.MovimentacaoProcesso.Select(i => new { Id = i.OperadorOrigem.Id, UrlFoto = i.OperadorOrigem.UrlFoto, NomeOperador = i.OperadorOrigem.NomeOperador }).ToList().Distinct())
-                {
-                <a target="_blank" href="@Url.Action(" Editar", "Operador" , new { id=usuario.Id.ToString() })">
-                    @if (String.IsNullOrEmpty(usuario.UrlFoto))
-                    {
-                    <i class="fa fa-user no-image text-muted" title="@usuario.NomeOperador"></i>
-                    }
-                    else
-                    {
-                    <img alt="image" class="img-circle" src="@UtilWeb.ImagemBase64FromCache(ConfiguracaoAplicativo.RepositorioOperadorImagem + usuario.UrlFoto)" title="@usuario.NomeOperador" />
-                    }
-                </a>
-                }
-                }
-            </dd>
-        </dl>
-    </div>
-    <div class="col-lg-6" id="cluster_info">
-        <dl class="dl-horizontal">
-            @{
-            TimeZoneInfo hrBrasilia = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+			<dt>Participantes:</dt>
+			<dd class="project-people">
+				@if (Model != null)
+				{
+					foreach (var usuario in Model.MovimentacaoProcesso.Select(i => new { Id = i.OperadorOrigem.Id, UrlFoto = i.OperadorOrigem.UrlFoto, NomeOperador = i.OperadorOrigem.NomeOperador }).ToList().Distinct())
+					{
+						<a target="_blank" href="@Url.Action(" Editar", "Operador" , new { id=usuario.Id.ToString() })">
+							@if (String.IsNullOrEmpty(usuario.UrlFoto))
+							{
+								<i class="fa fa-user no-image text-muted" title="@usuario.NomeOperador"></i>
+							}
+							else
+							{
+								<img alt="image" class="img-circle" src="@UtilWeb.ImagemBase64FromCache(ConfiguracaoAplicativo.RepositorioOperadorImagem + usuario.UrlFoto)" title="@usuario.NomeOperador" />
+							}
+						</a>
+					}
+				}
+			</dd>
+		</dl>
+	</div>
+	<div class="col-lg-6" id="cluster_info">
+		<dl class="dl-horizontal">
+			@{
+				TimeZoneInfo hrBrasilia = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
 
-            }
-            <dt>Criado:</dt>
-            <dd>@Html.DisplayTextFor(m => m.DataCadastro) </dd>
+			}
+			<dt>Criado:</dt>
+			<dd>@Html.DisplayTextFor(m => m.DataCadastro) </dd>
 
-            <dt>Ultima Atualização:</dt>
-            <dd>@Html.DisplayTextFor(m => m.DataModificacao)</dd>
+			<dt>Ultima Atualização:</dt>
+			<dd>@Html.DisplayTextFor(m => m.DataModificacao)</dd>
 
-            <dt>Tempo decorrido:</dt>
-            <dd>
-                @{
-                var dataCompara = DateTime.Now;
-                if (Model != null && Model.TpSituacao == TipoSituacaoProcessoEnum.Concluido)
-                {
-                dataCompara = Model.MovimentacaoProcesso.Last(i => i.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.Concluido).DthMovimentacao;
-                }
-                }
-                @Html.FwTempoDecorridoFor(m => m.DataCadastro, dataCompara)
-            </dd>
-        </dl>
-    </div>
+			<dt>Tempo decorrido:</dt>
+			<dd>
+				@{
+					var dataCompara = DateTime.Now;
+					if (Model != null && Model.TpSituacao == TipoSituacaoProcessoEnum.Concluido)
+					{
+						dataCompara = Model.MovimentacaoProcesso.Last(i => i.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.Concluido).DthMovimentacao;
+					}
+				}
+				@Html.FwTempoDecorridoFor(m => m.DataCadastro, dataCompara)
+			</dd>
+		</dl>
+	</div>
 </div>
 <div class="row" style="">
-    <div class="col-lg-11">
-        <dl class="dl-horizontal">
-            <dt>Barra de Progresso:</dt>
-            <dd class="progress-group-pipe">
-                @{
+	<div class="col-lg-11">
+		<dl class="dl-horizontal">
+			<dt>Barra de Progresso:</dt>
+			<dd class="progress-group-pipe">
+			@{
 
-                if (Model != null && !Model.AtividadeProcesso.IsNullOrEmpty())
-                {
-                var cultureUS = new System.Globalization.CultureInfo("en-US");
-                var lstAtividades = Model.AtividadeProcesso.OrderByDescending(o => o.DthConcluida.HasValue).ThenBy(o => o.DthConcluida).ToList();
+					if (Model != null && !Model.AtividadeProcesso.IsNullOrEmpty())
+					{
+						var cultureUS = new System.Globalization.CultureInfo("en-US");
+						var lstAtividades = Model.AtividadeProcesso.OrderByDescending(o => o.DthConcluida.HasValue).ThenBy(o => o.DthConcluida).ToList();
 
-                var percUnidade = Math.Round(100m / lstAtividades.Count, 2);
-                var percConcluidas = percUnidade * lstAtividades.Count(i => i.TipoSituacaoAtividade == TipoSituacaoAtividadeEnum.Concluida);
+						var percUnidade = Math.Round(100m / lstAtividades.Count, 2);
+						var percConcluidas = percUnidade * lstAtividades.Count(i => i.TipoSituacaoAtividade == TipoSituacaoAtividadeEnum.Concluida);
 
-                <small>conclusão das atividades em <strong>@(percConcluidas.ToString(cultureUS)) %</strong>. @* progress-stripedPendente elaborar laudo final e enviar para seguradora solicitante.*@</small>
-                <div class="progress  active m-b-sm">
-                    <div style="width:@(percConcluidas.ToString(cultureUS))%;" class="progress-bar bg-success"></div>
-                </div>
-                for (int i = 0; i < lstAtividades.Count; i++)
-                {
-                decimal percItem = 0;
-                var item = lstAtividades[i];
-                if ((i + 1) >= lstAtividades.Count)
-                {
-                percItem = 98;
-                }
-                else
-                {
-                percItem = (i + 1) * percUnidade;
-                }
-                <div class="progress-pipe small @(percItem > percConcluidas ? " pendente": string.Empty)" style="left:@(percItem.ToString(cultureUS))%">
-                    <div class="text-nowrap label label-success">@(item.TipoAtividade.GetAttributeOfType<AtividadeAttribute>().ShortName)</div>
-                </div>
-                }
-                }
-                else
-                {
-                <small>conclusão das atividades em <strong>0%</strong>. @* progress-stripedPendente elaborar laudo final e enviar para seguradora solicitante.*@</small>
-                <div class="progress  active m-b-sm">
-                    <div style="width:0%;" class="progress-bar bg-success"></div>
-                </div>
-                }
-                }
+						<small>conclusão das atividades em <strong>@(percConcluidas.ToString(cultureUS)) %</strong>.  </small>
+						<div class="progress  active m-b-sm">
+							<div style="width:@(percConcluidas.ToString(cultureUS))%;" class="progress-bar bg-success"></div>
+						</div>
+						for (int i = 0; i < lstAtividades.Count; i++)
+						{
+							decimal percItem = 0;
+							var item = lstAtividades[i];
+							if ((i + 1) >= lstAtividades.Count)
+							{
+								percItem = 98;
+							}
+							else
+							{
+								percItem = (i + 1) * percUnidade;
+							}
+							<div class="progress-pipe small @(percItem > percConcluidas ? " pendente": string.Empty)" style="left:@(percItem.ToString(cultureUS))%">
+								<div class="text-nowrap label label-success" title="@(item.DthConcluida?.FormatoDataHora())">@(item.TipoAtividade.GetAttributeOfType<AtividadeAttribute>().ShortName)</div>
+							</div>
+						}
+					}
+					else
+					{
+						<small>conclusão das atividades em <strong>0%</strong>.</small>
+						<div class="progress  active m-b-sm">
+							<div style="width:0%;" class="progress-bar bg-success"></div>
+						</div>
+					}
+			}
 
-                @*<div class="progress-pipe small" style="left:30%"><div class="text-nowrap label label-success">Agendar</div></div>
-                <div class="progress-pipe small pendente" style="left:40%"><div class="text-nowrap label label-success">Info. Agenda</div></div>*@
+				 
 
 
-            </dd>
-        </dl>
-    </div>
+			</dd>
+		</dl>
+	</div>
 </div>
 <br />
 <br />
 <br />
 <div class="tabs-container">
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#tab-UltimasAtividades" data-toggle="tab">Ultimas movimentações</a>
-        </li>
-        @*
-        <li class=""><a href="#tab-1" data-toggle="tab">Users messages</a></li>*@
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab-UltimasAtividades">
-            <div class="panel-body">
-                <div class="row">
-                    <table class="table table-responsive table-striped">
-                        <thead>
-                            <tr>
-                                <th style="width:180px">Operador</th>
-                                <th class="w120px">Ação</th>
-                                <th class="w100px">Início</th>
-                                <th class="w100px">Fim</th>
-                                <th>Mensagem</th>
-                                @*
-                                <th>Situação</th>*@
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
-                            {
-                            foreach (var movimentacao in Model.MovimentacaoProcesso)
-                            {
-                            var strClassSituacao = "label-default";
-                            switch (movimentacao.TipoSituacaoMovimento)
-                            {
-                            case TipoSituacaoMovimentoEnum.Nova:
-                            strClassSituacao = "label-warning";
-                            break;
-                            case TipoSituacaoMovimentoEnum.Aberto:
-                            strClassSituacao = "label-danger";
-                            break;
-                            case TipoSituacaoMovimentoEnum.Concluido:
-                            strClassSituacao = "label-primary";
-                            break;
-                            default:
-                            break;
-                            }
-                            <tr>
-                                <td class="">
-                                    @movimentacao.OperadorOrigem.NomeOperador
-                                </td>
-                                <td class="text-center">
-                                    @movimentacao.TipoSituacaoProcesso.FwDisplaySituacaoProcessoEnum()
-                                </td>
-                                <td class="text-center">
-                                    @movimentacao.DthMovimentacao.FormatoDataHora()
-                                </td>
-                                <td class="text-center">
-                                    @movimentacao.DthConclusao.FormatoDataHora()
-                                </td>
-                                <td class="">
-                                    <p class="">
-                                        @movimentacao.TextoMovimentacao
-                                    </p>
-                                </td>
-                                @*
-                                <td class="text-center w80px">
-                                    <span class="label @strClassSituacao">
-                                        <i class="fa fa-check"></i>
-                                        @movimentacao.TipoSituacaoMovimento.ToString()
-                                    </span>
-                                </td>*@
-                            </tr>
-                            }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    @*<div class="panel blank-panel">
-        <div class="panel-heading">
-            <div class="panel-options">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#tab-UltimasAtividades" data-toggle="tab">Ultimas movimentações</a>
+		</li>
+		@*
+		<li class=""><a href="#tab-1" data-toggle="tab">Users messages</a></li>*@
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab-UltimasAtividades">
+			<div class="panel-body">
+				<div class="row">
+					<table class="table table-responsive table-striped">
+						<thead>
+							<tr>
+								<th style="width:180px">Operador</th>
+								<th class="w120px">Ação</th>
+								<th class="w100px">Início</th>
+								<th class="w100px">Fim</th>
+								<th>Mensagem</th>
+								@*
+								<th>Situação</th>*@
+							</tr>
+						</thead>
+						<tbody>
+							@if (Model != null)
+							{
+								foreach (var movimentacao in Model.MovimentacaoProcesso)
+								{
+									var strClassSituacao = "label-default";
+									switch (movimentacao.TipoSituacaoMovimento)
+									{
+										case TipoSituacaoMovimentoEnum.Nova:
+											strClassSituacao = "label-warning";
+											break;
+										case TipoSituacaoMovimentoEnum.Aberto:
+											strClassSituacao = "label-danger";
+											break;
+										case TipoSituacaoMovimentoEnum.Concluido:
+											strClassSituacao = "label-primary";
+											break;
+										default:
+											break;
+									}
+									<tr>
+										<td class="">
+											@movimentacao.OperadorOrigem.NomeOperador
+										</td>
+										<td class="text-center">
+											@movimentacao.TipoSituacaoProcesso.FwDisplaySituacaoProcessoEnum()
+										</td>
+										<td class="text-center">
+											@movimentacao.DthMovimentacao.FormatoDataHora()
+										</td>
+										<td class="text-center">
+											@movimentacao.DthConclusao.FormatoDataHora()
+										</td>
+										<td class="">
+											<p class="">
+												@movimentacao.TextoMovimentacao
+											</p>
+										</td>
+										@*
+								<td class="text-center w80px">
+								<span class="label @strClassSituacao">
+								<i class="fa fa-check"></i>
+								@movimentacao.TipoSituacaoMovimento.ToString()
+								</span>
+								</td>*@
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	@*<div class="panel blank-panel">
+	<div class="panel-heading">
+	<div class="panel-options">
 
-            </div>
-        </div>
+	</div>
+	</div>
 
 
-    </div>*@
+	</div>*@
 </div>
 
 
 <style>
-    .project-people img {
-        width: 52px;
-        height: 52px;
-    }
+	.project-people img {
+		width: 52px;
+		height: 52px;
+	}
 
-    .project-people .no-image {
-        font-size: 53px;
-        vertical-align: middle;
-    }
+	.project-people .no-image {
+		font-size: 53px;
+		vertical-align: middle;
+	}
 
-    .progress-group-pipe {
-        position: relative;
-    }
+	.progress-group-pipe {
+		position: relative;
+	}
 
-    .progress {
-        background-color: #ddd;
-    }
+	.progress {
+		background-color: #ddd;
+	}
 
-    .progress-bar {
-        background-color: #3d97d0;
-    }
+	.progress-bar {
+		background-color: #3d97d0;
+	}
 
-    .progress-pipe {
-        height: 30px;
-        top: 18px;
-        left: 0%;
-        position: absolute;
-        padding-left: 2px;
-        border-left: 3px solid #3d97d0;
-        padding-top: 30px;
-    }
+	.progress-pipe {
+		height: 30px;
+		top: 18px;
+		left: 0%;
+		position: absolute;
+		padding-left: 2px;
+		border-left: 3px solid #3d97d0;
+		padding-top: 30px;
+	}
 
-        .progress-pipe div {
-            transform: rotate(50deg);
-            -ms-transform: rotate(50deg); /* IE 9 */
-            -webkit-transform: rotate(50deg); /* Safari 3-8 */
-            transform-origin: 0% 0%;
-            position: absolute;
-            top: 25px;
-            min-width: 80px;
-        }
+		.progress-pipe div {
+			transform: rotate(50deg);
+			-ms-transform: rotate(50deg); /* IE 9 */
+			-webkit-transform: rotate(50deg); /* Safari 3-8 */
+			transform-origin: 0% 0%;
+			position: absolute;
+			top: 25px;
+			min-width: 80px;
+		}
 
-            .progress-pipe div.label-success {
-                background-color: #3d97d0;
-            }
+			.progress-pipe div.label-success {
+				background-color: #3d97d0;
+			}
 
 
-        .progress-pipe.pendente {
-            border-left: 3px solid #ccc;
-        }
+		.progress-pipe.pendente {
+			border-left: 3px solid #ccc;
+		}
 
-            .progress-pipe.pendente div.label-success {
-                background-color: #ccc;
-            }
+			.progress-pipe.pendente div.label-success {
+				background-color: #ccc;
+			}
 </style>

@@ -21,5 +21,6 @@ namespace Differencial.Domain.Contracts.Repositories
         Task<Solicitacao> BuscarParaEnviar(int id);
         Task<Solicitacao> BuscarComContrato(int id);
         Task<Solicitacao> BuscarParaExcluir(int id);
-    }
+		Task<List<Solicitacao>> ListarTodasRotas(SolicitacaoFilter filtro);
+	}
 }

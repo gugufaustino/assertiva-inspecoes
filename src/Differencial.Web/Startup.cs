@@ -59,8 +59,10 @@ namespace Differencial.Web
 
 
 
-            services.AddDbContext<DifferencialContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DifferencialConnection")));
-           
+            services.AddDbContext<DifferencialContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DifferencialConnection"))
+                                                                                        .EnableSensitiveDataLogging()  // Para incluir dados dos parâmetros na query gerada
+                                                                                           .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)); // Nível do log);
+
             //services.AddAutoMapper(typeof(Startup));
             Infra.AutoMapperConfig.RegisterAutoMapper();
 

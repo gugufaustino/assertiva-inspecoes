@@ -170,13 +170,7 @@ namespace Differencial.Service.Services
 		}
 
 		#endregion "Consultas"
-		public IEnumerable<Solicitacao> ListarTodasRotas(SolicitacaoFilter filtro)
-		{
-			return TryCatch(() =>
-			{
-				return _solicitacaoRepositorio.Where(filtro).ToList();
-			});
-		}
+	 
 		public async Task SalvarSolicitacao(Solicitacao entidade)
 		{
 			await TryCatchAsync(() =>
@@ -209,12 +203,12 @@ namespace Differencial.Service.Services
 				&& solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
 					throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
 
-				  _lancamentoFinanceiroTotalService.ExcluirPorSolicitacao(solic.Id); 
-				  _agendamentoService.Excluir(solic.Agendamento);
+				_lancamentoFinanceiroTotalService.ExcluirPorSolicitacao(solic.Id);
+				_agendamentoService.Excluir(solic.Agendamento);
 
 				_comunicacaoService.Excluir(solic.Comunicacao);
 				_coberturaService.Excluir(solic.Cobertura);
-				
+
 				_movimentacaoProcessoService.Excluir(solic.MovimentacaoProcesso);
 				_atividadeService.Excluir(solic.AtividadeProcesso);
 				_laudoFotoService.ExcluirFotoLaudoFoto(solic.Foto);
@@ -288,7 +282,7 @@ namespace Differencial.Service.Services
 		{
 			var lstLancamentosValor = _contratoService.GerarLancamentosContrato(solicitacao);
 			if (lstLancamentosValor.Count > 0)
-			{ 
+			{
 				//TODO preciso tratar se já houver lançamento-manual prévio;
 				//valor total
 				var lancamentoTotal = new LancamentoFinanceiroTotal
@@ -380,7 +374,7 @@ namespace Differencial.Service.Services
 				DescricaoLancamentoFinanceiro = lancamento.DescricaoLancamentoFinanceiro
 			});
 
-			
+
 		}
 		#endregion Lancamentos Financeiros
 		#region WorkFlow Ações
@@ -546,11 +540,11 @@ namespace Differencial.Service.Services
 
 				// Consulta Agendamentos vigentes para realziar todos os calculos com os regisros já nas posições definidas
 				lstAgendamentosVigentes = _agendamentoService.ListarAgendamentosVistoriadorDiaVigentes(solicitacao.Vistoriador.Id, dataRotaAgendamento).ToList();
-				
+
 				// RECALCULA A Solicitação Atual, pois ela já está em novo posicionamento
 				solAtual = lstAgendamentosVigentes.FirstOrDefault(w => w.Solicitacao.Id == solicitacao.Id);
 				RecalcularRota(ref lstAgendamentosVigentes, solAtual.Solicitacao);
-				
+
 				// RECALCULA outra Solicitação(Pré atualização)
 				if (solicitacaoPosterior != null)
 					RecalcularRota(ref lstAgendamentosVigentes, solicitacaoPosterior.Solicitacao);
@@ -561,8 +555,8 @@ namespace Differencial.Service.Services
 					solicitacaoPosteriorPosAtualizacao = lstAgendamentosVigentes.ElementAtOrDefault(solIndex + 1);
 				if (solicitacaoPosteriorPosAtualizacao != null)
 					RecalcularRota(ref lstAgendamentosVigentes, solicitacaoPosteriorPosAtualizacao.Solicitacao);
-				
-				
+
+
 				//Se agenda atual é a RotaDeVolta e não é a unica do dia, então a solicitação anterior deve ser recalculada e "remover os valores de Rota de Volta"
 				if (solAtual.Solicitacao.IndRotaDeVolta && lstAgendamentosVigentes.Count > 1)
 				{
@@ -820,7 +814,7 @@ namespace Differencial.Service.Services
 			}
 			operadorDistancia = _operadorService.MontarOperadorDistanciaRota(vistoriador, enderecoRotaAnterior, solicitacao.Endereco.SiglaUf, solicitacao.Endereco.NomeMunicipio,
 																				solicitacao.Endereco.Latitude.Value, solicitacao.Endereco.Longitude.Value, solicitacao.Id, solicitacao.IdProduto);
-			
+
 			solicitacao.DeslocamentoPrevisto = Convert.ToDecimal(operadorDistancia.DistanciaRota.Value);
 			solicitacao.CustoDeslocamentoPrevisto = operadorDistancia.VlrTotalQuilometroRodado;
 			solicitacao.CustoTotalPrevisto = operadorDistancia.VlrTotalQuilometroRodadoMaisPagamentoVistoria;
@@ -831,7 +825,7 @@ namespace Differencial.Service.Services
 				Endereco endBaseVolta = vistoriador.EnderecoBase;
 				var operadorDistanciaVolta = _operadorService.MontarOperadorDistanciaRota(vistoriador, solicitacao.Endereco, endBaseVolta.SiglaUf, endBaseVolta.NomeMunicipio,
 																						endBaseVolta.Latitude.Value, endBaseVolta.Longitude.Value, solicitacao.Id, solicitacao.IdProduto);
-				
+
 				solicitacao.DeslocamentoPrevisto += Convert.ToDecimal(operadorDistanciaVolta.DistanciaRota.Value);
 				solicitacao.CustoDeslocamentoPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;
 				solicitacao.CustoTotalPrevisto += operadorDistanciaVolta.VlrTotalQuilometroRodado;
@@ -871,7 +865,7 @@ namespace Differencial.Service.Services
 		public Solicitacao RotaAnteriorSolicitacao(Solicitacao solicitacao)
 		{
 
-			if(!solicitacao.IdVistoriador.HasValue)
+			if (!solicitacao.IdVistoriador.HasValue)
 				throw new ValidationException("Falha no processamento: Vistoriador(id) necessário nessa etapa.");
 
 			var agendamentoRealizado = AgendamentoVigenteSolicitacao(solicitacao);
@@ -969,7 +963,7 @@ namespace Differencial.Service.Services
 		public Agendamento AgendamentoVigenteSolicitacao(Solicitacao solicitacao)
 		{
 			return _agendamentoService.AgendamentoVigenteSolicitacao(solicitacao.Id);
-			
+
 		}
 
 
