@@ -5,7 +5,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled> 
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -136,6 +136,7 @@
   <PropertyGroup />
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	<UserSecretsId>4ee19883-df89-482f-abb7-212c67ef2542</UserSecretsId>
   </PropertyGroup>
 </Project>
