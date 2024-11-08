@@ -124,6 +124,12 @@ namespace Differencial.Repository.Repositories
 		public Task<List<Solicitacao>> ListarSolicitacoesGerenciaAgendamento()
 		{
 
+			var tiposExcluidos = new[]
+			{
+				TipoSituacaoProcessoEnum.Cancelado,
+				//TipoSituacaoProcessoEnum.EnviadoParaFinanceiro,
+				//TipoSituacaoProcessoEnum.ApropriadoPeloFinanceiro
+			};
 
 			return _dbSet
 						.Include(i => i.Agendamento)
@@ -132,10 +138,12 @@ namespace Differencial.Repository.Repositories
 						.Include(i => i.Vistoriador.Operador)
 						.Include(i => i.Vistoriador.EnderecoBase)
 						.Include(i => i.MovimentacaoProcesso)
-						.AsNoTracking()
-						.Where(w => w.IndRelacionamentoAgendaInformada == false
-								&& w.MovimentacaoProcesso.Any(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria)).
-						ToListAsync();
+						.AsNoTracking() 
+						.Where(w => w.TpSituacao.HasValue &&
+								!tiposExcluidos.Contains(w.TpSituacao.Value) 
+								&& w.IndRelacionamentoAgendaInformada == false 
+								&& w.MovimentacaoProcesso.Any(m => m.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaVistoria))
+						.ToListAsync();
 		}
 
 		public IEnumerable<Solicitacao> ListarSolicitacoesVistoriador()

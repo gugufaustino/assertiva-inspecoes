@@ -199,6 +199,7 @@ namespace Differencial.Service.Services
 				var solic = await _solicitacaoRepositorio.BuscarParaExcluir(id);
 
 				if (solic.TpSituacao != TipoSituacaoProcessoEnum.EmElaboracao
+				&& solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoGerente
 				&& solic.TpSituacao != TipoSituacaoProcessoEnum.EmElaboracaoSolicitante
 				&& solic.TpSituacao != TipoSituacaoProcessoEnum.ApropriadoPeloSolicitante)
 					throw new ValidationException("Não é possível excluir o registro {0}".Formata(solic.TpSituacao.GetAttributeOfType<SituacaoProcessoAttribute>().Name));
