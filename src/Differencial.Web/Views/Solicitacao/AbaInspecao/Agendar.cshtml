@@ -44,7 +44,9 @@
             {
                 <div class="form-group col-md-12">
                     @Html.FwLabelFor(m => m.Solicitacao.Cliente.ContatoAgendamento)
-                    @Html.FwTextBoxFor(m => m.Solicitacao.Cliente.ContatoAgendamento, htmlAttributes: new { @id = "txtContatoAgendamento", @Name = "txtContatoAgendamento" })
+                    @* @Html.FwTextBoxFor(m => m.Solicitacao.Cliente.ContatoAgendamento, htmlAttributes: new { id = "txtContatoAgendamento", name = "txtContatoAgendamento" })   *@
+                    @Html.FwTextBox("txtContatoAgendamento", Model?.Solicitacao?.Cliente?.ContatoAgendamento, htmlAttributes: new { @id = "txtContatoAgendamento", @name = "txtContatoAgendamento", maxlength = "250" })
+
                 </div>
             }           
 

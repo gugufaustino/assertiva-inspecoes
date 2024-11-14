@@ -13,15 +13,12 @@
 			<table id="tbReceberLancamentos" class="grid-dataTables display table table-striped table-bordered table-hover">
 				<thead>
 					<tr class="text-nowrap">
-						<th class="">Nº inspeção</th>
-						<th class="">Nº proposta</th>
-						<th class="">Nº Cia</th>
-						<th class="">Centro de custo</th>
+						<th class="">Nº inspeção</th> 
+						<th class="">Nº Cia</th> 
 						<th class="w150px">Data de solicitação</th>
 						<th class="w150px">Data de agendamento</th>
 						<th class="w150px">Data de envio</th>
-						<th>Solicitante</th>
-						<th>Atividade</th>
+						 
 						 
 						<th style="width:180px">Cliente</th>
 						<th style="width:180px">Endereço</th>
@@ -40,10 +37,7 @@
 						<th class="">
 							Situação
 							<span class="small font-noraml">(Frustrada, liquidada ou em andamento)</span>
-						</th>
-
-						<th class="">Carta de recomendação (S/N)</th>
-						<th class="">Observações</th>
+						</th> 
 					</tr>
 				</thead>
 
@@ -53,12 +47,10 @@
 						<tr id="@item.Id">
 							<td class="text-right">
 								@item.Id
-							</td>
-							<td class="">-</td>
+							</td> 
 							<td class="text-center">
 								@item.CodSeguradora
-							</td>
-							<td class="">-</td>
+							</td> 
 							<td class="text-center">
 								@item.DataCadastro
 							</td>
@@ -67,13 +59,7 @@
 							</td>
 							<td class="text-center">
 								@item.DataEnvio
-							</td>
-							<td class="">
-								@item.Solicitante
-							</td>
-							<td class="">
-								@item.AtividadeNome
-							</td>
+							</td> 
 							 
 							<td class="" style="width:180px">@item.Cliente</td>
 							<td class=" " style="width:180px">@item.Logradouro, @item.NomeMunicipio - @item.SiglaUf</td>
@@ -91,8 +77,7 @@
 
 							<td class="text-right">@item.VlrRiscoSegurado</td>
 							<td class="text-center">@HtmlGridHelper.SituacaoProcesso(item.TipoSituacaoProcesso).ToString() </td>
-							<td class="text-center"> - </td>
-							<td class="">@item.TxtInformacoesAdicionais</td>
+					 
 						</tr>
 					}
 

@@ -120,7 +120,9 @@ namespace Differencial.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(string usuario, string senha, string ReturnUrl)
         {
-            var op = _operadorService.BuscarLogon(usuario, senha);
+			ViewBag.Version = Environment.GetEnvironmentVariable("Version") + "v";
+
+			var op = _operadorService.BuscarLogon(usuario, senha);
             if (op != null)
             {
 

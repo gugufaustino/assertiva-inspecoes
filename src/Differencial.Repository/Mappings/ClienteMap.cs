@@ -17,6 +17,7 @@ namespace Differencial.Repository.Mappings
 			builder.Property(t => t.ContatoTelefone).HasMaxLength(13);
 			builder.Property(t => t.ContatoOutro).HasMaxLength(250);
 			builder.Property(t => t.AtividadeNome).HasMaxLength(250);
+			builder.Property(t => t.ContatoAgendamento).HasMaxLength(250);
 		}
     }
 }

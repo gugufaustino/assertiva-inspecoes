@@ -30,7 +30,7 @@ namespace Differencial.Repository.Repositories
 					.Include(i => i.Produto.Seguradora)
 					.Include(i => i.Produto.Contrato.ContratoLancamento).ThenInclude(c => c.ContratoLancamentoValor)
 					.Include(i => i.Endereco)
-					.Include(i => i.Cliente.ClienteEndereco)
+					.Include(i => i.Cliente.ClienteEndereco) 
 					.Include(i => i.Cobertura)
 					.Include(i => i.Comunicacao).ThenInclude(e => e.Operador)
 					.Include(i => i.Agendamento)
