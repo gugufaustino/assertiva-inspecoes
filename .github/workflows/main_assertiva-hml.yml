@@ -37,15 +37,15 @@ jobs:
             $version = "$latestTag-$commitCount $buildDate"
             Write-Host "Build commitCount: $commitCount"
             Write-Host "Build latestTag: $latestTag"
-            Write-Host "Build version: $version"
             Write-Host "Build buildDate: $buildDate"
+            Write-Host "Build version: $version"
             echo "VERSION=$version" >> $env:GITHUB_ENV    # Grava a versão no ambiente
 
       - name: dotnet build
-        run: dotnet build .\src\DifferencialApp.sln --configuration Release -p:Version=${{ env.VERSION }}
+        run: dotnet build .\src\DifferencialApp.sln --configuration Release -p:Version="${{ env.VERSION }}"
 
       - name: dotnet publish
-        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true -p:Version=${{ env.VERSION }}
+        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true -p:Version="${{ env.VERSION }}"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

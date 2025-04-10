@@ -232,6 +232,12 @@ namespace Differencial.Repository.Repositories
 						join movimento in _db.MovimentacaoProcesso.Where(i => i.TipoSituacaoProcesso == TipoSituacaoProcessoEnum.EnviadoParaFinanceiro).AsEnumerable()
 														  on solicitacao.Id equals movimento.IdSolicitacao into gpmovimento
 
+						// Junção de Agendamento com o filtro desejado
+						join agendamento in _db.Agendamento.Where(w => w.IndCancelado == false && w.TipoAgendamento != TipoAgendamentoEnum.Comunicar)
+						on solicitacao.Id equals agendamento.IdSolicitacao into gpagendamento
+						from agendamento in gpagendamento.DefaultIfEmpty() // Left join para trazer os agendamentos, mesmo que não existam
+
+
 
 						where lancamento.TipoLancamentoFinanceiro == Domain.TipoLancamentoFinanceiroEnum.DespesaPagamentoVistoriador
 								&& solicitacao.IdVistoriador == idVistoriador
@@ -244,7 +250,7 @@ namespace Differencial.Repository.Repositories
 							solicitacao.CodSeguradora,
 							"**centro de custo",
 							solicitacao.DataCadastro,
-							solicitacao.DthRelacionamentoAgendaInformada,
+							agendamento.DthAgendamento, // propriedade de agendamento vem aqui
 							gpmovimento.Where(m => m.IdSolicitacao == solicitacao.Id).OrderByDescending(m => m.DthMovimentacao).Select(m => m.DthMovimentacao).FirstOrDefault(),
 							solicitacao.SolicitanteNome,
 							cliente.AtividadeNome,
