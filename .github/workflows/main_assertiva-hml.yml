@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build Deploy - Assertiva-HML
+name: Build and deploy ASP.Net Core app to Azure Web App - assertiva-hml
 
 on:
   push:
@@ -12,35 +12,22 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET Core
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-        
-      - name: Clear NuGet Cache
-        run: dotnet nuget locals all --clear
 
-      - name: NuGet Restore
-        run: dotnet restore .\src\DifferencialApp.sln
-
-      - name: Calculate Build Version
-        id: version
-        shell: pwsh
-        run: |
-          $commitCount = git rev-list --count HEAD
-          $version = "1.1.$commitCount"
-          Write-Host "Build version: $version"
-          echo "VERSION=$VERSION" >> $env:GITHUB_ENV
-
-      - name: dotnet build
-        run: dotnet build .\src\DifferencialApp.sln --configuration Release -p:Version=${{ env.VERSION }}
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish .\src\DifferencialApp.sln -c Release -o "${{env.DOTNET_ROOT}}\myapp" -r win-x86 --self-contained true -p:Version=${{ env.VERSION }}
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -56,6 +43,7 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
@@ -66,12 +54,11 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_276179A66D6D487CB04410763F6792C5 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A917958BBDE547F1BAE399B45622DAD4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D1B959575B8841859907A61BA879792B }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_90B1C39A67024507ABA3C7E98A91AAE4 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AB9205C1E1654F938A7C35EB3A9336C5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EF6CD68017624629958E59794A7DB6C5 }}
 
-      - name: Deploy to Azure
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
