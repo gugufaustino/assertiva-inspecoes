@@ -1,0 +1,32 @@
+name: Test Calculate Build Version
+
+on:
+  workflow_dispatch:  # Permite disparar manualmente no GitHub
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+        
+      - name: Calculate Build Version
+        id: version
+        shell: pwsh
+        run: |
+            $latestTag = git describe --tags --abbrev=0           
+            $commitCount = git rev-list --count HEAD
+            $version = "0.$latestTag-$commitCount"
+            Write-Host "Build commitCount: $commitCount"
+            Write-Host "Build latestTag: $latestTag"
+            Write-Host "Build version: $version"
+            echo "VERSION=$version" >> $env:GITHUB_ENV    # Grava a versão no ambiente
+
+      - name: Display version
+        run: |
+          echo "Version from environment: ${{ env.VERSION }}"

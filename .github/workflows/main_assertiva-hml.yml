@@ -22,16 +22,18 @@ jobs:
       - name: Clear NuGet Cache
         run: dotnet nuget locals all --clear
 
-      - name: NuGet Restore
-        run: dotnet restore .\src\DifferencialApp.sln
+      # - name: NuGet Restore
+      #   run: dotnet restore .\src\DifferencialApp.sln
 
       - name: Calculate Build Version
         id: version
         shell: pwsh
         run: |
-            $latestTag = git describe --tags --abbrev=0
+            $latestTag = git describe --tags --abbrev=0           
             $commitCount = git rev-list --count HEAD
-            $version = "$latestTag-$commitCount"
+            $version = "0.$latestTag-$commitCount"
+            Write-Host "Build commitCount: $commitCount"
+            Write-Host "Build latestTag: $latestTag"
             Write-Host "Build version: $version"
             echo "VERSION=$version" >> $env:GITHUB_ENV   
 
