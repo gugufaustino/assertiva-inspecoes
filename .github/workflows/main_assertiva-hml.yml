@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+            fetch-depth: 0
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
@@ -31,11 +33,13 @@ jobs:
         run: |
             $latestTag = git describe --tags --abbrev=0           
             $commitCount = git rev-list --count HEAD
-            $version = "0.$latestTag-$commitCount"
+            $buildDate = Get-Date -Format "dd/MM/yyyy-HHmm"
+            $version = "$latestTag-$commitCount $buildDate"
             Write-Host "Build commitCount: $commitCount"
             Write-Host "Build latestTag: $latestTag"
             Write-Host "Build version: $version"
-            echo "VERSION=$version" >> $env:GITHUB_ENV   
+            Write-Host "Build buildDate: $buildDate"
+            echo "VERSION=$version" >> $env:GITHUB_ENV    # Grava a versão no ambiente
 
       - name: dotnet build
         run: dotnet build .\src\DifferencialApp.sln --configuration Release -p:Version=${{ env.VERSION }}
