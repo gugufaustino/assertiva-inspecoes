@@ -1,0 +1,36 @@
+mssql-assertiva
+assertiva
+sa-assertiva
+bd@pwd-Assert
+
+Basics
+Subscription
+Pago pelo Uso
+Resource group
+rg-assertiva-brazil-dev
+Server name
+mssql-assertiva
+mssql-assertiva.database.windows.net
+Authentication method
+SQL and Microsoft Entra authentication
+Server admin login
+sa-assertiva
+Microsoft Entra Admin
+well.faustino_hotmail.com#EXT#@wellfaustinohotmail.onmicrosoft.com
+Location
+Brazil South
+
+"DifferencialConnection": "Data Source=mssql-assertiva.database.windows.net;Initial Catalog=assertiva;User ID=sa-assertiva;Password=bd@pwd-Assert;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;",
+"DifferencialConnection-dev": "Data Source=mssql-assertiva.database.windows.net;Initial Catalog=assertiva;Integrated Security=True;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;"
+  
+  
+  [16:40, 9/10/2024] Nathy: Cor principal #af3577
+[16:43, 9/10/2024] Nathy: Cores secundárias #6D225B e #A20671
+[16:43, 9/10/2024] Nathy: E o branquinho
+
+  
+ 
+
+
+erro path:
+C:\home\site\wwwroot\App_Data\Log\Erro>
