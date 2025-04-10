@@ -116,7 +116,7 @@ namespace WEB.Controllers
 			return ResponseResult(true, content: lstSolicitacao);
 		}
 
-		[HttpGet("FinanceiroReceber/PagarLancamentos")]
+		[HttpGet("FinanceiroPagar/PagarLancamentos")]
 		public ActionResult PagarLancamentos(int idVistoriador, string mesano)
 		{
 			var mes = int.Parse(mesano.Split('/')[0]);
@@ -127,6 +127,20 @@ namespace WEB.Controllers
 			ViewData["Mes"] = mes;
 			ViewData["Ano"] = ano;
 			return View("PagarLancamentos", lstSolicitacao);
+		}
+
+
+		[HttpPost("FinanceiroPagar/Pagar")]
+		[ServiceFilter(typeof(TransactionFilter))]
+		public async Task<JsonResult> Pagar(int[] Id, string mesano)
+		{
+			throw new NotImplementedException();
+			var mes = int.Parse(mesano.Split('/')[0]);
+			var ano = int.Parse(mesano.Split('/')[1]);
+
+			//await _lancamentoFinanceiroTotalService.Pagar(Id, ano, mes);
+			await AppSaveChangesAsync();
+			return ResponseResult(true);
 		}
 
 		#endregion
@@ -141,7 +155,7 @@ namespace WEB.Controllers
 
             while (dataAtual >= dataInicio)
             {
-                var key = $"{dataAtual.Month}/{dataAtual.Year}";
+                var key = $"{dataAtual.Month:D2}/{dataAtual.Year}";
                 var value = $"{dataAtual.ToString("MMMM", new System.Globalization.CultureInfo("pt-BR"))}/{dataAtual.Year}";
 
                 listaCompetencias.Add(new KeyValuePair<string, string>(key, value));

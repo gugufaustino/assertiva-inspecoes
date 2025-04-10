@@ -88,7 +88,7 @@
 				var arrSel = grideFinanceiroPagar.rows({ selected: true }).ids().toArray();
 
 				if (arrSel.length == 1) {
-					loadModal("/Dashboards/FinanceiroReceber/PagarLancamentos?idVistoriador=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
+					loadModal("/Dashboards/FinanceiroPagar/PagarLancamentos?idVistoriador=" + arrSel[0] + "&mesano=" + $("#competenciaMes").val(), "modal-xl");
 				} else if (arrSel.length == 0) {
 					alertaMensagem("Selecione um item da lista");
 				} else {
@@ -102,7 +102,7 @@
 				if (arrSel.length < 1)
 					alertaMensagem("Selecione ao menos um item da lista");
 
-				$.post("/Dashboards/FinanceiroReceber/Faturar", { Id: arrSel, mesano: $("#competenciaMes").val() }, function (data) {
+				$.post("/Dashboards/FinanceiroPagar/Pagar", { Id: arrSel, mesano: $("#competenciaMes").val() }, function (data) {
 					alertaResponseResult(data);
 					if (data.success) {
 						load($("#competenciaMes").val());
