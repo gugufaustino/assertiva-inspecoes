@@ -34,7 +34,7 @@ jobs:
             $latestTag = git describe --tags --abbrev=0           
             $commitCount = git rev-list --count HEAD
             $buildDate = Get-Date -Format "yyyyMMdd"
-            $version = "$latestTag.$commitCount-$buildDate"
+            $version = "$latestTag.$commitCount"
             Write-Host "Build commitCount: $commitCount"
             Write-Host "Build latestTag: $latestTag"
             Write-Host "Build buildDate: $buildDate"

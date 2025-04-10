@@ -3,13 +3,12 @@ using Differencial.Domain.Contracts.Services;
 using Differencial.Domain.Resources;
 using Differencial.Domain.UOW;
 using Differencial.Domain.Util.ExtensionMethods;
-using Differencial.Service.ServiceUtility;
-using Differencial.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -80,13 +79,15 @@ namespace Differencial.Web.Controllers
         public static string GetVersion()
         {
             var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-            if (version != null)
-                return version + "av";
+            var exePath = Assembly.GetExecutingAssembly().Location;
+			var lastModified = System.IO.File.GetLastWriteTime(exePath); 
+			var versionInfo = FileVersionInfo.GetVersionInfo(exePath);
 
-            version = Environment.GetEnvironmentVariable("Version");
-            if (version != null)
-                return version + "ev";
+			version = $"Versão: {versionInfo}, Data de Modificação: {lastModified:dd/MM/yyyy HH:mm}";
 
+			if (version != null)
+                return version ;
+ 
             return "";
         }
 
