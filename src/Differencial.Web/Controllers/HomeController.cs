@@ -54,7 +54,7 @@ namespace Differencial.Web.Controllers
             if (_usuarioService.Autenticado())
                 return Redirect(@"~/Home/Inicio");
 
-            ViewBag.Version = GetVersion() + "v";
+            ViewBag.Version = GetVersion();
             return View("Login");
         }
         [AllowAnonymous]
@@ -74,18 +74,18 @@ namespace Differencial.Web.Controllers
         public ActionResult Login(string ReturnUrl = null)
         {
             ViewData["ReturnUrl"] = ReturnUrl;
-            ViewBag.Version = GetVersion() + "v";
+            ViewBag.Version = GetVersion();
             return View();
         }
         public static string GetVersion()
         {
             var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
             if (version != null)
-                return version;
+                return version + "av";
 
             version = Environment.GetEnvironmentVariable("Version");
             if (version != null)
-                return version;
+                return version + "ev";
 
             return "";
         }
