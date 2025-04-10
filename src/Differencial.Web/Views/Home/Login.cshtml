@@ -14,6 +14,7 @@
         .gray-bg {
             background-color: #edeef0;
         }
+
     </style>
 </head>
 
@@ -45,24 +46,21 @@
             <p class="m-t"></p>
         </div>
         <div class="m-t">
-            <div class="col-md-12 no-margins no-padding">
-                <small>Todos os direitos reservados &copy; @DateTime.Now.Date.Year</small>
-               @*  <small>@(ConfiguracaoAplicativo.AppVersao.IsNullOrEmpty() ? string.Empty : $"{ConfiguracaoAplicativo.AppVersao}v") </small> *@
-                <small>@(ViewBag.Version).</small>
-                
-                 
+            <div class="col-md-12 no-margins no-padding"> 
+                <small class="block text-center">Todos os direitos reservados &copy; @DateTime.Now.Date.Year</small>
             </div>
            
         </div>
 
     </div>
+    <small style="position:absolute; right:0;bottom:0; padding:8px" class="block">@(ViewBag.Version)</small>
+
     <partial name="Dialog/_ModalMensagem" />
     <partial name="_ScriptsjQueryBootstrapPartial" />
     <partial name="_ScriptsLibsPartial" />
     <partial name="_ScriptsAppPartial" />
 
-    <script>
-
+    <script> 
         $(document).ready(function () {
 
             if (($(".validation-summary-errors").length > 0 && $(".validation-summary-errors li:eq(0)").css("display") != "none")
@@ -84,6 +82,6 @@
             return str.replace(/^\s+/, '').replace(/\s+$/, '');
         }
     </script>
-
+    
 </body>
 </html>

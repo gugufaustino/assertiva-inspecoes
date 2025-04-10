@@ -78,17 +78,18 @@ namespace Differencial.Web.Controllers
         }
         public static string GetVersion()
         {
-            var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            // var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            //ProductVersion: 1.1.114+4aa367c9d51503cfe2fa677627c2b861aadf70f5
             var exePath = Assembly.GetExecutingAssembly().Location;
 			var lastModified = System.IO.File.GetLastWriteTime(exePath); 
-			var versionInfo = FileVersionInfo.GetVersionInfo(exePath);
+			var versionInfo = FileVersionInfo.GetVersionInfo(exePath).FileVersion;
 
-			version = $"Versão: {versionInfo}, Data de Modificação: {lastModified:dd/MM/yyyy HH:mm}";
+            var version = $"Versão: {versionInfo} {lastModified:dd/MM/yyyy}";
 
 			if (version != null)
                 return version ;
  
-            return "";
+            return $"Versão: 0.0.000.0 {DateTime.Now:dd/MM/yyyy}";
         }
 
         public ActionResult Inicio()
